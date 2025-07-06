@@ -1,0 +1,24 @@
+﻿@using LMS.Host.Components.Layout
+@using Microsoft.AspNetCore.Components.Routing
+@using System.Reflection
+
+@inherits LayoutComponentBase
+
+<Router AdditionalAssemblies="@AdditionalAssemblies" AppAssembly="@AppAssembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p>Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+
+@code {
+    [Parameter]
+    public Assembly AppAssembly { get; set; } = typeof(App).Assembly;
+
+    [Parameter]
+    public IEnumerable<Assembly> AdditionalAssemblies { get; set; } = Enumerable.Empty<Assembly>();
+}

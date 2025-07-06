@@ -1,6 +1,17 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
+﻿@using LMS.Host.Components.Layout
+@inherits LayoutComponentBase
+
+<ModuleRouter AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
-        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
-</Router>
+    <NotFound>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <div class="container">
+                <h1>Page Not Found</h1>
+                <p>Sorry, there's nothing at this address.</p>
+                <a href="/" class="btn btn-primary">Return to Home</a>
+            </div>
+        </LayoutView>
+    </NotFound>
+</ModuleRouter>
