@@ -69,6 +69,8 @@ public static class ModuleManager
     {
         var module = (IModule)Activator.CreateInstance(moduleType)!;
         module.RegisterServices(_services);
+        _modules.Add(moduleInfo);
+
         switch (true)
         {
             case var _ when typeof(IApiModule).IsAssignableFrom(module.ModuleType):

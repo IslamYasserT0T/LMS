@@ -1,7 +1,8 @@
 ﻿@using LMS.Host.Components.Layout
+@using LMS.Host.Services
 @inherits LayoutComponentBase
 
-<ModuleRouter AppAssembly="@typeof(Program).Assembly">
+<Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="ModuleManager.GetModules().Select(m => m.Assembly).ToArray()">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
@@ -14,4 +15,4 @@
             </div>
         </LayoutView>
     </NotFound>
-</ModuleRouter>
+</Router>

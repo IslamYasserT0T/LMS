@@ -1,5 +1,14 @@
-﻿@inherits LayoutComponentBase
+﻿@using LMS.Host.Services
+@using MudBlazor
+@inherits LayoutComponentBase
+<MudThemeProvider />
+<MudPopoverProvider />
 
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -21,3 +30,27 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+@code{
+    private IEnumerable<ModuleInfo> Modules;
+
+    protected override void OnInitialized()
+    {
+        Modules = ModuleManager.GetUiModules();
+        ModuleManager.OnModulesChanged += OnModulesChanged;
+        StateHasChanged();
+    }
+
+    private async void OnModulesChanged(IEnumerable<ModuleInfo> modules)
+    {
+        await InvokeAsync(() =>
+        {
+            Modules = modules;
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        ModuleManager.OnModulesChanged -= OnModulesChanged;
+    }
+}

@@ -10,5 +10,8 @@
     <ProjectReference Include="..\..\shared\Shared.Core\Shared.Core.csproj" />
     <ProjectReference Include="..\..\shared\Shared.Ui\Shared.Ui.csproj" />
   </ItemGroup>
-
+	<Target Name="BuildPlugin" BeforeTargets="Build">
+		<MSBuild Projects="..\..\modules\SampleModule\SampleModule.Ui\SampleModule.Ui.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/SampleModule.Ui/" />
+	
+	</Target>
 </Project>

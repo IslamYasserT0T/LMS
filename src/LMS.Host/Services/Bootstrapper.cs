@@ -1,4 +1,6 @@
 ﻿using LMS.Host.Components;
+using Microsoft.AspNetCore.Builder;
+using ModulePoc.Host.Pages;
 using MudBlazor.Services;
 
 namespace LMS.Host.Services;
@@ -13,13 +15,15 @@ public class Bootstrapper
     }
     public void ConfigureServices()
     {
-        _builder.Services.AddServerSideBlazor();
-        _builder.Services.AddMudServices();
-        _builder.Services.AddRazorComponents()
-               .AddInteractiveServerComponents();
+
         ModuleManager.LoadModules(_builder.Services);
 
         _builder.Services.AddControllers();
+
+        _builder.Services.AddRazorComponents()
+               .AddInteractiveServerComponents();
+        _builder.Services.AddServerSideBlazor();
+        _builder.Services.AddMudServices();
 
         var mvcBuilder = _builder.Services.AddRazorPages();
            
@@ -58,17 +62,19 @@ public class Bootstrapper
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ModulePoc API V1");
             });
         }
-
-        app.UseHttpsRedirection();
         app.UseRouting();
         app.UseAntiforgery();
+        app.UseHttpsRedirection();
         app.UseStaticFiles();
-        app.UseAuthentication();
+        app.MapStaticAssets();
         app.UseAuthorization();
         app.MapControllers();
+        // app.MapBlazorHub();
         app.MapRazorComponents<App>()
-                .AddInteractiveServerRenderMode();
-        app.MapBlazorHub();
+                .AddInteractiveServerRenderMode()
+                .AddAdditionalAssemblies(ModuleManager.GetModules().Select(m => m.Assembly).ToArray());
+     
+        //app.MapBlazorHub();
     }
    
 }

@@ -1,4 +1,5 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using LMS.Host.Services
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">LMS.Host</a>
     </div>
@@ -25,6 +26,50 @@
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
             </NavLink>
         </div>
+        <div class="nav-item px-3">
+            <div class="nav-link text-muted">
+                <span class="oi oi-puzzle-piece" aria-hidden="true"></span> Modules
+            </div>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/Component/razor">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Component Razor
+            </NavLink>
+        </div>
+        @foreach (var module in Modules)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="@module.Module.URL">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> @module.Module.Name
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
 
+@code
+{
+    private IEnumerable<ModuleInfo> Modules;
+
+
+    protected override void OnInitialized()
+    {
+        Modules = ModuleManager.GetUiModules();
+        ModuleManager.OnModulesChanged += OnModulesChanged;
+        StateHasChanged();
+    }
+
+    private async void OnModulesChanged(IEnumerable<ModuleInfo> modules)
+    {
+        await InvokeAsync(() =>
+        {
+            Modules = modules;
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        ModuleManager.OnModulesChanged -= OnModulesChanged;
+    }
+}
