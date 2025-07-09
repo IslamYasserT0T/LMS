@@ -4,8 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using ModulePoc.Host.Pages;
 using MudBlazor.Services;
 using SettingModule.Contracts;
+using SettingModule.ExtentionMethods;
+using SettingModule.Presistence.Context;
 using SettingModule.Services;
 using Shared.Infrastructure.Persistence;
+using System.Threading.Tasks;
 
 namespace LMS.Host.Services;
 
@@ -17,23 +20,23 @@ public class Bootstrapper
     {
         _builder = builder;
     }
-    public void ConfigureServices()
+    public async Task ConfigureServices()
     {
+        _builder.Services.AddDbContext<BaseDbContext>(options =>
+         options.UseNpgsql(_builder.Configuration.GetConnectionString("Default")));
 
-        ModuleManager.LoadModules(_builder.Services);
+        _builder.Services.AddSettingModule(_builder.Configuration);
+
+        await ModuleManager.LoadModules(_builder.Services);
 
         _builder.Services.AddControllers();
-
+        var mvcBuilder = _builder.Services.AddRazorPages();
+       
         _builder.Services.AddRazorComponents()
                .AddInteractiveServerComponents();
         _builder.Services.AddServerSideBlazor();
         _builder.Services.AddMudServices();
-        _builder.Services.AddSingleton<ISettingDefinationContext, SettingDefinationContext>();
-        _builder.Services.AddScoped<ISettingDefinationProvider , SettingDefinationProvider>();
 
-        var mvcBuilder = _builder.Services.AddRazorPages();
-        _builder.Services.AddDbContext<BaseDbContext>(options =>
-          options.UseNpgsql(_builder.Configuration.GetConnectionString("Default")));
 
         foreach (var assembly in ModuleManager.GetUiModules())
         {

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace SettingModule.Contracts;
 public interface ISettingDefinationContext
 {
-    SettingDefinition? GetOrNull(string name);
+    Task<SettingDefinition?> GetOrNull(string name);
+    Task<Dictionary<string, SettingDefinition>> GetList(CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<SettingDefinition>> GetAll();
 
-    IReadOnlyList<SettingDefinition> GetAll();
-
-    void Add(params SettingDefinition[] definitions );
+    Task Add(params SettingDefinition[] definitions );
 }

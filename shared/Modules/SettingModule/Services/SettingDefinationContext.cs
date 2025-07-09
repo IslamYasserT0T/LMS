@@ -3,44 +3,43 @@ using SettingModule.Contracts;
 using SettingModule.Entities;
 using SettingModule.Presistence.Context;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 namespace SettingModule.Services;
 public class SettingDefinationContext : ISettingDefinationContext
 {
-    public Dictionary<string, SettingDefinition> Settings { get; set; }
     private  SettingDbContext _context;
 
     public  SettingDefinationContext(SettingDbContext context)
     {
-
-        Settings = new Dictionary<string, SettingDefinition>();
         _context = context;
-        Task.Run(() => this.GetList()).Wait();
     }
-    public async Task GetList()
+    public async Task<Dictionary<string, SettingDefinition>> GetList(CancellationToken cancellationToken = default)
     {
-        Settings = await _context.SettingDefinitions
+      return await _context.SettingDefinitions
                  .AsNoTracking() 
                  .ToDictionaryAsync(sd => sd.Name);
     }
-    public virtual SettingDefinition? GetOrNull(string name)
+    public virtual async Task<SettingDefinition?> GetOrNull(string name)
     {
-        return Settings.GetValueOrDefault(name);
+        return await _context.SettingDefinitions.FirstOrDefaultAsync(sd => sd.Name == name);
     }
 
-    public virtual IReadOnlyList<SettingDefinition> GetAll()
+    public virtual async Task<IReadOnlyList<SettingDefinition>> GetAll()
     {
-        return Settings.Values.ToImmutableList();
+        return await _context.SettingDefinitions.ToListAsync();
     }
 
-    public virtual void Add(params SettingDefinition[] definitions)
+    public virtual async Task Add(params SettingDefinition[] definitions)
     { 
         if (definitions.Length == 0)
-        {
             return;
-        }
-        foreach (var definition in definitions)
-        {
-            Settings[definition.Name] = definition;
-        }
+        foreach (var item in definitions)
+            if (!_context.SettingDefinitions.Any(x => x.Name == item.Name))
+            {
+                await _context.SettingDefinitions.AddAsync(item);
+                await _context.SaveChangesAsync();
+            }
+
+      
     }
 }
