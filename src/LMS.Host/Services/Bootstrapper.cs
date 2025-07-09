@@ -1,7 +1,9 @@
 ﻿using LMS.Host.Components;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using ModulePoc.Host.Pages;
 using MudBlazor.Services;
+using Shared.Infrastructure.Persistence;
 
 namespace LMS.Host.Services;
 
@@ -26,7 +28,8 @@ public class Bootstrapper
         _builder.Services.AddMudServices();
 
         var mvcBuilder = _builder.Services.AddRazorPages();
-           
+        _builder.Services.AddDbContext<BaseDbContext>(options =>
+          options.UseNpgsql(_builder.Configuration.GetConnectionString("Default")));
 
         foreach (var assembly in ModuleManager.GetUiModules())
         {
