@@ -1,5 +1,9 @@
 using LMS.Host.Components;
 using LMS.Host.Services;
+using Microsoft.EntityFrameworkCore;
+using SettingModule.Contracts;
+using SettingModule.Services;
+using Shared.Infrastructure.Persistence;
 
 namespace LMS.Host
 {
@@ -7,9 +11,8 @@ namespace LMS.Host
     {
         public static void Main(string[] args)
         {
-
-
             var builder = WebApplication.CreateBuilder(args);
+      
             // Configure services
             var bootstrapper = new Bootstrapper(builder);
 

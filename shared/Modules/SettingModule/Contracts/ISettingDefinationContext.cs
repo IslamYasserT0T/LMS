@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SettingModule.Contracts;
-public interface ISettingDefinitionContext
+public interface ISettingDefinationContext
 {
     SettingDefinition? GetOrNull(string name);
 

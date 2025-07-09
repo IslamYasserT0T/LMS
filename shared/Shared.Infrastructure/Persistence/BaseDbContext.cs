@@ -10,9 +10,10 @@ namespace Shared.Infrastructure.Persistence;
 /// <summary>
 /// The base database context
 /// </summary>
-public class BaseDbContext  : DbContext
+public class BaseDbContext : DbContext
 {
     public BaseDbContext(DbContextOptions options) : base(options)
     {
     }
+
 }

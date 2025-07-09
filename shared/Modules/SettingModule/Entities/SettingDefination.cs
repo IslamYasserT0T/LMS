@@ -1,35 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Shared.Infrastructure.Entities;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SettingModule.Entities;
-public class SettingDefinition
+public class SettingDefinition : BaseEntity<Guid>
 {
     /// <summary>
     /// Unique name of the setting.
     /// </summary>
     [NotNull]
-    public string Name { get; }
+    public string Name { get; set; }
+    [NotNull]
     public string ModuleName { get; set; }
     public string? DisplayName { get; set; }
-
     public string? Description { get; set; }
-
     /// <summary>
     /// Default value of the setting.
     /// </summary>
-    public string? DefaultValue { get; set; }
-
+    public string  DefaultValue { get; set; }
     /// <summary>
     /// Can clients see this setting and it's value.
     /// It maybe dangerous for some settings to be visible to clients (such as an email server password).
     /// Default: false.
     /// </summary>
     public bool IsVisibleToClients { get; set; }
-
     /// <summary>
     /// A list of allowed providers to get/set value of this setting.
     /// An empty list indicates that all providers are allowed.
@@ -41,39 +34,9 @@ public class SettingDefinition
     /// Default: True.
     /// </summary>
     public bool IsInherited { get; set; }
-
-    /// <summary>
-    /// Can be used to get/set custom properties for this setting definition.
-    /// </summary>
-    [NotNull]
-    public Dictionary<string, object> Properties { get; }
-
     /// <summary>
     /// Is this setting stored as encrypted in the data source.
     /// Default: False.
     /// </summary>
     public bool IsEncrypted { get; set; }
-
-
-    /// <summary>
-    /// Sets a property in the <see cref="Properties"/> dictionary.
-    /// This is a shortcut for nested calls on this object.
-    /// </summary>
-    public virtual SettingDefinition WithProperty(string key, object value)
-    {
-        Properties[key] = value;
-        return this;
-    }
 }
-
-
-
-//[NotNull]
-//public ILocalizableString DisplayName
-//{
-//    get => _displayName;
-//    set => _displayName = Check.NotNull(value, nameof(value));
-//}
-//private ILocalizableString _displayName = default!;
-
-//public ILocalizableString? Description { get; set; }
