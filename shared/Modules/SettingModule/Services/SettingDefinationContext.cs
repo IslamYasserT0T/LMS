@@ -42,4 +42,10 @@ public class SettingDefinationContext : ISettingDefinationContext
 
       
     }
+
+    public async Task Update(SettingDefinition definitions)
+    {
+        _context.SettingDefinitions.Update(definitions);
+        await _context.SaveChangesAsync();
+    }
 }

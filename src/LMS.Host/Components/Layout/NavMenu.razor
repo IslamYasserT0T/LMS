@@ -52,7 +52,12 @@
         {
             <div class="nav-item px-3">
                 <NavLink class="nav-link">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> @module.Value.Name
+                    <InputCheckbox Value="@module.Value.IsEnabled"
+                                   ValueChanged="@(v => SettingChanged(v, module))"
+                                   ValueExpression="() => module.Value.IsEnabled"
+                                   class="oi oi-list-rich" />
+
+                    <span>@module.Value.Name</span>
                 </NavLink>
             </div>
         }
@@ -70,7 +75,14 @@
         ModuleManager.OnModulesChanged += OnModulesChanged;
         StateHasChanged();
     }
+    private async Task SettingChanged(bool isEnabled, KeyValuePair<string, SettingDefinition> setting)
+    {
+        setting.Value.IsEnabled = isEnabled;
+        await settingDefination.Update(setting.Value);
+        Settings = await settingDefination.InitializeAsync();
+        StateHasChanged();
 
+    }
     private async void OnModulesChanged(IEnumerable<ModuleInfo> modules)
     {
         await InvokeAsync(() =>

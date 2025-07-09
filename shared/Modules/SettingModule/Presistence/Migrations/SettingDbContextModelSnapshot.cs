@@ -38,6 +38,9 @@ namespace SettingModule.Presistence.Migrations
                     b.Property<string>("DisplayName")
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsEncrypted")
                         .HasColumnType("boolean");
 

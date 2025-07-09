@@ -13,4 +13,5 @@ public interface ISettingDefinationContext
     Task<IReadOnlyList<SettingDefinition>> GetAll();
 
     Task Add(params SettingDefinition[] definitions );
+    Task Update(SettingDefinition definitions);
 }

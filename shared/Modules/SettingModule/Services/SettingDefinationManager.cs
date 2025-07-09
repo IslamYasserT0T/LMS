@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SettingModule.Services;
 
-public class SettingDefinationManager : ISettingDefinationManager
+public class SettingDefinationManager : ISettingDefinationManager 
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private Dictionary<string, SettingDefinition> _settings { get; set; }
@@ -21,10 +21,31 @@ public class SettingDefinationManager : ISettingDefinationManager
     public async Task<Dictionary<string, SettingDefinition>> InitializeAsync()
     {
         if (_settings != null) return _settings;
-        using var scope = _scopeFactory.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ISettingDefinationContext>();
+        IServiceScope scope;
+        ISettingDefinationContext context;
+        GetSettingContextService(out scope, out context);
+        _settings = await context.GetList();
+        return _settings;
+
+
+    }
+
+    public async Task<Dictionary<string, SettingDefinition>> Update(SettingDefinition settingDefinition)
+    {
+        IServiceScope scope;
+        ISettingDefinationContext context;
+        GetSettingContextService(out scope, out context);
+        await context.Update(settingDefinition);
         _settings = await context.GetList();
         return _settings;
     }
 
+    #region Private Methods
+    private void GetSettingContextService(out IServiceScope scope, out ISettingDefinationContext context)
+    {
+        scope = _scopeFactory.CreateScope();
+        context = scope.ServiceProvider.GetRequiredService<ISettingDefinationContext>();
+    }
+
+    #endregion
 }

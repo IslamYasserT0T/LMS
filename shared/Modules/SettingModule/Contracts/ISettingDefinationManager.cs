@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace SettingModule.Contracts;
 
-public interface ISettingDefinationManager
+public interface ISettingDefinationManager 
 {
     Task<Dictionary<string, SettingDefinition>> InitializeAsync();
+    Task<Dictionary<string, SettingDefinition>> Update(SettingDefinition settingDefinition);
 }

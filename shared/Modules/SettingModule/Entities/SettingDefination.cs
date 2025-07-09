@@ -39,4 +39,8 @@ public class SettingDefinition : BaseEntity<Guid>
     /// Default: False.
     /// </summary>
     public bool IsEncrypted { get; set; }
+    /// <summary>
+    /// Is this setting enabled.
+    /// </summary>
+    public bool IsEnabled { get; set; }
 }
