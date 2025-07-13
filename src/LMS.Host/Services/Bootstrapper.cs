@@ -1,4 +1,5 @@
-﻿using LMS.Host.Components;
+﻿using AuthorizationModule.ExtentionMethods;
+using LMS.Host.Components;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using ModulePoc.Host.Pages;
@@ -22,16 +23,16 @@ public class Bootstrapper
     }
     public async Task ConfigureServices()
     {
+
         _builder.Services.AddDbContext<BaseDbContext>(options =>
          options.UseNpgsql(_builder.Configuration.GetConnectionString("Default")));
 
         _builder.Services.AddSettingModule(_builder.Configuration);
 
-        await ModuleManager.LoadModules(_builder.Services);
 
         _builder.Services.AddControllers();
         var mvcBuilder = _builder.Services.AddRazorPages();
-       
+        _builder.Services.AddAuthorizationModule(_builder.Configuration);
         _builder.Services.AddRazorComponents()
                .AddInteractiveServerComponents();
         _builder.Services.AddServerSideBlazor();
@@ -53,6 +54,9 @@ public class Bootstrapper
                 Description = "API for ModulePoc application"
             });
         });
+
+        await ModuleManager.LoadModules(_builder.Services);
+
     }
 
     public void ConfigureApplication(WebApplication app)
@@ -79,12 +83,9 @@ public class Bootstrapper
         app.MapStaticAssets();
         app.UseAuthorization();
         app.MapControllers();
-        // app.MapBlazorHub();
         app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
                 .AddAdditionalAssemblies(ModuleManager.GetModules().Select(m => m.Assembly).ToArray());
-     
-        //app.MapBlazorHub();
     }
    
 }
