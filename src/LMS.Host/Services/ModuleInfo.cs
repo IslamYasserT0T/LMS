@@ -1,4 +1,4 @@
-﻿using Shared.Core;
+﻿using Shared.Core.Contracts;
 using System.Reflection;
 
 namespace LMS.Host.Services;

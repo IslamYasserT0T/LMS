@@ -1,34 +1,49 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ModulePoc.Shared;
+﻿using LMS.Host.Contracts;
+using Microsoft.EntityFrameworkCore;
 using SettingModule.Contracts;
 using SettingModule.Presistence.Context;
 using SettingModule.Services;
-using Shared.Core;
+using Shared.Core.Contracts;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace LMS.Host.Services;
-
-public static class ModuleManager
+///<inheritdoc/>
+public class ModuleManager : IModuleManager
 {
-    private static readonly List<ModuleInfo> _modules = new();
-    private static readonly List<ModuleInfo> _moduleUis = new();
-    private static IServiceCollection _services;
+    private static  List<ModuleInfo> _modules { get; set; } = new();
+    private  List<ModuleInfo> _moduleUis { get; set; } = new();
+    private IServiceCollection _services { get; set; }
+    private IConfiguration _configuration { get; set; }
 
-    public static event Action<IEnumerable<ModuleInfo>> OnModulesChanged;
+    ///<inheritdoc/>
+    public bool Loaded { get; set; }
 
-    public static bool Loaded { get; private set; }
-
-    public static async Task LoadModules(IServiceCollection services)
+    #region Public Methods
+    ///<inheritdoc/>
+    public async Task LoadModules(IServiceCollection services, IConfiguration configuration)
     {
         _services = services;
+        _configuration = configuration;
         LoadModule();
         using var provider = services.BuildServiceProvider();
         await ExecuteSettingProviders(provider);
-        OnModulesChanged?.Invoke(_modules);
         Loaded = true;
     }
-    private static async Task ExecuteSettingProviders(IServiceProvider provider)
+    ///<inheritdoc/>
+    public List<ModuleInfo> GetUiModules()
+    {
+        return _moduleUis;
+    }
+    ///<inheritdoc/>
+    public List<ModuleInfo> GetModules()
+    {
+        return _modules;
+    }
+    #endregion
+
+    #region Private Methods
+    private async Task ExecuteSettingProviders(IServiceProvider provider)
     {
         using var scope = provider.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<SettingDbContext>();
@@ -54,7 +69,7 @@ public static class ModuleManager
             }
         }
     }
-    private static void LoadModule()
+    private void LoadModule()
     {
         var pluginsDir = Path.Combine(AppContext.BaseDirectory, "plugins");
 
@@ -94,37 +109,20 @@ public static class ModuleManager
 
     }
 
-    private static void RegisterModuleServices(Type moduleType, ModuleInfo moduleInfo)
+    private void RegisterModuleServices(Type moduleType, ModuleInfo moduleInfo)
     {
         var module = (IModule)Activator.CreateInstance(moduleType)!;
-        module.RegisterServices(_services);
+        module.RegisterServices(_services,_configuration);
         _modules.Add(moduleInfo);
 
         switch (true)
         {
-           
-
             case var _ when typeof(IUiModule).IsAssignableFrom(module.ModuleType):
                 _moduleUis.Add(moduleInfo);
-                break;
-
-            case var _ when typeof(IDataModule).IsAssignableFrom(module.ModuleType):
-                _modules.Add(moduleInfo);
-                break;
-
-            default:
-                _modules.Add(moduleInfo);
                 break;
         }
     }
 
-    public static List<ModuleInfo> GetUiModules()
-    {
-        return _moduleUis;
-    }
+    #endregion
 
-    public static List<ModuleInfo> GetModules()
-    {
-        return _modules;
-    }
 }

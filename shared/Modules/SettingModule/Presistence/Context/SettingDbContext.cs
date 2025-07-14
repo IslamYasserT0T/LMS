@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace SettingModule.Presistence.Context;
 public class SettingDbContext : BaseDbContext
 {
-    public SettingDbContext(DbContextOptions options) : base(options)
+    public SettingDbContext(DbContextOptions<SettingDbContext> options) : base(options)
     {
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)

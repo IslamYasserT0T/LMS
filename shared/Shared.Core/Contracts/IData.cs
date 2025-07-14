@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModulePoc.Shared;
+namespace Shared.Core.Contracts;
 
-public interface IDataModule
+public interface IData
 {
 }

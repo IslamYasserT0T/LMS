@@ -1,6 +1,9 @@
-﻿using LMS.Host.Components;
+﻿using AuthorizationModule.ExtentionMethods;
+using LMS.Host.Components;
+using LMS.Host.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ModulePoc.Host.Pages;
 using MudBlazor.Services;
 using SettingModule.Contracts;
@@ -20,28 +23,22 @@ public class Bootstrapper
     {
         _builder = builder;
     }
-    public async Task ConfigureServices()
+    public async Task PreInitialize()
     {
+
         _builder.Services.AddDbContext<BaseDbContext>(options =>
-         options.UseNpgsql(_builder.Configuration.GetConnectionString("Default")));
+          options.UseNpgsql(_builder.Configuration.GetConnectionString("Default")));
 
         _builder.Services.AddSettingModule(_builder.Configuration);
-
-        await ModuleManager.LoadModules(_builder.Services);
-
+        _builder.Services.AddAuthorizationModule(_builder.Configuration);
         _builder.Services.AddControllers();
-        var mvcBuilder = _builder.Services.AddRazorPages();
-       
+
         _builder.Services.AddRazorComponents()
                .AddInteractiveServerComponents();
         _builder.Services.AddServerSideBlazor();
         _builder.Services.AddMudServices();
+        _builder.Services.AddSingleton<IModuleManager, ModuleManager>();
 
-
-        foreach (var assembly in ModuleManager.GetUiModules())
-        {
-            mvcBuilder.AddApplicationPart(assembly.Assembly);
-        }
         // Configure Swagger
         _builder.Services.AddEndpointsApiExplorer();
         _builder.Services.AddSwaggerGen(c =>
@@ -53,9 +50,29 @@ public class Bootstrapper
                 Description = "API for ModulePoc application"
             });
         });
+        await Task.Yield();
+
     }
 
-    public void ConfigureApplication(WebApplication app)
+    public async Task Initialize(IModuleManager moduleManager)
+    {
+
+         await moduleManager.LoadModules(_builder.Services, _builder.Configuration);
+
+    }
+
+    public async Task PostInitialize(IModuleManager moduleManager)
+    {
+        var mvcBuilder = _builder.Services.AddRazorPages();
+
+        foreach (var assembly in moduleManager.GetUiModules())
+        {
+            mvcBuilder.AddApplicationPart(assembly.Assembly);
+        }
+        await Task.Yield();
+    }
+
+    public void ConfigureApplication(WebApplication app, IModuleManager moduleManager)
     {
         // Configure the HTTP request pipeline
         if (!app.Environment.IsDevelopment())
@@ -79,12 +96,9 @@ public class Bootstrapper
         app.MapStaticAssets();
         app.UseAuthorization();
         app.MapControllers();
-        // app.MapBlazorHub();
         app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
-                .AddAdditionalAssemblies(ModuleManager.GetModules().Select(m => m.Assembly).ToArray());
-     
-        //app.MapBlazorHub();
+                .AddAdditionalAssemblies(moduleManager.GetModules().Select(m => m.Assembly).ToArray());
     }
    
 }

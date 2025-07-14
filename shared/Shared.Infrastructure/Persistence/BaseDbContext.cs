@@ -12,8 +12,11 @@ namespace Shared.Infrastructure.Persistence;
 /// </summary>
 public class BaseDbContext : DbContext
 {
-    public BaseDbContext(DbContextOptions options) : base(options)
+    public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options)
     {
     }
+    protected BaseDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+    {
 
+    }
 }

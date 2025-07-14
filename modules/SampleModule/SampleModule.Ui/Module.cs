@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using SampleModule.Application.Extensions;
+using SampleModule.Infrastructure.Extensions;
+using Shared.Core.Contracts;
 using SampleModule.Ui.Nav;
 using Shared.Core;
 using System;
@@ -24,7 +28,7 @@ public class Module : IModule
     public bool IsEnabled => true;
 
     
-    public void RegisterServices(IServiceCollection services)
+    public void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<INavigationProvider, ProductNavigationProvider>();
     }
