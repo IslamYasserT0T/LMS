@@ -1,6 +1,8 @@
 ﻿@using LMS.Host.Components.Layout
+@using LMS.Host.Contracts
 @using LMS.Host.Services
 @inherits LayoutComponentBase
+@inject IModuleManager ModuleManager
 
 <Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="ModuleManager.GetModules().Select(m => m.Assembly).ToArray()">
     <Found Context="routeData">

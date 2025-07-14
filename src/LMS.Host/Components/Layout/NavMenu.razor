@@ -1,7 +1,9 @@
-﻿@using LMS.Host.Services
+﻿@using LMS.Host.Contracts
+@using LMS.Host.Services
 @using SettingModule.Contracts
 @using SettingModule.Entities
 @inject ISettingDefinationManager settingDefination
+@inject IModuleManager ModuleManager
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -72,7 +74,6 @@
     {
         Modules = ModuleManager.GetUiModules();
         Settings = await settingDefination.InitializeAsync();
-        ModuleManager.OnModulesChanged += OnModulesChanged;
         StateHasChanged();
     }
     private async Task SettingChanged(bool isEnabled, KeyValuePair<string, SettingDefinition> setting)
@@ -90,10 +91,5 @@
             Modules = modules;
             StateHasChanged();
         });
-    }
-
-    public void Dispose()
-    {
-        ModuleManager.OnModulesChanged -= OnModulesChanged;
     }
 }

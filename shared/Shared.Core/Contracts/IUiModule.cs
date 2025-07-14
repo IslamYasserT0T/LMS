@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared.Core;
+namespace Shared.Core.Contracts;
 public interface IUiModule
 {
-    
+
 }

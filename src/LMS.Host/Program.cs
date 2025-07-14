@@ -9,14 +9,16 @@ namespace LMS.Host
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
       
             // Configure services
             var bootstrapper = new Bootstrapper(builder);
 
-            bootstrapper.ConfigureServices();
+           await bootstrapper.PreInitialize();
+           await bootstrapper.Initialize();
+           await bootstrapper.PostInitialize();
 
             var app = builder.Build();
 
