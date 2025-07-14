@@ -15,6 +15,7 @@ public static class ServiceRepository
 {
     public static IServiceCollection AddRepositoryServices(this IServiceCollection services)
     {
+        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
         var serviceTypes = Assembly.GetExecutingAssembly().ExportedTypes
             .Where(t => t.IsAssignableTo(typeof(IApplicationService)) && !t.IsInterface && !t.IsAbstract).ToList();
 

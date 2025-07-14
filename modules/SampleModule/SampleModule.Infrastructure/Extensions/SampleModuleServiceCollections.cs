@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SampleModule.Domain.Repositories.Samples;
 using SampleModule.Infrastructure.Presistence.Context;
+using SampleModule.Infrastructure.Repositories.Samples;
 using SettingModule.Presistence.Context;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,7 @@ public static class SampleModuleServiceCollections
     {
         services.AddDbContext<SampleModuleDBContext>(options =>
           options.UseNpgsql(configuration.GetConnectionString("Default")));
-        services.AddRepositoryServices();
+        services.AddScoped<ISampleRepository, SampleRepository>();
         return services;
     }
 }

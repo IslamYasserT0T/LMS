@@ -11,7 +11,7 @@ namespace LMS.Host.Services;
 ///<inheritdoc/>
 public class ModuleManager : IModuleManager
 {
-    private  List<ModuleInfo> _modules { get; set; } = new();
+    private static  List<ModuleInfo> _modules { get; set; } = new();
     private  List<ModuleInfo> _moduleUis { get; set; } = new();
     private IServiceCollection _services { get; set; }
     private IConfiguration _configuration { get; set; }

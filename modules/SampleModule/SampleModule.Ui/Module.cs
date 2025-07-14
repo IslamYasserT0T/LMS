@@ -28,7 +28,5 @@ public class Module : IModule
     
     public void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddInfrastructureSampleModuleServices(configuration);
-        services.AddApplicationSampleModuleServices();
     }
 }

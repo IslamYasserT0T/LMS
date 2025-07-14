@@ -6,7 +6,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SampleModule.Domain.Entities.Samples;
+namespace SampleModule.Domain.Entities;
 
 public class Sample : Auditable<Guid>
 {

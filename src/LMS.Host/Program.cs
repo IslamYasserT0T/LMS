@@ -1,4 +1,5 @@
 using LMS.Host.Components;
+using LMS.Host.Contracts;
 using LMS.Host.Services;
 using Microsoft.EntityFrameworkCore;
 using SettingModule.Contracts;
@@ -16,12 +17,14 @@ namespace LMS.Host
             var bootstrapper = new Bootstrapper(builder);
 
            await bootstrapper.PreInitialize();
-           await bootstrapper.Initialize();
-           await bootstrapper.PostInitialize();
+            var moduleManager = builder.Services.BuildServiceProvider().GetRequiredService<IModuleManager>();
+
+            await bootstrapper.Initialize(moduleManager);
+           await bootstrapper.PostInitialize(moduleManager);
 
             var app = builder.Build();
 
-            bootstrapper.ConfigureApplication(app);
+            bootstrapper.ConfigureApplication(app, moduleManager);
 
             app.Run();
         }

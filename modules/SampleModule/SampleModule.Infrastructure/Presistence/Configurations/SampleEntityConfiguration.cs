@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SampleModule.Domain.Entities.Samples;
+using SampleModule.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

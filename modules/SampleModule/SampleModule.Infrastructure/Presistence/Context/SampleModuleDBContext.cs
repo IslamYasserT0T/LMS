@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SampleModule.Domain.Entities.Samples;
+using SampleModule.Domain.Entities;
 using Shared.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace SampleModule.Infrastructure.Presistence.Context;
 
 public class SampleModuleDBContext : BaseDbContext
 {
-    public SampleModuleDBContext(DbContextOptions<SampleModuleDBContext> options) : base(options)
+    public SampleModuleDBContext(DbContextOptions options) : base(options)
     {
     }
 

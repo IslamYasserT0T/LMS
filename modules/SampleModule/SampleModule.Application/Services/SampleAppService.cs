@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using SampleModule.Application.Contracts;
 using SampleModule.Application.DTOs.Sample;
-using SampleModule.Domain.Entities.Samples;
+using SampleModule.Domain.Entities;
 using SampleModule.Domain.Repositories.Samples;
 using Shared.Core.DependencyInjections;
 using Shared.Core.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SampleModule.Application.Services;
 
@@ -17,10 +12,9 @@ public class SampleAppService : ISampleAppService, IApplicationService, IScopedS
 {
     private readonly ISampleRepository _sampleRepository;
     private readonly IMapper _mapper;
-    public SampleAppService(ISampleRepository sampleRepository, IMapper mapper)
+    public SampleAppService(ISampleRepository sampleRepository)
     {
         _sampleRepository = sampleRepository;
-        _mapper = mapper;
     }
     #region Public Methods
     ///<inheritdoc/>

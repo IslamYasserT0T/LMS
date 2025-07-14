@@ -18,3 +18,11 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    protected override Task OnInitializedAsync()
+    {
+        var modules = ModuleManager.GetModules();
+        return base.OnInitializedAsync();
+    }
+}

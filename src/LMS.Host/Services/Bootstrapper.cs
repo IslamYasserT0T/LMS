@@ -18,7 +18,6 @@ namespace LMS.Host.Services;
 public class Bootstrapper
 {
     private readonly WebApplicationBuilder _builder;
-    private readonly IModuleManager _moduleManager ;
 
     public Bootstrapper(WebApplicationBuilder builder)
     {
@@ -38,6 +37,7 @@ public class Bootstrapper
                .AddInteractiveServerComponents();
         _builder.Services.AddServerSideBlazor();
         _builder.Services.AddMudServices();
+        _builder.Services.AddSingleton<IModuleManager, ModuleManager>();
 
         // Configure Swagger
         _builder.Services.AddEndpointsApiExplorer();
@@ -50,28 +50,29 @@ public class Bootstrapper
                 Description = "API for ModulePoc application"
             });
         });
-    }    
-    
-    public async Task Initialize()
+        await Task.Yield();
+
+    }
+
+    public async Task Initialize(IModuleManager moduleManager)
     {
-        _builder.Services.AddSingleton<IModuleManager, ModuleManager>(); 
-        
-        var moduleManager = _builder.Services.BuildServiceProvider().GetRequiredService<IModuleManager>();
+
          await moduleManager.LoadModules(_builder.Services, _builder.Configuration);
 
     }
 
-    public async Task PostInitialize()
+    public async Task PostInitialize(IModuleManager moduleManager)
     {
         var mvcBuilder = _builder.Services.AddRazorPages();
 
-        foreach (var assembly in _moduleManager.GetUiModules())
+        foreach (var assembly in moduleManager.GetUiModules())
         {
             mvcBuilder.AddApplicationPart(assembly.Assembly);
         }
+        await Task.Yield();
     }
 
-    public void ConfigureApplication(WebApplication app)
+    public void ConfigureApplication(WebApplication app, IModuleManager moduleManager)
     {
         // Configure the HTTP request pipeline
         if (!app.Environment.IsDevelopment())
@@ -97,7 +98,7 @@ public class Bootstrapper
         app.MapControllers();
         app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
-                .AddAdditionalAssemblies(_moduleManager.GetModules().Select(m => m.Assembly).ToArray());
+                .AddAdditionalAssemblies(moduleManager.GetModules().Select(m => m.Assembly).ToArray());
     }
    
 }

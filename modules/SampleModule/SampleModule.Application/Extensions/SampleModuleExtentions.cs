@@ -17,7 +17,6 @@ public static class SampleModuleExtentions
 {
     public static IServiceCollection AddApplicationSampleModuleServices(this IServiceCollection services)
     {
-        services.AddRepositoryServices();
         var serviceTypes = Assembly.GetExecutingAssembly().ExportedTypes
             .Where(t => t.IsAssignableTo(typeof(IApplicationService)) && !t.IsInterface && !t.IsAbstract).ToList();
 

@@ -1,4 +1,4 @@
-﻿using SampleModule.Domain.Entities.Samples;
+﻿using SampleModule.Domain.Entities;
 using Shared.Core.DependencyInjections;
 using Shared.Core.Repositories;
 using System;
