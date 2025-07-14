@@ -1,4 +1,5 @@
-﻿using LMS.Host.Components;
+﻿using AuthorizationModule.ExtentionMethods;
+using LMS.Host.Components;
 using LMS.Host.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -25,11 +26,12 @@ public class Bootstrapper
     }
     public async Task PreInitialize()
     {
+
         _builder.Services.AddDbContext<BaseDbContext>(options =>
           options.UseNpgsql(_builder.Configuration.GetConnectionString("Default")));
 
         _builder.Services.AddSettingModule(_builder.Configuration);
-
+        _builder.Services.AddAuthorizationModule(_builder.Configuration);
         _builder.Services.AddControllers();
 
         _builder.Services.AddRazorComponents()

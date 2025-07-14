@@ -13,7 +13,6 @@ namespace LMS.Host
         {
             var builder = WebApplication.CreateBuilder(args);
       
-            // Configure services
             var bootstrapper = new Bootstrapper(builder);
 
            await bootstrapper.PreInitialize();
@@ -22,7 +21,6 @@ namespace LMS.Host
 
             var app = builder.Build();
 
-            // Configure application
             bootstrapper.ConfigureApplication(app);
 
             app.Run();
