@@ -25,6 +25,11 @@ public class Bootstrapper
     }
     public async Task PreInitialize()
     {
+        var filesCopier = new ModuleFolderCopier();
+        var manifestPath = Path.Combine(Directory.GetCurrentDirectory(), "manifest.json");
+        var destinationRoot = Path.Combine(AppContext.BaseDirectory,"plugins");
+
+        await ModuleFolderCopier.CopyFoldersFromManifestAsync(manifestPath, destinationRoot);
 
         _builder.Services.AddDbContext<BaseDbContext>(options =>
           options.UseNpgsql(_builder.Configuration.GetConnectionString("Default")));

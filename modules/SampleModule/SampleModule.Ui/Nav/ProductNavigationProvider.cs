@@ -17,6 +17,12 @@ public class ProductNavigationProvider : INavigationProvider
                 Title = "Sample Module",
                 Url = "/Component/razor",
                 Icon = "oi oi-box"
+            },
+            new NavMenuItem
+            {
+                Title = "Sample Module2",
+                Url = "/Component/razor",
+                Icon = "oi oi-box"
             }
         };
     }
