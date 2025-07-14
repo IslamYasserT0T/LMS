@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SampleModule.Ui.Nav;
 using Shared.Core;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,6 @@ public class Module : IModule
     
     public void RegisterServices(IServiceCollection services)
     {
-        
+        services.AddScoped<INavigationProvider, ProductNavigationProvider>();
     }
 }
