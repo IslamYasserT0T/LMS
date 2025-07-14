@@ -18,7 +18,7 @@
 
     <nav class="nav flex-column">
         <MudNavGroup Title="Modules">
-            @foreach (var item in ModuleManager.MenuItems)
+            @foreach (var item in ModuleManager.GetMenuItems())
             {
                 <div class="nav-item px-3">
                     <NavLink href="@item.Url" class="nav-link">

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SettingModule.Contracts;
 using SettingModule.Presistence.Context;
 using SettingModule.Services;
+using Shared.Core;
 using Shared.Core.Contracts;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ public class ModuleManager : IModuleManager
     private  List<ModuleInfo> _moduleUis { get; set; } = new();
     private IServiceCollection _services { get; set; }
     private IConfiguration _configuration { get; set; }
-
+    private static List<NavMenuItem> _menuItems { get; set; } = new();
     ///<inheritdoc/>
     public bool Loaded { get; set; }
 
@@ -28,12 +29,20 @@ public class ModuleManager : IModuleManager
         LoadModule();
         using var provider = services.BuildServiceProvider();
         await ExecuteSettingProviders(provider);
+        ExecuteNavProviders(provider);
         Loaded = true;
     }
+
+
     ///<inheritdoc/>
     public List<ModuleInfo> GetUiModules()
     {
         return _moduleUis;
+    }
+    ///<inheritdoc/>
+    public List<NavMenuItem> GetMenuItems()
+    {
+        return _menuItems;
     }
     ///<inheritdoc/>
     public List<ModuleInfo> GetModules()
@@ -68,6 +77,12 @@ public class ModuleManager : IModuleManager
                 }
             }
         }
+    }
+
+    private static void ExecuteNavProviders(ServiceProvider provider)
+    {
+        var providers = provider.GetServices<INavigationProvider>();
+        _menuItems = providers.SelectMany(p => p.GetMenuItems()).ToList();
     }
     private void LoadModule()
     {

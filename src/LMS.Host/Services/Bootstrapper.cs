@@ -69,17 +69,22 @@ public class Bootstrapper
         {
             mvcBuilder.AddApplicationPart(assembly.Assembly);
         }
+
+       
         await Task.Yield();
     }
 
     public void ConfigureApplication(WebApplication app, IModuleManager moduleManager)
     {
+        ApplyMigrations(app);
+
         // Configure the HTTP request pipeline
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Error");
             app.UseHsts();
         }
+
 
         if (app.Environment.IsDevelopment())
         {
@@ -100,5 +105,16 @@ public class Bootstrapper
                 .AddInteractiveServerRenderMode()
                 .AddAdditionalAssemblies(moduleManager.GetModules().Select(m => m.Assembly).ToArray());
     }
-   
+
+    private static void ApplyMigrations(WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var migrators = scope.ServiceProvider.GetServices<IModuleDbMigrator>();
+            foreach (var migrator in migrators)
+            {
+                migrator.ApplyMigrations(scope.ServiceProvider);
+            }
+        }
+    }
 }

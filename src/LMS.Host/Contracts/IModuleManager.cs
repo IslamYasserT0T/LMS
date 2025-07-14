@@ -1,4 +1,5 @@
 ﻿using LMS.Host.Services;
+using Shared.Core;
 
 namespace LMS.Host.Contracts;
 
@@ -12,6 +13,7 @@ public interface IModuleManager
     /// </summary>
     /// <returns> return true if loaded otherwise false</returns>
      bool Loaded { get; set; }
+
     /// <summary>
     /// Load Modules
     /// </summary>
@@ -28,4 +30,9 @@ public interface IModuleManager
     /// </summary>
     /// <returns> List of all ModuleInfo </returns>
     List<ModuleInfo> GetModules();
+    /// <summary>
+    /// Get Menu Items
+    /// </summary>
+    /// <returns> List of NavMenuItem</returns>
+    List<NavMenuItem> GetMenuItems();
 }

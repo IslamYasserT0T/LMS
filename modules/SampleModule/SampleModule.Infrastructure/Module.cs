@@ -3,9 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SampleModule.Domain.Repositories.Samples;
 using SampleModule.Infrastructure.Extensions;
+using SampleModule.Infrastructure.Presistence;
 using SampleModule.Infrastructure.Presistence.Context;
 using SampleModule.Infrastructure.Repositories.Samples;
 using Shared.Core.Contracts;
+using Shared.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,5 +35,6 @@ public class Module : IModule
         services.AddDbContext<SampleModuleDBContext>(options =>
           options.UseNpgsql(configuration.GetConnectionString("Default")));
         services.AddScoped<ISampleRepository, SampleRepository>();
+        services.AddScoped<IModuleDbMigrator, SampleModuleMigrator>();
     }
 }
