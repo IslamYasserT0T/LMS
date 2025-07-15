@@ -70,8 +70,9 @@ public class Bootstrapper
     public async Task PostInitialize(IModuleManager moduleManager)
     {
         var mvcBuilder = _builder.Services.AddRazorPages();
-        var modules = moduleManager.GetUiModules();
-        foreach (var assembly in modules)
+        var modulesUi = moduleManager.GetUiModules();
+        var modules = moduleManager.GetModules();
+        foreach (var assembly in modulesUi)
         {
             mvcBuilder.AddApplicationPart(assembly.Assembly);
         }

@@ -13,7 +13,7 @@ public class UiSetting : ISettingDefinationProvider
     public string ModuleName = "SettingModules ";
     public async Task Define(ISettingDefinationContext context)
     {
-        await context.Add(new SettingDefinition { Name = "Host", ModuleName = ModuleName, DefaultValue = "localhost", IsEncrypted = false });
+        //await context.Add(new SettingDefinition { Name = "Host", ModuleName = ModuleName, DefaultValue = "localhost", IsEncrypted = false });
     }
 
 }

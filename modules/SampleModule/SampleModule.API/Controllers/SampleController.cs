@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SampleModule.Application.Contracts;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using SampleModule.Application.DTOs.Sample;
 
 namespace SampleModule.API.Controllers;
 
@@ -9,39 +8,54 @@ namespace SampleModule.API.Controllers;
 [ApiController]
 public class SampleController : ControllerBase
 {
+    private readonly ISampleAppService _sampleAppService;
     public SampleController(ISampleAppService sampleAppService)
     {
+        _sampleAppService = sampleAppService;
     }
-
     // GET: api/<SampleController>
     [HttpGet]
-    public IEnumerable<string> Get()
+    public async Task<IActionResult> Get()
     {
-        return new string[] { "value1", "value2" };
+        var result = await _sampleAppService.GetAllAsync();
+
+        return Ok(result);
     }
 
-    // GET api/<SampleController>/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public async Task<IActionResult> Get(Guid id)
     {
-        return "value";
+        var result = await _sampleAppService.GetByIdAsync(id);
+
+        return Ok(result);
     }
 
     // POST api/<SampleController>
     [HttpPost]
-    public void Post([FromBody] string value)
+    public async Task<IActionResult> Create( CreateUpdateSampleDto createUpdateSample)
     {
+        var reuslt =  await _sampleAppService.CreateAsync(createUpdateSample);
+
+        return Ok(reuslt);
+
     }
 
     // PUT api/<SampleController>/5
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    public async Task<IActionResult> Update(Guid id, [FromBody] CreateUpdateSampleDto createUpdateSample)
     {
+        var result =  await _sampleAppService.UpdateAsync(createUpdateSample, id );
+
+        return Ok(result);
+
     }
 
     // DELETE api/<SampleController>/5
     [HttpDelete("{id}")]
-    public void Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
+        var result =  await _sampleAppService.DeleteAsync(id);
+
+        return Ok(result);
     }
 }

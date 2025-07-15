@@ -12,8 +12,8 @@ using SampleModule.Infrastructure.Presistence.Context;
 namespace SampleModule.Infrastructure.Presistence.Migrations
 {
     [DbContext(typeof(SampleModuleDBContext))]
-    [Migration("20250714191446_addsample")]
-    partial class addsample
+    [Migration("20250715103619_altercolumncreatedbytotimestampwithouttimezone")]
+    partial class altercolumncreatedbytotimestampwithouttimezone
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,14 +36,14 @@ namespace SampleModule.Infrastructure.Presistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
