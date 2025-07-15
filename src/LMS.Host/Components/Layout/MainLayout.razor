@@ -1,6 +1,8 @@
-﻿@using LMS.Host.Services
+﻿@using LMS.Host.Contracts
+@using LMS.Host.Services
 @using MudBlazor
 @inherits LayoutComponentBase
+@inject IModuleManager ModuleManager
 <MudThemeProvider />
 <MudPopoverProvider />
 
@@ -36,7 +38,6 @@
     protected override void OnInitialized()
     {
         Modules = ModuleManager.GetUiModules();
-        ModuleManager.OnModulesChanged += OnModulesChanged;
         StateHasChanged();
     }
 
@@ -47,10 +48,5 @@
             Modules = modules;
             StateHasChanged();
         });
-    }
-
-    public void Dispose()
-    {
-        ModuleManager.OnModulesChanged -= OnModulesChanged;
     }
 }

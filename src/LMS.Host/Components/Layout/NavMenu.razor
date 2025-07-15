@@ -1,7 +1,10 @@
-﻿@using LMS.Host.Services
+﻿@using LMS.Host.Contracts
+@using LMS.Host.Services
+@using MudBlazor
 @using SettingModule.Contracts
 @using SettingModule.Entities
 @inject ISettingDefinationManager settingDefination
+@inject IModuleManager ModuleManager
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -12,7 +15,22 @@
 <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+
     <nav class="nav flex-column">
+        <MudNavGroup Title="Modules">
+            @foreach (var item in ModuleManager.GetMenuItems())
+            {
+                <div class="nav-item px-3">
+                    <NavLink href="@item.Url" class="nav-link">
+                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> @item.Title
+                    </NavLink>
+                </div>
+            }
+        </MudNavGroup>
+      
+    </nav>
+    <nav class="nav flex-column">
+
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
@@ -72,7 +90,6 @@
     {
         Modules = ModuleManager.GetUiModules();
         Settings = await settingDefination.InitializeAsync();
-        ModuleManager.OnModulesChanged += OnModulesChanged;
         StateHasChanged();
     }
     private async Task SettingChanged(bool isEnabled, KeyValuePair<string, SettingDefinition> setting)
@@ -90,10 +107,5 @@
             Modules = modules;
             StateHasChanged();
         });
-    }
-
-    public void Dispose()
-    {
-        ModuleManager.OnModulesChanged -= OnModulesChanged;
     }
 }

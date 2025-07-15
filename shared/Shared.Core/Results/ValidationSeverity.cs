@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModulePoc.Shared;
+namespace Shared.Core.Results;
 
-public interface IApiModule
+public enum ValidationSeverity
 {
+    Error = 0,
+    Warning = 1,
+    Info = 2
 }

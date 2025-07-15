@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModulePoc.Shared;
+namespace Shared.Core;
 
-public interface IDataModule
+public interface INavigationProvider
 {
+    IEnumerable<NavMenuItem> GetMenuItems();
 }
