@@ -57,23 +57,32 @@ public class ModuleManager : IModuleManager
         using var scope = provider.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<SettingDbContext>();
 
-        var context = new SettingDefinationContext(dbContext);
-
         var assemblies = _modules.Select(m => m.Assembly).Distinct();
 
         foreach (var assembly in assemblies)
         {
             var providerTypes = assembly.GetTypes()
-                .Where(t => typeof(ISettingDefinationProvider).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+                .Where(t => typeof(ISettingDefinationProvider).IsAssignableFrom(t)
+                            && !t.IsInterface
+                            && !t.IsAbstract);
 
             foreach (var type in providerTypes)
             {
-                var instance = (ISettingDefinationProvider?)scope.ServiceProvider.GetService(type)
-                              ?? (ISettingDefinationProvider?)Activator.CreateInstance(type);
+                var instance = scope.ServiceProvider.GetService(type) as ISettingDefinationProvider
+                               ?? ActivatorUtilities.CreateInstance(scope.ServiceProvider, type) as ISettingDefinationProvider;
 
                 if (instance != null)
                 {
-                   await instance.Define(context);
+                    var context = new SettingDefinationContext(dbContext);
+
+                    try
+                    {
+                        await instance.Define(context);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Failed to define settings in {type.Name}: {ex.Message}");
+                    }
                 }
             }
         }

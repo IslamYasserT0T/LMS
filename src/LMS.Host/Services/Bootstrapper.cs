@@ -120,9 +120,17 @@ public class Bootstrapper
         using (var scope = app.Services.CreateScope())
         {
             var migrators = scope.ServiceProvider.GetServices<IModuleDbMigrator>();
+
             foreach (var migrator in migrators)
             {
-                migrator.ApplyMigrations(scope.ServiceProvider);
+                if (!migrator.IsMigrationApplied(scope.ServiceProvider))
+                {
+                    migrator.ApplyMigrations(scope.ServiceProvider);
+                }
+                else
+                {
+                    Console.WriteLine($"Migrations already applied for {migrator.GetType().Name}");
+                }
             }
         }
     }

@@ -14,7 +14,16 @@ public class SampleModuleMigrator : IModuleDbMigrator
 {
     public void ApplyMigrations(IServiceProvider serviceProvider)
     {
-        var context = serviceProvider.GetRequiredService<SampleModuleDBContext>();
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<SampleModuleDBContext>();
         context.Database.Migrate();
+    }
+
+    public bool IsMigrationApplied(IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<SampleModuleDBContext>();
+        var pendingMigrations = context.Database.GetPendingMigrations();
+        return !pendingMigrations.Any();
     }
 }

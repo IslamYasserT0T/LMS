@@ -9,5 +9,6 @@ namespace Shared.Infrastructure.Persistence;
 public interface IModuleDbMigrator
 {
     void ApplyMigrations(IServiceProvider serviceProvider);
+    bool IsMigrationApplied(IServiceProvider serviceProvider);
 
 }
