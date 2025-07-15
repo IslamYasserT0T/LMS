@@ -12,6 +12,6 @@ public interface ISettingDefinationContext
     Task<Dictionary<string, SettingDefinition>> GetList(CancellationToken cancellationToken = default);
     Task<IReadOnlyList<SettingDefinition>> GetAll();
 
-    Task Add(params SettingDefinition[] definitions );
+    Task Add(List<SettingDefinition> definitions );
     Task Update(SettingDefinition definitions);
 }

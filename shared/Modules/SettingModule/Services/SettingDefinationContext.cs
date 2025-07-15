@@ -16,7 +16,6 @@ public class SettingDefinationContext : ISettingDefinationContext
     public async Task<Dictionary<string, SettingDefinition>> GetList(CancellationToken cancellationToken = default)
     {
       return await _context.SettingDefinitions
-                 .AsNoTracking() 
                  .ToDictionaryAsync(sd => sd.Name);
     }
     public virtual async Task<SettingDefinition?> GetOrNull(string name)
@@ -29,23 +28,35 @@ public class SettingDefinationContext : ISettingDefinationContext
         return await _context.SettingDefinitions.ToListAsync();
     }
 
-    public virtual async Task Add(params SettingDefinition[] definitions)
+    public virtual async Task Add(List<SettingDefinition> definitions)
     { 
-        if (definitions.Length == 0)
+        if (definitions.Count == 0)
             return;
         foreach (var item in definitions)
+        {
             if (!_context.SettingDefinitions.Any(x => x.Name == item.Name))
             {
                 await _context.SettingDefinitions.AddAsync(item);
-                await _context.SaveChangesAsync();
             }
-
-      
+            else if (_context.SettingDefinitions.Any(x => x.Name == item.Name && x.ModuleName == item.ModuleName && x.DefaultValue != item.DefaultValue))
+            {
+                await Update(item);
+            }
+            await _context.SaveChangesAsync();
+        }
     }
 
     public async Task Update(SettingDefinition definitions)
     {
-        _context.SettingDefinitions.Update(definitions);
+        var entity = await _context.SettingDefinitions.FirstOrDefaultAsync(x => x.Name == definitions.Name && x.ModuleName == definitions.ModuleName);
+        if (entity == null)
+            return;
+        entity.DefaultValue = definitions.DefaultValue;
+        entity.IsEnabled = definitions.IsEnabled;
+        entity.IsEncrypted = definitions.IsEncrypted;
+        entity.IsVisibleToClients = definitions.IsVisibleToClients;
+        _context.SettingDefinitions.Update(entity);
         await _context.SaveChangesAsync();
+
     }
 }
