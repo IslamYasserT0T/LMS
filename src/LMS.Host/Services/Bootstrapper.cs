@@ -1,6 +1,7 @@
 ﻿using AuthorizationModule.ExtentionMethods;
 using LMS.Host.Components;
 using LMS.Host.Contracts;
+using LMS.Host.ExtensionsMethods;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -69,13 +70,14 @@ public class Bootstrapper
     public async Task PostInitialize(IModuleManager moduleManager)
     {
         var mvcBuilder = _builder.Services.AddRazorPages();
-
-        foreach (var assembly in moduleManager.GetUiModules())
+        var modules = moduleManager.GetUiModules();
+        foreach (var assembly in modules)
         {
             mvcBuilder.AddApplicationPart(assembly.Assembly);
         }
+        _builder.Services.AddModuleAutoMappers(modules.Select(m => m.Assembly).ToArray());
 
-       
+
         await Task.Yield();
     }
 
