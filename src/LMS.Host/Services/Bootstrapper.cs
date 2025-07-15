@@ -76,6 +76,7 @@ public class Bootstrapper
             mvcBuilder.AddApplicationPart(assembly.Assembly);
         }
         _builder.Services.AddModuleAutoMappers(modules.Select(m => m.Assembly).ToArray());
+        _builder.Services.AddModuleValidators(modules.Select(m => m.Assembly).ToArray());
 
 
         await Task.Yield();
