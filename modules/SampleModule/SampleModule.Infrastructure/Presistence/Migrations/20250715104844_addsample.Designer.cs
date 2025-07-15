@@ -12,8 +12,8 @@ using SampleModule.Infrastructure.Presistence.Context;
 namespace SampleModule.Infrastructure.Presistence.Migrations
 {
     [DbContext(typeof(SampleModuleDBContext))]
-    [Migration("20250715103619_altercolumncreatedbytotimestampwithouttimezone")]
-    partial class altercolumncreatedbytotimestampwithouttimezone
+    [Migration("20250715104844_addsample")]
+    partial class addsample
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

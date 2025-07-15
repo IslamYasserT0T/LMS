@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SampleModule.Infrastructure.Presistence.Migrations
 {
     /// <inheritdoc />
-    public partial class altercolumncreatedbytotimestampwithouttimezone : Migration
+    public partial class addsample : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

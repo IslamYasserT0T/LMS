@@ -15,7 +15,7 @@ public class SampleModuleDbContextFactory : IDesignTimeDbContextFactory<SampleMo
     SampleModuleDBContext IDesignTimeDbContextFactory<SampleModuleDBContext>.CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<SampleModuleDBContext>();
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=LMSLocal;Username=postgres;Password=1234;Include Error Detail=true");
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=LMSLocal;Username=postgres;Password=123;Include Error Detail=true");
 
         return new SampleModuleDBContext(optionsBuilder.Options);
     }
