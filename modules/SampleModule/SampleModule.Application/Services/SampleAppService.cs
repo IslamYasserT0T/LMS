@@ -12,9 +12,10 @@ public class SampleAppService : ISampleAppService, IApplicationService, IScopedS
 {
     private readonly ISampleRepository _sampleRepository;
     private readonly IMapper _mapper;
-    public SampleAppService(ISampleRepository sampleRepository)
+    public SampleAppService(ISampleRepository sampleRepository, IMapper mapper)
     {
         _sampleRepository = sampleRepository;
+        _mapper = mapper;
     }
     #region Public Methods
     ///<inheritdoc/>

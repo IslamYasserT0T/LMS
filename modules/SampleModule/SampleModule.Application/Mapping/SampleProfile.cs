@@ -13,6 +13,7 @@ public class SampleProfile : Profile
 {
     public SampleProfile()
     {
-        CreateMap<Sample, SampleDto>();
+        CreateMap<Sample, SampleDto>().ReverseMap();
+        CreateMap<CreateUpdateSampleDto, Sample>().ReverseMap();
     }
 }
