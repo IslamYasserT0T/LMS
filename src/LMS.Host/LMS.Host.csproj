@@ -27,6 +27,13 @@
 		<MSBuild Projects="..\..\modules\SampleModule\SampleModule.Ui\SampleModule.Ui.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/SampleModule.Ui/" />
 		<MSBuild Projects="..\..\modules\SampleModule\SampleModule.API\SampleModule.API.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/SampleModule.API/" />
 		<MSBuild Projects="..\..\modules\SampleModule\SampleModule.Core\SampleModule.Core.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/SampleModule.Core/" />
+		<!-- user management -->
+		<MSBuild Projects="..\..\modules\UserManagementModule\UserManagementModule.Domain\UserManagementModule.Domain.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/UserManagementModule.Domain/" />
+		<MSBuild Projects="..\..\modules\UserManagementModule\UserManagementModule.Infrastructure\UserManagementModule.Infrastructure.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/UserManagementModule.Infrastructure/" />
+		<MSBuild Projects="..\..\modules\UserManagementModule\UserManagementModule.Application\UserManagementModule.Application.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/UserManagementModule.Application/" />
+		<MSBuild Projects="..\..\modules\UserManagementModule\UserManagementModule.Ui\UserManagementModule.Ui.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/UserManagementModule.Ui/" />
+		<MSBuild Projects="..\..\modules\UserManagementModule\UserManagementModule.API\UserManagementModule.API.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/UserManagementModule.API/" />
+		<MSBuild Projects="..\..\modules\UserManagementModule\UserManagementModule.Core\UserManagementModule.Core.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/UserManagementModule.Core/" />
 
 	</Target>
 </Project>

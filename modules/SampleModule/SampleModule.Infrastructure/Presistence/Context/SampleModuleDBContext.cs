@@ -11,7 +11,7 @@ namespace SampleModule.Infrastructure.Presistence.Context;
 
 public class SampleModuleDBContext : BaseDbContext
 {
-    public SampleModuleDBContext(DbContextOptions options) : base(options)
+    public SampleModuleDBContext(DbContextOptions<SampleModuleDBContext> options) : base(options)
     {
     }
 

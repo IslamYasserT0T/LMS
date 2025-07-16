@@ -6,4 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\Shared.Application\Shared.Application.csproj" />
+    <ProjectReference Include="..\UserManagementModule.Infrastructure\UserManagementModule.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Mapping\" />
+    <Folder Include="Validators\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

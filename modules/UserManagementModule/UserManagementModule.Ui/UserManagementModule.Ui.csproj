@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -12,7 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\Shared.Core\Shared.Core.csproj" />
+    <ProjectReference Include="..\..\..\shared\Shared.Ui\Shared.Ui.csproj" />
+    <ProjectReference Include="..\UserManagementModule.Application\UserManagementModule.Application.csproj" />
   </ItemGroup>
 
 </Project>

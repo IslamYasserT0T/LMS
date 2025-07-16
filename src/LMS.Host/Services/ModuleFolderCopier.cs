@@ -42,7 +42,6 @@ public class ModuleFolderCopier
 
             File.Copy(filePath, destinationPath, overwrite: true);
 
-            Console.WriteLine($"Copied: {filePath} -> {destinationPath}");
         }
     }
 }
