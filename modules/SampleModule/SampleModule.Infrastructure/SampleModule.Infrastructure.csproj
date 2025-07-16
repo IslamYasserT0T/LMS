@@ -14,9 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\shared\Shared.Core\Shared.Core.csproj" />
     <ProjectReference Include="..\..\..\shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
-    <ProjectReference Include="..\SampleModule.Core\SampleModule.Core.csproj" />
     <ProjectReference Include="..\SampleModule.Domain\SampleModule.Domain.csproj" />
   </ItemGroup>
 

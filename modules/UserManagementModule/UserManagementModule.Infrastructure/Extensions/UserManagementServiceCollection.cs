@@ -18,16 +18,19 @@ namespace UserManagementModule.Infrastructure.Extensions;
 
 public static class UserManagementServiceCollection
 {
-    public static IServiceCollection AddUserManagementModuleServices(this IServiceCollection services,IConfiguration configuration)
+    public static IServiceCollection AddUserManagementModuleServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<ApplicationUser, IdentityRole>()
-      .AddEntityFrameworkStores<UserManagmentModuleDBContext>();
-
         services.AddDbContext<UserManagmentModuleDBContext>(options =>
-          options.UseNpgsql(configuration.GetConnectionString("Default")));
+            options.UseNpgsql(configuration.GetConnectionString("Default")));
+
+        services.AddIdentity<ApplicationUser, IdentityRole<Guid>>() 
+            .AddEntityFrameworkStores<UserManagmentModuleDBContext>()
+            .AddDefaultTokenProviders();
+
         services.AddScoped<IModuleDbMigrator, UserManagementModuleMigrator>();
         services.AddScoped<IBaseDbContext, UserManagmentModuleDBContext>();
         services.AddScoped<IUserRepository, UserRepository>();
+
         return services;
     }
 }

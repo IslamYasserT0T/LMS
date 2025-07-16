@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\shared\Shared.Core\Shared.Core.csproj" />
     <ProjectReference Include="..\..\..\shared\Shared.Ui\Shared.Ui.csproj" />
     <ProjectReference Include="..\SampleModule.Application\SampleModule.Application.csproj" />
   </ItemGroup>
