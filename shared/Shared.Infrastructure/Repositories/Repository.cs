@@ -17,9 +17,9 @@ namespace Shared.Infrastructure.Repositories;
 /// <typeparam name="TId"></typeparam>
 public class Repository<TEntity, TId> : SaveContext, IRepository<TEntity, TId> where TEntity : class, IEntity<TId>
 {
-    private readonly BaseDbContext _context;
+    private readonly IBaseDbContext _context;
 
-    protected Repository(BaseDbContext context) : base(context)
+    protected Repository(IBaseDbContext context) : base(context)
     {
         _context = context;
     }

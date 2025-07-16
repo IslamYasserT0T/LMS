@@ -10,8 +10,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserManagementModule.Domain.Entities;
+using UserManagementModule.Domain.Repositories.Users;
 using UserManagementModule.Infrastructure.Presistence;
 using UserManagementModule.Infrastructure.Presistence.Context;
+using UserManagementModule.Infrastructure.Repositories.Users;
 
 namespace SampleModule.Infrastructure;
 
@@ -37,5 +39,7 @@ public class Module : IModule
         services.AddDbContext<UserManagmentModuleDBContext>(options =>
           options.UseNpgsql(configuration.GetConnectionString("Default")));
         services.AddScoped<IModuleDbMigrator, UserManagementModuleMigrator>();
+        services.AddScoped<IBaseDbContext, UserManagmentModuleDBContext>();
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 }

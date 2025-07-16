@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Shared.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,13 @@ using UserManagementModule.Domain.Entities;
 
 namespace UserManagementModule.Infrastructure.Presistence.Context;
 
-public class UserManagmentModuleDBContext : IdentityDbContext<ApplicationUser>
+public class UserManagmentModuleDBContext : IdentityDbContext<ApplicationUser> , IBaseDbContext
 {
     public UserManagmentModuleDBContext(DbContextOptions<UserManagmentModuleDBContext> options) : base(options)
     {
     }
 
+    
     #region DbSets
 
     #endregion

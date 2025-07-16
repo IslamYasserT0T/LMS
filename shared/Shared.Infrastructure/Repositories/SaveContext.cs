@@ -11,9 +11,9 @@ namespace Shared.Infrastructure.Repositories;
 ///<inheritdoc/>
 public class SaveContext : ISaveContext
 {
-    private readonly BaseDbContext _dbContext;
+    private readonly IBaseDbContext _dbContext;
 
-    public SaveContext(BaseDbContext dbContext)
+    public SaveContext(IBaseDbContext dbContext)
     {
         _dbContext = dbContext;
     }

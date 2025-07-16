@@ -11,8 +11,4 @@
     <ProjectReference Include="..\UserManagementModule.Core\UserManagementModule.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>
