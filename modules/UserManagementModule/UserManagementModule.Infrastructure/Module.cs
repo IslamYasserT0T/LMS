@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Core.Contracts;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserManagementModule.Domain.Entities;
 using UserManagementModule.Infrastructure.Presistence;
 using UserManagementModule.Infrastructure.Presistence.Context;
 
@@ -29,8 +31,11 @@ public class Module : IModule
 
     public void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {
+        services.AddIdentity<ApplicationUser, IdentityRole>()
+       .AddEntityFrameworkStores<UserManagmentModuleDBContext>();
+
         services.AddDbContext<UserManagmentModuleDBContext>(options =>
           options.UseNpgsql(configuration.GetConnectionString("Default")));
-       // services.AddScoped<IModuleDbMigrator, UserManagementModuleMigrator>();
+        services.AddScoped<IModuleDbMigrator, UserManagementModuleMigrator>();
     }
 }

@@ -25,6 +25,6 @@ public class UserManagementModuleMigrator : IModuleDbMigrator
         var context = scope.ServiceProvider.GetRequiredService<UserManagmentModuleDBContext>();
         var pendingMigrations = context.Database.GetPendingMigrations();
         return !pendingMigrations.Any();
-        return true;
+       
     }
 }
