@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UserManagementModule.Domain.Entities;
 using UserManagementModule.Domain.Repositories.Users;
+using UserManagementModule.Infrastructure.Extensions;
 using UserManagementModule.Infrastructure.Presistence;
 using UserManagementModule.Infrastructure.Presistence.Context;
 using UserManagementModule.Infrastructure.Repositories.Users;
@@ -33,13 +34,6 @@ public class Module : IModule
 
     public void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<ApplicationUser, IdentityRole>()
-       .AddEntityFrameworkStores<UserManagmentModuleDBContext>();
-
-        services.AddDbContext<UserManagmentModuleDBContext>(options =>
-          options.UseNpgsql(configuration.GetConnectionString("Default")));
-        services.AddScoped<IModuleDbMigrator, UserManagementModuleMigrator>();
-        services.AddScoped<IBaseDbContext, UserManagmentModuleDBContext>();
-        services.AddScoped<IUserRepository, UserRepository>();
+       services.AddUserManagementModuleServices(configuration);
     }
 }

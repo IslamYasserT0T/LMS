@@ -19,7 +19,7 @@ public class Repository<TEntity, TId> : SaveContext, IRepository<TEntity, TId> w
 {
     private readonly IBaseDbContext _context;
 
-    protected Repository(IBaseDbContext context) : base(context)
+    public Repository(IBaseDbContext context) : base(context)
     {
         _context = context;
     }
