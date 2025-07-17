@@ -31,5 +31,6 @@ public class Module : IModule
     public void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<INavigationProvider, ProductNavigationProvider>();
+        services.AddInfrastructureSampleModuleServices(configuration);
     }
 }
