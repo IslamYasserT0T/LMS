@@ -11,6 +11,6 @@ namespace SampleModule.Domain.Repositories.Samples;
 /// <summary>
 /// Sample Respositoy
 /// </summary>
-public interface ISampleRepository : IRepository<Sample, Guid>,  IApplicationService, IScopedService
+public interface ISampleRepository : IRepository<Sample, Guid> 
 {
 }

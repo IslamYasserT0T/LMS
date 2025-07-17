@@ -8,7 +8,7 @@ using Shared.Core.Results;
 
 namespace SampleModule.Application.Services;
 
-public class SampleAppService : ISampleAppService, IApplicationService, IScopedService
+public class SampleAppService : ISampleAppService 
 {
     private readonly ISampleRepository _sampleRepository;
     private readonly IMapper _mapper;

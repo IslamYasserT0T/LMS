@@ -13,9 +13,10 @@ using System.Threading.Tasks;
 namespace SampleModule.Infrastructure.Repositories.Samples;
 
 public class SampleRepository : Repository<Sample, Guid>, 
-    ISampleRepository , IApplicationService, IScopedService
+    ISampleRepository 
 {
     public SampleRepository(SampleModuleDBContext context) : base(context)
     {
     }
+
 }
