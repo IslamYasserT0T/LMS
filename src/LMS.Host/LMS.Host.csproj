@@ -20,14 +20,5 @@
     <ProjectReference Include="..\..\shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
     <ProjectReference Include="..\..\shared\Shared.Ui\Shared.Ui.csproj" />
   </ItemGroup>
-	<Target Name="BuildPlugin" BeforeTargets="Build">
-		<MSBuild Projects="..\..\modules\SampleModule\SampleModule.Domain\SampleModule.Domain.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/SampleModule.Domain/" />
-		<MSBuild Projects="..\..\modules\SampleModule\SampleModule.Infrastructure\SampleModule.Infrastructure.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/SampleModule.Infrastructure/" />
-		<MSBuild Projects="..\..\modules\SampleModule\SampleModule.Application\SampleModule.Application.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/SampleModule.Application/" />
-		<MSBuild Projects="..\..\modules\SampleModule\SampleModule.Ui\SampleModule.Ui.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/SampleModule.Ui/" />
-		<MSBuild Projects="..\..\modules\SampleModule\SampleModule.API\SampleModule.API.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/SampleModule.API/" />
-		<MSBuild Projects="..\..\modules\SampleModule\SampleModule.Core\SampleModule.Core.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/SampleModule.Core/" />
-		<!-- user management -->
-	
-	</Target>
+		<Import Project="..\..\modules\SampleModule\PluginManifest.targets" />
 </Project>
