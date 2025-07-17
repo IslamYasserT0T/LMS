@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UserManagementModule.Ui.Nav;
+using UserManagementModule.Infrastructure.Extensions;
 
 namespace SampleModule.Ui;
 
@@ -28,6 +29,8 @@ public class Module : IModule
     
     public void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {
+        services.AddUserManagementModuleServices(configuration);
+
         services.AddScoped<INavigationProvider, UserManagementModuleNavigationProvider>();
     }
 }

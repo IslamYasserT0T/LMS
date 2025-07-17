@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\shared\Shared.Core\Shared.Core.csproj" />
     <ProjectReference Include="..\..\..\shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
     <ProjectReference Include="..\UserManagementModule.Core\UserManagementModule.Core.csproj" />
     <ProjectReference Include="..\UserManagementModule.Domain\UserManagementModule.Domain.csproj" />
