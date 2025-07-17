@@ -1,6 +1,0 @@
-@UserManagementModule.API_HostAddress = http://localhost:5275
-
-GET {{UserManagementModule.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
