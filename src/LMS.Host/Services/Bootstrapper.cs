@@ -29,7 +29,8 @@ public class Bootstrapper
         var filesCopier = new ModuleFolderCopier();
         var manifestPath = Path.Combine(Directory.GetCurrentDirectory(), "manifest.json");
         var destinationRoot = Path.Combine(AppContext.BaseDirectory,"plugins");
-
+         if(!Directory.Exists(destinationRoot)) 
+            Directory.CreateDirectory(destinationRoot);
         await ModuleFolderCopier.CopyFoldersFromManifestAsync(manifestPath, destinationRoot);
 
         _builder.Services.AddDbContext<BaseDbContext>(options =>
