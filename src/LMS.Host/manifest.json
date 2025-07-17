@@ -29,36 +29,6 @@
       "Name": "SampleModule.Ui",
       "Version": "1.0.0",
       "CopyFolder": "modules/SampleModule/SampleModule.Ui/bin/Debug/net9.0/plugins"
-    },
-    {
-      "Name": "UserManagementModule.Domain",
-      "Version": "1.0.0",
-      "CopyFolder": "modules/UserManagementModule/UserManagementModule.Domain/bin/Debug/net9.0/plugins"
-    },
-    {
-      "Name": "UserManagementModule.API",
-      "Version": "1.0.0",
-      "CopyFolder": "modules/UserManagementModule/UserManagementModule.API/bin/Debug/net9.0/plugins"
-    },
-    {
-      "Name": "UserManagementModule.Application",
-      "Version": "1.0.0",
-      "CopyFolder": "modules/UserManagementModule/UserManagementModule.Application/bin/Debug/net9.0/plugins"
-    },
-    {
-      "Name": "UserManagementModule.Core",
-      "Version": "1.0.0",
-      "CopyFolder": "modules/UserManagementModule/UserManagementModule.Core/bin/Debug/net9.0/plugins"
-    },
-    {
-      "Name": "UserManagementModule.Infrastructure",
-      "Version": "1.0.0",
-      "CopyFolder": "modules/UserManagementModule/UserManagementModule.Infrastructure/bin/Debug/net9.0/plugins"
-    },
-    {
-      "Name": "UserManagementModule.Ui",
-      "Version": "1.0.0",
-      "CopyFolder": "modules/UserManagementModule/UserManagementModule.Ui/bin/Debug/net9.0/plugins"
     }
   ]
 }
