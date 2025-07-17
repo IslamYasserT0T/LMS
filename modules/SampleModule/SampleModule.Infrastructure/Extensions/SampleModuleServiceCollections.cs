@@ -21,6 +21,7 @@ public static class SampleModuleServiceCollections
     {
         services.AddDbContext<SampleModuleDBContext>(options =>
       options.UseNpgsql(configuration.GetConnectionString("Default")));
+        services.AddScoped<IBaseDbContext, SampleModuleDBContext>();
         services.AddScoped<ISampleRepository, SampleRepository>();
         services.AddScoped<IModuleDbMigrator, SampleModuleMigrator>();
         return services;

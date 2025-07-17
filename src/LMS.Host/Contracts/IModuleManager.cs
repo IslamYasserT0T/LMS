@@ -1,5 +1,6 @@
 ﻿using LMS.Host.Services;
 using Shared.Core;
+using System.Reflection;
 
 namespace LMS.Host.Contracts;
 
@@ -35,4 +36,9 @@ public interface IModuleManager
     /// </summary>
     /// <returns> List of NavMenuItem</returns>
     List<NavMenuItem> GetMenuItems();
+    /// <summary>
+    /// Get All Assemblies
+    /// </summary>
+    /// <returns> List of Assembly</returns>
+    List<Assembly> GetAllAssemblies();
 }

@@ -72,13 +72,12 @@ public class Bootstrapper
     {
         var mvcBuilder = _builder.Services.AddRazorPages();
         var modulesUi = moduleManager.GetUiModules();
-        var modules = moduleManager.GetModules();
         foreach (var assembly in modulesUi)
         {
             mvcBuilder.AddApplicationPart(assembly.Assembly);
         }
-        _builder.Services.AddModuleAutoMappers(modules.Select(m => m.Assembly).ToArray());
-        _builder.Services.AddModuleValidators(modules.Select(m => m.Assembly).ToArray());
+        _builder.Services.AddModuleAutoMappers(moduleManager.GetAllAssemblies());
+        _builder.Services.AddModuleValidators(moduleManager.GetAllAssemblies());
 
 
         await Task.Yield();

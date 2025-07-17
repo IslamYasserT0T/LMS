@@ -23,6 +23,10 @@ public class Repository<TEntity, TId> : SaveContext, IRepository<TEntity, TId> w
     {
         _context = context;
     }
+    public Repository(BaseDbContext context) : base(context)
+    {
+        _context = context;
+    }
     ///<inheritdoc/>
     public virtual async Task<bool> AddAsync(TEntity entity)
     {

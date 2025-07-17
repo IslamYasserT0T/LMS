@@ -13,6 +13,7 @@ namespace LMS.Host.Services;
 public class ModuleManager : IModuleManager
 {
     private static  List<ModuleInfo> _modules { get; set; } = new();
+    private static  List<Assembly> _assemblies { get; set; } = new();
     private  List<ModuleInfo> _moduleUis { get; set; } = new();
     private IServiceCollection _services { get; set; }
     private IConfiguration _configuration { get; set; }
@@ -48,6 +49,11 @@ public class ModuleManager : IModuleManager
     public List<ModuleInfo> GetModules()
     {
         return _modules;
+    }
+    ///<inheritdoc/>
+    public List<Assembly> GetAllAssemblies()
+    {
+        return _assemblies;
     }
     #endregion
 
@@ -108,18 +114,18 @@ public class ModuleManager : IModuleManager
                     try
                     {
                         var assembly = Assembly.LoadFrom(pluginDll);
+                        
                         var moduleTypes = assembly.GetTypes()
                                         .Where(t => typeof(IModule).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
                                         .ToList();
- 
                         foreach (var moduleType in moduleTypes)
                         {
+                            
                             if (ModuleInfo.TryCreateModule(assembly, out var moduleInfo))
                             {
                                 RegisterModuleServices(moduleType, moduleInfo);
                             }
                         }
-
                         Console.WriteLine($"Loaded module from {pluginDll}");
                     }
                     catch (Exception ex)
@@ -131,11 +137,15 @@ public class ModuleManager : IModuleManager
 
         }
 
+        _assemblies.AddRange(AppDomain.CurrentDomain.GetAssemblies());
+
+
     }
 
     private void RegisterModuleServices(Type moduleType, ModuleInfo moduleInfo)
     {
         var module = (IModule)Activator.CreateInstance(moduleType)!;
+        
         module.RegisterServices(_services,_configuration);
         _modules.Add(moduleInfo);
 

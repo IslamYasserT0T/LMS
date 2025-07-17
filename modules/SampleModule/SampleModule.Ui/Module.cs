@@ -32,5 +32,7 @@ public class Module : IModule
     {
         services.AddScoped<INavigationProvider, ProductNavigationProvider>();
         services.AddInfrastructureSampleModuleServices(configuration);
+        services.AddSampleModuleApplicationServices();
+
     }
 }
