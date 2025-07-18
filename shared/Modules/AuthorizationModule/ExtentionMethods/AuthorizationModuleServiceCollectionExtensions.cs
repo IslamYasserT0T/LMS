@@ -1,16 +1,18 @@
-﻿using Casbin.Model;
-using Casbin.Persist.Adapter.EFCore;
-using Casbin.Persist;
+﻿using AuthorizationModule.Presistence.Context;
 using Casbin;
+using Casbin.Model;
+using Casbin.Persist;
+using Casbin.Persist.Adapter.EFCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SettingModule.Presistence;
+using Shared.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using AuthorizationModule.Presistence.Context;
-using Microsoft.EntityFrameworkCore;
 
 namespace AuthorizationModule.ExtentionMethods;
 
@@ -36,6 +38,8 @@ public static class AuthorizationModuleServiceCollectionExtensions
             var adapter = sp.GetRequiredService<IAdapter>();
             return new Enforcer(model, adapter);
         });
+        services.AddScoped<IModuleDbMigrator, AuthorizeModuleMigrator>();
+
         return services;
     }
 }

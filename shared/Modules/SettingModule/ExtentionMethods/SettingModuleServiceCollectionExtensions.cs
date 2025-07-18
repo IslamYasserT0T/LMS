@@ -2,8 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SettingModule.Contracts;
+using SettingModule.Presistence;
 using SettingModule.Presistence.Context;
 using SettingModule.Services;
+using Shared.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,8 @@ public static class SettingModuleServiceCollectionExtensions
            options.UseNpgsql(configuration.GetConnectionString("Default")));
         services.AddSingleton<ISettingDefinationManager, SettingDefinationManager>();
         services.AddScoped<ISettingDefinationContext, SettingDefinationContext>();
+        services.AddScoped<IModuleDbMigrator, SettingModuleMigrator>();
+
         return services;
     }
 }
