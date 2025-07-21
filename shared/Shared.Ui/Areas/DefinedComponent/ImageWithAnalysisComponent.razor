@@ -1,0 +1,24 @@
+﻿@using MudBlazor
+
+<MudPaper Class="position-relative rounded-4 overflow-hidden p-0"
+          Elevation="1"
+          Style="width: 100%; height: auto; border-radius: 16px; position: relative; overflow: hidden;">
+
+    <MudImage Src="@ImageUrl"
+              Alt="@AltText"
+              Style="width: 100%; height: auto; object-fit: cover; border-radius: 16px; display: block;" />
+
+    <MudPaper Elevation="2"
+              Square="false"
+              Style="position: absolute; top: 12px; right: 12px; background-color: white; padding: 6px 16px; border-radius: 24px; display: inline-block; text-align: center;">
+        <MudText Typo="Typo.subtitle2" Class="fw-bold text-primary">
+            @($"{Name} ({Count})")
+        </MudText>
+    </MudPaper>
+</MudPaper>
+
+@code {
+   
+         
+    
+}

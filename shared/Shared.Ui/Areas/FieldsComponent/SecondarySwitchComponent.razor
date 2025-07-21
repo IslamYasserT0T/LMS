@@ -1,0 +1,73 @@
+﻿@using MudBlazor
+
+<MudSwitch T="bool"
+           @bind-Value="Value"
+           Class="@(Value ? "customs-switch-on" : "customs-switch-off")"
+           ReadOnly="Read"
+           ThumbIcon="@(Value ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+           ThumbIconColor="@(Value ? Color.Secondary : Color.Default)" />
+
+@code {
+    [Parameter]
+    public bool Value { get; set; }
+    [Parameter]
+    public bool Read { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ValueChanged { get; set; }
+}
+<style>
+    .customs-switch-on .mud-switch-thumb {
+        box-shadow: 0 0 6px rgba(29, 97, 201, 0.6); /* bluish glow */
+        background-color: #1D61C9;
+    }
+
+    .customs-switch-off .mud-switch-thumb {
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+        background-color: #ccc;
+    }
+
+    .customs-switch-on .mud-switch-track {
+        background-color: #1D61C9 !important; /* Your custom ON color */
+        min-width: 44px; /* Increased from 40px to accommodate spacing */
+        height: 24px;
+        position: relative; /* Added for better positioning context */
+        overflow: hidden; /* our custom ON color */
+    }
+
+    .customs-switch-off .mud-switch-track {
+        background-color: #cccccc !important; /* Your custom OFF color */
+        min-width: 44px; /* Increased from 40px to accommodate spacing */
+        height: 24px;
+        position: relative; /* Added for better positioning context */
+        overflow: hidden; /* * Your custom ON color */
+    }
+
+    .mud-switch-button .mud-switch-thumb-medium {
+        width: 16px;
+        height: 16px;
+        box-shadow: -4px 0px 7.7px 0px #000D4033, inset -1px -1px 1.9px 0px #15328F66;
+        border-radius: 50%;
+        background-color: currentColor;
+        margin-top: 7px;
+        margin-right:10px;
+        position: relative;
+        left: 0;
+        transition: transform 0.3s ease; /* Smooth sliding animation */
+    }
+
+    .mud-switch-button.mud-switch-off .mud-switch-thumb-medium {
+        transform: translateX(50px);
+        left: 0;
+    }
+
+    /* Open state - 5px from right */
+    .mud-switch-button.mud-switch-on .mud-switch-thumb-medium {
+        transform: translateX(calc(100% - 100px)); /* 100% of track width minus (thumb width + right spacing) */
+        right: 0;
+    }
+
+    .mud-switch-span .mud-switch-track {
+        opacity: 1 !important;
+    }
+</style>

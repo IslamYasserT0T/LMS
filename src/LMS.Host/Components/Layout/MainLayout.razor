@@ -3,28 +3,55 @@
 @using MudBlazor
 @inherits LayoutComponentBase
 @inject IModuleManager ModuleManager
+
 <MudThemeProvider />
 <MudPopoverProvider />
-
-@* Needed for dialogs *@
-<MudDialogProvider />
-
-@* Needed for snackbars *@
+<MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.Small" />
 <MudSnackbarProvider />
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+   
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        <div class="top-row px-4 py-2 d-flex justify-content-between align-items-center" style="background-color:white">
+            <!-- LEFT SECTION: Image + Notification + Language -->
+            <div class="d-flex align-items-center gap-3">
+
+                <MudIconButton Icon="@Icons.Material.Outlined.Language"
+                               Color="Color.Dark"
+                               Size="Size.Medium"
+                               Edge="Edge.End"
+                               Style="background-color: #F8FAFC; border-radius: 50%;" />
+
+                <MudIconButton Icon="@Icons.Material.Outlined.Notifications"
+                               Color="Color.Dark"
+                               Size="Size.Medium"
+                               Edge="Edge.End"
+                               Style="background-color: #F8FAFC; border-radius: 50%;" />
+
+                <MudImage Src="assets/images/manlogo.png"
+                          Alt="Logo"
+                          Width="36"
+                          Height="36"
+                          Style="background-color: #00488C; border-radius: 25%;" />
+
+
+            </div>
+
+            <!-- RIGHT SECTION: Two Buttons -->
+            <div class="d-flex align-items-center gap-2">
+                <MudButton Variant="Variant.Outlined" Class="rounded-4" Style="background: #FFFFFF; border: 1px solid #EEF0F3; box-shadow: -1px -1px 1.9px 0px #839CED26 inset;">غير مستخدم</MudButton>
+                <MudButton Variant="Variant.Filled" Class="rounded-4"
+                           Style="background-color:#192A56; color:white; box-shadow: 3px 3px 7.7px 0px #3568C766 inset, 0px -5px 4px 0px #00063026 inset;">مستخدم</MudButton>
+            </div>
         </div>
 
         <article class="content px-4">
             @Body
         </article>
     </main>
+    <div class="sidebar">
+        <NavMenu />
+    </div>
 </div>
 
 <div id="blazor-error-ui" data-nosnippet>
@@ -32,6 +59,8 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+
 @code{
     private IEnumerable<ModuleInfo> Modules;
 
@@ -50,3 +79,13 @@
         });
     }
 }
+<style>
+    .top-row[b-pmyhdjlh4t] {
+        background-color: transparent;
+        border-bottom: 0px solid !important;
+        justify-content: flex-end;
+        height: 3.5rem;
+        display: flex;
+        align-items: center;
+    }
+</style>

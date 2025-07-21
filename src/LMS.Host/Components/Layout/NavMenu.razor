@@ -7,14 +7,140 @@
 @inject IModuleManager ModuleManager
 
 <div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">LMS.Host</a>
+    <div class="container-fluid d-flex justify-content-center">
+        <MudImage Width="150" Src="assets/images/logo.webp"></MudImage>
     </div>
 </div>
 
 <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+        <nav class="nav flex-column" style="direction: rtl; text-align: right;">
+
+            <MudTextField T="string"
+                          Placeholder="بحث"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          Variant="Variant.Outlined"
+                          Class="me-2 mb-3 rounded-1"
+                          Style="min-width:100px; height:30px" />
+
+            <div class="d-flex align-items-center px-2 mt-3 mb-2">
+                <MudText Typo="Typo.overline" Class="px-2 text-secondary">عام</MudText>
+                <MudDivider Style="border-top: 1px solid #6D6D6DCC; width: 0%; margin: auto;" />
+            </div>
+
+            <MudNavLink Href="" Match="NavLinkMatch.All">
+                <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                الصفحة الرئيسية
+            </MudNavLink>
+            <MudNavLink Href="dashboard">
+                <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                لوحه التحكم
+            </MudNavLink>
+
+
+            <MudNavLink Href="inputs">
+                <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                الحقول
+            </MudNavLink>
+
+            <div class="d-flex align-items-center px-2 mt-3 mb-2">
+                <MudText Typo="Typo.overline" Class="px-2 text-secondary">الميزات</MudText>
+                <MudDivider Style="border-top: 1px solid #6D6D6DCC; width: 0%; margin: auto;" />
+            </div>
+
+            <MudNavGroup Title="المزيد من الميزات">
+                <!-- First NavLink with Image Icon -->
+                <MudNavLink Href="feature1">
+                    <div class="d-flex align-items-center">
+                        <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                        الميزة الأولى
+                    </div>
+                </MudNavLink>
+
+                <!-- Second NavLink with Image Icon -->
+                <MudNavLink Href="feature2">
+                    <div class="d-flex align-items-center">
+                        <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                        الميزة الثانية
+                    </div>
+                </MudNavLink>
+            </MudNavGroup>
+
+
+            <div class="d-flex align-items-center px-2 mt-3 mb-2">
+                <MudText Typo="Typo.overline" Class="px-2 text-secondary">الإدارة</MudText>
+                <MudDivider Style="border-top: 1px solid #6D6D6DCC; width: 0%; margin: auto;" />
+            </div>
+            <MudNavGroup Title="الادارة">
+                <MudNavLink Href="users">
+                    <div class="d-flex align-items-center">
+                        <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                        الميزة الأولى
+                    </div>
+                </MudNavLink>
+
+                <!-- Custom Icon: الأدوار -->
+                <MudNavLink Href="roles">
+                    <div class="d-flex align-items-center">
+                        <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                        الميزة الأولى
+                    </div>
+                </MudNavLink>
+
+                <!-- Custom Icon: الصلاحيات -->
+                <MudNavLink Href="permissions">
+                    <div class="d-flex align-items-center">
+                        <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                        الميزة الأولى
+                    </div>
+                </MudNavLink>
+            </MudNavGroup>
+
+
+            <div class="d-flex align-items-center px-2 mt-3 mb-2">
+                <MudText Typo="Typo.overline" Class="px-2 text-secondary">التقارير</MudText>
+                <MudDivider Style="border-top: 1px solid #6D6D6DCC; width: 0%; margin: auto;" />
+            </div>
+            <MudNavGroup Title="التقارير">
+                <!-- Custom Icon: تقرير يومي -->
+                <MudNavLink Href="daily-report">
+                    <div class="d-flex align-items-center">
+                        <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                        الميزة الأولى
+                    </div>
+                </MudNavLink>
+
+                <!-- Custom Icon: تقرير شهري -->
+                <MudNavLink Href="monthly-report">
+                    <div class="d-flex align-items-center">
+                        <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                        الميزة الأولى
+                    </div>
+                </MudNavLink>
+            </MudNavGroup>
+
+
+            <div class="d-flex align-items-center px-2 mt-3 mb-2">
+                <MudText Typo="Typo.overline" Class="px-2 text-secondary">أخرى</MudText>
+                <MudDivider Style="border-top: 1px solid #6D6D6DCC; width: 0%; margin: auto;" />
+            </div>
+            <MudNavLink Href="monthly-report">
+                <div class="d-flex align-items-center">
+                    <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                    الدعم
+                </div>
+            </MudNavLink>
+
+            <MudNavLink Href="monthly-report">
+                <div class="d-flex align-items-center">
+                    <img src="assets/images/Framesvg.svg" alt="Home" style="width: 20px; height: 20px; margin-left:5px" />
+                    الاعدادات
+                </div>
+            </MudNavLink>
+        </nav>
+    </div>
 
     <nav class="nav flex-column">
         <MudNavGroup Title="Modules">
@@ -29,51 +155,6 @@
         </MudNavGroup>
       
     </nav>
-    <nav class="nav flex-column">
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <div class="nav-link text-muted">
-                <span class="oi oi-puzzle-piece" aria-hidden="true"></span> Modules
-            </div>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/Component/razor">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Component Razor
-            </NavLink>
-        </div>
-
-        @* @foreach (var module in Settings) *@
-        @* { *@
-        @*     <div class="nav-item px-3"> *@
-        @*         <NavLink class="nav-link"> *@
-        @*             <InputCheckbox Value="@module.Value.IsEnabled" *@
-        @*                            ValueChanged="@(v => SettingChanged(v, module))" *@
-        @*                            ValueExpression="() => module.Value.IsEnabled" *@
-        @*                            class="oi oi-list-rich" /> *@
-
-        @*             <span>@module.Value.Name</span> *@
-        @*         </NavLink> *@
-        @*     </div> *@
-        @* } *@
-    </nav>
-</div>
 
 @code
 {
@@ -102,3 +183,32 @@
         });
     }
 }
+<style>
+
+
+     .mud-nav-link .mud-nav-link-text {
+         width: 100%;
+         text-align: start;
+         margin-left: 12px;
+         margin-inline-start: 12px;
+         margin-inline-end: unset;
+         font-size: 12px !important;
+         letter-spacing: 0;
+     }
+
+     .mud-nav-link.active:not(.mud-nav-link-disabled) {
+         font-weight: 600 !important;
+         background-color: #F8FAFC !important;
+         border-radius: 12px !important;
+         display: inline-flex !important;
+         max-width: 90% !important;
+     }
+
+     .text-secondary {
+         color: #555;
+         font-size: 12px;
+         line-height: 1.6;
+         font-weight: 500;
+         white-space: pre-line;
+     }
+</style>

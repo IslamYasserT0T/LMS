@@ -1,9 +1,14 @@
-html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+html, body, * {
+    font-family: "Noto Kufi Arabic", sans-serif !important;
+    font-optical-sizing: auto;
 }
 
 a, .btn-link {
     color: #006bb7;
+}
+
+.body {
+    background-color: #e3f2fd !important;
 }
 
 .btn-primary {
@@ -13,7 +18,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
@@ -57,4 +62,16 @@ h1:focus {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
+}
+
+.mud-button-filled.mud-button-filled-primary {
+    color: var(--mud-palette-primary-text);
+    --mud-ripple-color rgba(255,255,255,1) : var(--mud-palette-primary-text);
+    background-color: #192A56;
+}
+
+.mud-button-filled.mud-button-filled-secondary {
+    color: var(--mud-palette-primary-text);
+    --mud-ripple-color rgba(255,255,255,1) : var(--mud-palette-primary-text);
+    background-color: #1D61C9;
 }

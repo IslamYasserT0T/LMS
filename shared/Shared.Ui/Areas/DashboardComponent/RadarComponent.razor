@@ -1,0 +1,68 @@
+﻿@using ApexCharts
+@using MudBlazor
+
+    <ApexChart TItem="Order"
+               Options="chartOptions">
+        <ApexPointSeries TItem="Order"
+                         Items="orders"
+                         Name="Gross Value"
+                         SeriesType="SeriesType.Radar"
+                         XValue="@(e => e.Country)"
+                         YValue="@(e => e.GrossValue)"
+                         ShowDataLabels />
+    </ApexChart>
+
+@code {
+    private List<Order> orders { get; set; } = SampleData.GetOrders();
+
+    private ApexChartOptions<Order> chartOptions = new ApexChartOptions<Order>
+    {
+        Chart = new Chart
+        {
+            Type = ApexCharts.ChartType.Radar,
+            Toolbar = new Toolbar { Show = false }
+        },
+        Stroke = new Stroke { Width = 1 },
+        Fill = new Fill { Opacity = 0.1 },
+        Markers = new Markers { Size = 2 },
+        DataLabels = new DataLabels { Enabled = true },
+        PlotOptions = new PlotOptions
+        {
+            Radar = new PlotOptionsRadar
+            {
+                Size = 60
+            }
+        },
+        Colors = new List<string> { "#192A56" },
+        Xaxis = new XAxis
+        {
+            Categories = new List<string> { "الرياض", "جدة", "الدمام", "مكة", "المدينة" }
+        },
+        Yaxis = new List<YAxis>  // Changed to List<YAxis>
+        {
+            new YAxis { Show = false }
+        }
+    };
+
+    public class Order
+    {
+        public string Country { get; set; }
+        public decimal GrossValue { get; set; }
+        public decimal NetValue { get; set; }
+    }
+
+    public static class SampleData
+    {
+        public static List<Order> GetOrders()
+        {
+            return new List<Order>
+            {
+                new Order { Country = "الرياض", GrossValue = 1000, NetValue = 800 },
+                new Order { Country = "جدة", GrossValue = 1500, NetValue = 1200 },
+                new Order { Country = "الدمام", GrossValue = 800, NetValue = 600 },
+                new Order { Country = "مكة", GrossValue = 1200, NetValue = 900 },
+                new Order { Country = "المدينة", GrossValue = 1100, NetValue = 850 },
+            };
+        }
+    }
+}

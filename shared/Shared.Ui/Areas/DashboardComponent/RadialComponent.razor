@@ -1,0 +1,31 @@
+﻿@using MudBlazor
+
+<div class="d-flex flex-column align-center justify-center">
+    <div style="position: relative; display: inline-flex;box-shadow: none;">
+        <!-- Background Circle (Gray Track) -->
+        <MudProgressCircular Style="color:#EEF0F3"
+                             Rounded="true"
+                             Size="@Size"
+                             StrokeWidth="@StrokeWidth"
+                             Value="100" />
+
+        <!-- Foreground Circle (Actual Value) -->
+        <MudProgressCircular Class="position-absolute"
+                             Color="@Color"                             
+                             Rounded="true"
+                             Size="@Size"
+                             StrokeWidth="@StrokeWidth"
+                             Value="@NormalizedValue" />
+
+        <!-- Center Text -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <MudText style="font-size:14px" Align="Align.Center">
+                @ActualValue
+            </MudText>
+        </div>
+    </div>
+
+    <MudText Typo="Typo.subtitle2" Class="mt-2">
+        @Title
+    </MudText>
+</div>

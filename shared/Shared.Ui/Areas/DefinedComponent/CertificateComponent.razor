@@ -1,0 +1,34 @@
+﻿@using MudBlazor
+
+<MudPaper Class="d-flex flex-column align-items-center"
+          Style="position: relative; border-radius:40px ;">
+    <MudPaper Class="d-flex align-items-center justify-content-between"
+              Style="background-color: white; border: 2px solid #BD901E; color: #BD901E; padding: 10px 20px; border-radius: 32px; z-index: 2; margin-top: -20px; min-width: 250px; display: flex; align-items: center; justify-content: space-between;"
+              Elevation="2">
+        <MudImage Src="@LeftImage" Alt="Left"
+                  Style="width: 32px; height: 32px; object-fit: contain;" />
+        <MudText Typo="Typo.h6"
+                 Align="Align.Center"
+                 Class="mx-2 flex-grow-1 text-center fw-bold">
+            @TopText
+        </MudText>
+        <MudImage Src="@RightImage" Alt="Right"
+                  Style="width: 32px; height: 32px; object-fit: contain;" />
+    </MudPaper>
+
+    <MudPaper Class="mt-n4 p-3"
+              Style="background-color: #fff; border-radius: 16px; width: 100%;"
+              Elevation="1">
+        <MudGrid>
+            @foreach (var imageUrl in listImages)
+            {
+                <MudItem xs="4" sm="3" md="2">
+                    <MudImage Src="@imageUrl"
+                              Style="width: 120px; height: 55px; object-fit: cover; border-radius: 12px; margin-top: 20px;" />
+                </MudItem>
+            }
+        </MudGrid>
+    </MudPaper>
+</MudPaper>
+
+

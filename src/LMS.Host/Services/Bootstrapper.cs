@@ -1,4 +1,8 @@
 ﻿using AuthorizationModule.ExtentionMethods;
+using Blazorise;
+using Blazorise.Bootstrap5;
+using Blazorise.Icons.FontAwesome;
+using Blazorise.RichTextEdit;
 using LMS.Host.Components;
 using LMS.Host.Contracts;
 using LMS.Host.ExtensionsMethods;
@@ -39,7 +43,14 @@ public class Bootstrapper
         _builder.Services.AddSettingModule(_builder.Configuration);
         _builder.Services.AddAuthorizationModule(_builder.Configuration);
         _builder.Services.AddControllers();
-
+        _builder.Services
+            .AddBlazorise(options =>
+            {
+                options.Immediate = true;
+            })
+            .AddBlazoriseRichTextEdit()
+            .AddBootstrap5Providers()
+            .AddFontAwesomeIcons();
         _builder.Services.AddRazorComponents()
                .AddInteractiveServerComponents();
         _builder.Services.AddServerSideBlazor();

@@ -1,0 +1,14 @@
+﻿@using MudBlazor
+
+    <div class="d-flex align-items-center mb-1">
+        <MudIcon Icon="@LabelIcon" Color="Color.Dark" Class="me-1" />
+        <MudText Typo="Typo.caption" Class="fw-bold">@Label</MudText>
+    </div>
+
+    @ChildContent
+
+@code {
+    [Parameter] public string Label { get; set; }
+    [Parameter] public string LabelIcon { get; set; } = Icons.Material.Filled.Label;
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}
