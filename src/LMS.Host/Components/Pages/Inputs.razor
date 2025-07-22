@@ -9,7 +9,7 @@
 <MudContainer MaxWidth="MaxWidth.False"  dir="rtl">
 
     <!-- User Data Section -->
-    <MudPaper Class="p-4 mb-5" Style="background-color:transparent; border-radius:12px;">
+    <MudPaper Class="p-4 mb-5" Style="background-color:white; border-radius:12px;">
         <MudText Typo="Typo.h6" Class="mb-4 fw-bold text-end">بيانات المستخدم</MudText>
 
         <MudGrid GutterSize="3">
@@ -65,7 +65,7 @@
     </MudPaper>
 
     <!-- Rich Text Editor Section -->
-    <MudPaper Class="p-4 mb-5" Style="background-color:transparent; border-radius:12px;">
+    <MudPaper Class="p-4 mb-5" Style="background-color:white; border-radius:12px;">
         <MudGrid>
             <!-- Rich Text Editor Column -->
             <MudItem xs="12" md="6">
@@ -83,7 +83,7 @@
 
 
        
-        <MudPaper Class="p-4 mt-5" Style="background-color:transparent; border-radius:12px;">
+        <MudPaper Class="p-4 mt-5" Style="background-color:white; border-radius:12px;">
         <MudText Typo="Typo.h6" Class="mb-4 fw-bold text-end">الاختيارات</MudText>
 
    <MudStack Row="true" Class="mt-5" Spacing="3">
@@ -126,7 +126,7 @@
 
 </MudStack>
     </MudPaper>
-    <MudPaper Class="p-4 mb-5" Style="background-color:transparent; border-radius:12px;">
+    <MudPaper Class="p-4 mb-5" Style="background-color:white; border-radius:12px;">
         <MudText Typo="Typo.h6" Class="mb-4 fw-bold text-end">بيانات المستخدم</MudText>
 
         <MudGrid GutterSize="3">
@@ -135,7 +135,7 @@
             <MudItem xs="12" sm="6" md="3">
                 <LabelWithIcon Label="وقت البدء" LabelIcon="@Icons.Material.Filled.AccessTime">
 
-                <CustomTimePickerComponent @bind-SelectedTime="startTime" Placeholder="اختر الوقت" />
+                <CustomTimePickerComponent  @bind-SelectedTime="startTime" Placeholder="اختر الوقت" />
             </LabelWithIcon>
         </MudItem>
         
@@ -177,77 +177,3 @@
    
 }
 
-<style>
-   
-    .mud-theme-primary {
-        color: var(--mud-palette-primary-text) !important;
-        background-color: #192A56 !important;
-    }
-
-    .mud-button-filled.mud-button-filled-primary {
-        color: var(--mud-palette-primary-text);
-        background-color: #192A56;
-    }
-
-
-
-    
-    .mud-button-filled.mud-button-filled-secondary {
-        color: var(--mud-palette-primary-text);
-        background-color: #1D61C9;
-    }
-
-    .mud-primary-text {
-        color: #192A56 !important;
-    }
-    .mud-secondary-text {
-        color: #1D61C9 !important;
-    }
-
-    .mud-primary {
-        background-color: #192A56 !important;
-    }
-    
-
-    /* Secondary color version */
-   
-    .me-auto {
-        margin-inline-end: auto !important;
-        margin-right: 0 !important; /* If you're sure it's only affecting LTR */
-    }
-
-   
-   
- 
-    .mud-button-outlined.mud-button-outlined-primary {
-        color: #192A56;
-        border-color: #192A56;
-        background-color: transparent;
-    }
-
-    .mud-input {
-        position: relative;
-        color: var(--mud-palette-text-primary);
-        cursor: text;
-        display: inline-flex;
-        box-sizing: border-box;
-        align-items: center;
-        color-scheme: var(--mud-native-html-color-scheme);
-        width: 260px !important;
-        height: 40px !important;
-        border-radius:100px !important;
-    }
-
-    .mud-button-outlined.mud-button-outlined-secondary {
-        color: #1D61C9;
-        border-color: #1D61C9;
-        background-color: transparent;
-    }
-
-    .mud-secondary-hover:hover,
-    .hover\:mud-secondary-hover:hover {
-        background-color: #1D61C9 !important; /* ← your custom hover color */
-        color: white !important;
-        opacity: 0.1 !important;
-    }
-</style>
