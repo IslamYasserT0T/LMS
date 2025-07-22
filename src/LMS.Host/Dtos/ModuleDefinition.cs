@@ -8,5 +8,6 @@ public class ModuleDefinition
 }
 public class ModulesManifest
 {
+    public string ModuleName { get; set; }
     public List<ModuleDefinition> Modules { get; set; }
 }

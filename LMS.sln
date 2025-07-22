@@ -46,6 +46,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationModule", "shar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleModule.Test", "modules\SampleModule\SampleModule.Test\SampleModule.Test.csproj", "{6BB9B3B2-599F-4D2B-BB5A-69EF50E601BC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MinifestPlugins", "MinifestPlugins", "{215C7D2B-E63D-466D-9474-0E67AE47E260}"
+	ProjectSection(SolutionItems) = preProject
+		MinifestPlugins\SampleModuleMinifest.json = MinifestPlugins\SampleModuleMinifest.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
