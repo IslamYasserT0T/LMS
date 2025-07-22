@@ -11,3 +11,7 @@ public class ModulesManifest
     public string ModuleName { get; set; }
     public List<ModuleDefinition> Modules { get; set; }
 }
+public class ModulesRoot
+{
+    public List<ModulesManifest> Modules { get; set; }
+}

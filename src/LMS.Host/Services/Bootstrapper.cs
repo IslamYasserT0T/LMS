@@ -5,6 +5,7 @@ using Blazorise.Icons.FontAwesome;
 using Blazorise.RichTextEdit;
 using LMS.Host.Components;
 using LMS.Host.Contracts;
+using LMS.Host.Dtos;
 using LMS.Host.ExtensionsMethods;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ using SettingModule.ExtentionMethods;
 using SettingModule.Presistence.Context;
 using SettingModule.Services;
 using Shared.Infrastructure.Persistence;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LMS.Host.Services;
@@ -31,7 +33,10 @@ public class Bootstrapper
     public async Task PreInitialize()
     {
         var filesCopier = new ModuleFolderCopier();
-        var manifestPath = Path.Combine(Directory.GetCurrentDirectory(), "manifest.json");
+              var moduleManifestManager = new ModuleManifestsManager();
+        moduleManifestManager.ProcessManifests(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "ManifestPlugins"),Path.Combine(Directory.GetCurrentDirectory(),"manifest"));
+
+        var manifestPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "manifest"));
         var destinationRoot = Path.Combine(AppContext.BaseDirectory,"plugins");
          if(!Directory.Exists(destinationRoot)) 
             Directory.CreateDirectory(destinationRoot);
@@ -144,5 +149,28 @@ public class Bootstrapper
                 }
             }
         }
+    }
+    public static List<ModulesManifest> LoadModulesFromSubdirectories(string modulesRootPath)
+    {
+        var modules = new List<ModulesManifest>();
+
+        var jsonFiles = Directory.GetFiles(modulesRootPath, "*.json", SearchOption.AllDirectories);
+
+        foreach (var file in jsonFiles)
+        {
+            try
+            {
+                string json = File.ReadAllText(file);
+                var module = JsonSerializer.Deserialize<ModulesManifest>(json);
+                if (module != null)
+                    modules.Add(module);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error reading file '{file}': {ex.Message}");
+            }
+        }
+
+        return modules;
     }
 }

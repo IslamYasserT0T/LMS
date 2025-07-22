@@ -11,23 +11,27 @@ public class ModuleFolderCopier
             return;
 
         var json = await File.ReadAllTextAsync(manifestPath);
-        var manifest = JsonSerializer.Deserialize<ModulesManifest>(json);
+        var manifest = JsonSerializer.Deserialize<ModulesRoot>(json);
 
         if (manifest?.Modules == null)
             return;
 
         foreach (var module in manifest.Modules)
         {
-            if (string.IsNullOrWhiteSpace(module.CopyFolder))
-                continue;
-            var root = Directory.GetCurrentDirectory();
-            string sourceFolder = Path.Combine(Directory.GetParent(root).Parent.FullName, module.CopyFolder.Replace('/', Path.DirectorySeparatorChar));
-            if (!Directory.Exists(sourceFolder))
-                continue;
+            foreach(var item in module.Modules)
+            {
 
-            var destinationFolder = Path.Combine(destinationRoot, module.Name);
+                if (string.IsNullOrWhiteSpace(item.CopyFolder))
+                    continue;
+                var root = Directory.GetCurrentDirectory();
+                string sourceFolder = Path.Combine(Directory.GetParent(root).Parent.FullName, item.CopyFolder.Replace('/', Path.DirectorySeparatorChar));
+                if (!Directory.Exists(sourceFolder))
+                    continue;
 
-            CopyDirectory(sourceFolder, destinationFolder);
+                var destinationFolder = Path.Combine(destinationRoot, item.Name);
+
+                CopyDirectory(sourceFolder, destinationFolder);
+            }
         }
     }
 

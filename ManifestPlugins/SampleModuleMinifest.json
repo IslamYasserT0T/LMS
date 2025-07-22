@@ -1,4 +1,5 @@
 {
+  "ModuleName": "SampleModule",
   "Modules": [
     {
       "Name": "SampleModule.Domain",
