@@ -26,6 +26,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Infrastructure", "shared\Shared.Infrastructure\Shared.Infrastructure.csproj", "{A7D3F827-D4A1-4B49-A818-31B912D35366}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleModule", "SampleModule", "{2B94FA5D-B108-4142-842D-3081AA3EAE33}"
+	ProjectSection(SolutionItems) = preProject
+		modules\SampleModule\PluginManifest.targets = modules\SampleModule\PluginManifest.targets
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleModule.API", "modules\SampleModule\SampleModule.API\SampleModule.API.csproj", "{1DBD941D-89C8-4D0C-B134-6240CD0B774F}"
 EndProject
