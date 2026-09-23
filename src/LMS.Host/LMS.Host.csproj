@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -21,4 +21,5 @@
     <ProjectReference Include="..\..\shared\Shared.Ui\Shared.Ui.csproj" />
   </ItemGroup>
 		<Import Project="..\..\modules\SampleModule\PluginManifest.targets" />
+		<Import Project="..\..\modules\IdentityModule\PluginManifest.targets" />
 </Project>

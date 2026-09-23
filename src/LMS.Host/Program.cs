@@ -16,15 +16,15 @@ namespace LMS.Host
       
             var bootstrapper = new Bootstrapper(builder);
 
-           await bootstrapper.PreInitialize();
-            var moduleManager = builder.Services.BuildServiceProvider().GetRequiredService<IModuleManager>();
+            await bootstrapper.PreInitialize();
+            var moduleManager = bootstrapper.ModuleManager;
 
             await bootstrapper.Initialize(moduleManager);
-           await bootstrapper.PostInitialize(moduleManager);
+            await bootstrapper.PostInitialize(moduleManager);
 
             var app = builder.Build();
 
-            bootstrapper.ConfigureApplication(app, moduleManager);
+            await bootstrapper.ConfigureApplication(app, moduleManager);
 
             app.Run();
         }

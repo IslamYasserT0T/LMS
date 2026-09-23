@@ -1,4 +1,4 @@
-﻿using LMS.Host.Contracts;
+using LMS.Host.Contracts;
 using Microsoft.EntityFrameworkCore;
 using SettingModule.Contracts;
 using SettingModule.Presistence.Context;
@@ -12,28 +12,32 @@ namespace LMS.Host.Services;
 ///<inheritdoc/>
 public class ModuleManager : IModuleManager
 {
-    private static  List<ModuleInfo> _modules { get; set; } = new();
-    private static  List<Assembly> _assemblies { get; set; } = new();
-    private  List<ModuleInfo> _moduleUis { get; set; } = new();
-    private IServiceCollection _services { get; set; }
-    private IConfiguration _configuration { get; set; }
-    private static List<NavMenuItem> _menuItems { get; set; } = new();
+    private readonly List<ModuleInfo> _modules = new();
+    private readonly List<Assembly> _assemblies = new();
+    private readonly List<ModuleInfo> _moduleUis = new();
+    private IServiceCollection? _services;
+    private IConfiguration? _configuration;
+    private List<NavMenuItem> _menuItems = new();
     ///<inheritdoc/>
     public bool Loaded { get; set; }
 
     #region Public Methods
     ///<inheritdoc/>
-    public async Task LoadModules(IServiceCollection services, IConfiguration configuration)
+    public Task LoadModules(IServiceCollection services, IConfiguration configuration)
     {
         _services = services;
         _configuration = configuration;
         LoadModule();
-        using var provider = services.BuildServiceProvider();
-        await ExecuteSettingProviders(provider);
-        ExecuteNavProviders(provider);
         Loaded = true;
+        return Task.CompletedTask;
     }
 
+    ///<inheritdoc/>
+    public async Task InitializeRuntimeAsync(IServiceProvider serviceProvider)
+    {
+        await ExecuteSettingProviders(serviceProvider);
+        ExecuteNavProviders(serviceProvider);
+    }
 
     ///<inheritdoc/>
     public List<ModuleInfo> GetUiModules()
@@ -94,9 +98,10 @@ public class ModuleManager : IModuleManager
         }
     }
 
-    private static void ExecuteNavProviders(ServiceProvider provider)
+    private void ExecuteNavProviders(IServiceProvider provider)
     {
-        var providers = provider.GetServices<INavigationProvider>();
+        using var scope = provider.CreateScope();
+        var providers = scope.ServiceProvider.GetServices<INavigationProvider>();
         _menuItems = providers.SelectMany(p => p.GetMenuItems()).ToList();
     }
     private void LoadModule()
@@ -146,7 +151,7 @@ public class ModuleManager : IModuleManager
     {
         var module = (IModule)Activator.CreateInstance(moduleType)!;
         
-        module.RegisterServices(_services,_configuration);
+        module.RegisterServices(_services!, _configuration!);
         _modules.Add(moduleInfo);
 
         switch (true)

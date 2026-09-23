@@ -1,4 +1,4 @@
-﻿using LMS.Host.Services;
+using LMS.Host.Services;
 using Shared.Core;
 using System.Reflection;
 
@@ -21,6 +21,13 @@ public interface IModuleManager
     /// <param name="services"> Object of IServiceCollection </param>
     /// <param name="configuration"> Object of IConfiguration </param>
     Task LoadModules(IServiceCollection services, IConfiguration configuration);
+
+    /// <summary>
+    /// Initialize runtime providers using the final application service provider.
+    /// </summary>
+    /// <param name="serviceProvider"> Object of IServiceProvider </param>
+    Task InitializeRuntimeAsync(IServiceProvider serviceProvider);
+
     /// <summary>
     /// Get Ui Modules
     /// </summary>

@@ -1,0 +1,10 @@
+{
+  "ModuleName": "IdentityModule",
+  "Modules": [
+    {
+      "Name": "LMS.IdentityModule",
+      "Version": "1.0.0",
+      "CopyFolder": "modules/IdentityModule/LMS.IdentityModule/bin/Debug/net9.0/plugins"
+    }
+  ]
+}

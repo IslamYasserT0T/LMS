@@ -1,4 +1,4 @@
-﻿using AuthorizationModule.ExtentionMethods;
+using AuthorizationModule.ExtentionMethods;
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
@@ -25,26 +25,30 @@ namespace LMS.Host.Services;
 public class Bootstrapper
 {
     private readonly WebApplicationBuilder _builder;
+    public IModuleManager ModuleManager { get; }
 
-    public Bootstrapper(WebApplicationBuilder builder)
+    public Bootstrapper(WebApplicationBuilder builder, IModuleManager? moduleManager = null)
     {
         _builder = builder;
+        ModuleManager = moduleManager ?? new ModuleManager();
     }
+
     public async Task PreInitialize()
     {
         var filesCopier = new ModuleFolderCopier();
-              var moduleManifestManager = new ModuleManifestsManager();
+        var moduleManifestManager = new ModuleManifestsManager();
         moduleManifestManager.ProcessManifests(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "ManifestPlugins"),Path.Combine(Directory.GetCurrentDirectory(),"manifest"));
 
         var manifestPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "manifest"));
         var destinationRoot = Path.Combine(AppContext.BaseDirectory,"plugins");
-         if(!Directory.Exists(destinationRoot)) 
+        if(!Directory.Exists(destinationRoot)) 
             Directory.CreateDirectory(destinationRoot);
         await ModuleFolderCopier.CopyFoldersFromManifestAsync(manifestPath, destinationRoot);
 
         _builder.Services.AddDbContext<BaseDbContext>(options =>
           options.UseNpgsql(_builder.Configuration.GetConnectionString("Default")));
 
+        _builder.Services.AddAuthentication();
         _builder.Services.AddSettingModule(_builder.Configuration);
         _builder.Services.AddAuthorizationModule(_builder.Configuration);
         _builder.Services.AddControllers();
@@ -60,7 +64,7 @@ public class Bootstrapper
                .AddInteractiveServerComponents();
         _builder.Services.AddServerSideBlazor();
         _builder.Services.AddMudServices();
-        _builder.Services.AddSingleton<IModuleManager, ModuleManager>();
+        _builder.Services.AddSingleton<IModuleManager>(ModuleManager);
 
         // Configure Swagger
         _builder.Services.AddEndpointsApiExplorer();
@@ -74,14 +78,11 @@ public class Bootstrapper
             });
         });
         await Task.Yield();
-
     }
 
     public async Task Initialize(IModuleManager moduleManager)
     {
-
-         await moduleManager.LoadModules(_builder.Services, _builder.Configuration);
-
+        await moduleManager.LoadModules(_builder.Services, _builder.Configuration);
     }
 
     public async Task PostInitialize(IModuleManager moduleManager)
@@ -95,13 +96,14 @@ public class Bootstrapper
         _builder.Services.AddModuleAutoMappers(moduleManager.GetAllAssemblies());
         _builder.Services.AddModuleValidators(moduleManager.GetAllAssemblies());
 
-
         await Task.Yield();
     }
 
-    public void ConfigureApplication(WebApplication app, IModuleManager moduleManager)
+    public async Task ConfigureApplication(WebApplication app, IModuleManager moduleManager)
     {
         ApplyMigrations(app);
+
+        await moduleManager.InitializeRuntimeAsync(app.Services);
 
         // Configure the HTTP request pipeline
         if (!app.Environment.IsDevelopment())
@@ -109,7 +111,6 @@ public class Bootstrapper
             app.UseExceptionHandler("/Error");
             app.UseHsts();
         }
-
 
         if (app.Environment.IsDevelopment())
         {
@@ -120,11 +121,12 @@ public class Bootstrapper
             });
         }
         app.UseRouting();
-        app.UseAntiforgery();
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.MapStaticAssets();
+        app.UseAuthentication();
         app.UseAuthorization();
+        app.UseAntiforgery();
         app.MapControllers();
         app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
@@ -150,6 +152,7 @@ public class Bootstrapper
             }
         }
     }
+
     public static List<ModulesManifest> LoadModulesFromSubdirectories(string modulesRootPath)
     {
         var modules = new List<ModulesManifest>();
