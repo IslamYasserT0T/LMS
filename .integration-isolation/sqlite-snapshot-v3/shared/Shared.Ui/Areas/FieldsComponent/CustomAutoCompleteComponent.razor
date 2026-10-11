@@ -1,0 +1,57 @@
+﻿@using MudBlazor
+
+<MudAutocomplete T="string"
+                 @bind-Value="Value"
+                 Placeholder="@Placeholder"
+                 Variant="Variant.Outlined"
+                 Dense="true"
+                 Adornment="Adornment.Start"
+                 AdornmentIcon="@Icon"
+                 SearchFunc="InternalSearchFunc"
+                 ToStringFunc="@(x => x)"
+                 Clearable="true"
+                 CoerceText="true"
+                 ResetValueOnEmptyText="true"
+                 Class="autocomplete-with-dropdown"
+                 Style="border-radius: 20px;" />
+
+@code {
+    [Parameter]
+    public string Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public string Placeholder { get; set; }
+
+    [Parameter]
+    public string Icon { get; set; }
+
+    [Parameter]
+    public Func<string, Task<IEnumerable<string>>>? SearchFunc { get; set; }
+
+    private Task<IEnumerable<string>> InternalSearchFunc(string value, CancellationToken token)
+    {
+        return SearchFunc != null
+            ? SearchFunc.Invoke(value)
+            : Task.FromResult(Enumerable.Empty<string>());
+    }
+}
+<style>
+    .autocomplete-with-dropdown .mud-input-adornment {
+        position: relative;
+    }
+
+        .autocomplete-with-dropdown .mud-input-adornment::after {
+            content: '\25BE'; /* ▼ */
+            font-size: 1rem;
+            position: absolute;
+            right: 230px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: gray;
+            pointer-events: none;
+        }
+
+</style>

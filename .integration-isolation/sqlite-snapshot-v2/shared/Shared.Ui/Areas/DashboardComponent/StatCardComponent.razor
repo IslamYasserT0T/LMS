@@ -1,0 +1,38 @@
+﻿@using MudBlazor
+
+<MudPaper Class="d-flex align-items-center"
+          Style="
+              direction: rtl;
+              border-radius: 20px;
+              background-color: #FFFFFF;
+              box-shadow: 0px 4px 13.6px 0px #0015420D;
+              gap: 12px;
+              padding-top: 8px;
+              padding-bottom: 8px;
+              padding-right: 8px;
+              padding-left: 8px;
+              ">
+
+    <MudImage Src="@ImageUrl"
+              Style="width: 40px; height: 40px;" />
+
+    <div class="flex-grow-1 d-flex flex-column" style="text-align: right;">
+        <MudText Class="fw-bold m-0 p-0" Style="font-size: 12px;">@Title</MudText>
+
+        <div class="d-flex align-items-center justify-content-between" style="width: 100%;">
+            <!-- Value -->
+            <MudText Class="p-0" Style="font-size: 12px; flex-shrink: 0;">@Value</MudText>
+
+            <!-- Chip -->
+            <div style="background-color: @ChipColor;
+                        color: @TextColor;
+                        border-radius: 8px;
+                        padding: 0 5px;"
+                 class="d-inline-flex align-items-center justify-center fw-bold">
+                <MudIcon Icon="@ChipIcon" Style="font-size: 12px;" />
+                <span style="font-size: 11px;">@ChipLabel</span>
+            </div>
+        </div>
+    </div>
+
+</MudPaper>

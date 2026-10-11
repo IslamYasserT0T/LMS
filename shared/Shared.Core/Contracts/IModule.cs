@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,4 +15,8 @@ public interface IModule
     Type ModuleType { get; }
     bool IsEnabled { get; }
     void RegisterServices(IServiceCollection services, IConfiguration configuration);
+    void RegisterServices(IServiceCollection services, IConfiguration configuration, IHostEnvironment? hostEnvironment)
+    {
+        RegisterServices(services, configuration);
+    }
 }

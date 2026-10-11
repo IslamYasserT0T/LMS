@@ -1,0 +1,94 @@
+@page "/reporting/integration-proof"
+@using System.Globalization
+@using IY.Reporting.Blazor.Components.Viewer
+@using IY.Reporting.Blazor.Components.Designer
+@using IY.Reporting.Models
+@using IY.Reporting.Schema
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Hosting
+@using MudBlazor
+@inject IConfiguration Configuration
+@inject IHostEnvironment HostEnvironment
+@inject NavigationManager NavigationManager
+
+<PageTitle>Reporting Integration Proof</PageTitle>
+
+@if (!_isAuthorizedProofEnvironment)
+{
+    <MudContainer MaxWidth="MaxWidth.Small" Class="mt-8">
+        <MudAlert Severity="Severity.Error" Variant="Variant.Filled" id="proof-access-denied">
+            Access Denied: The integration proof harness is disabled or running in an unauthorized environment.
+        </MudAlert>
+    </MudContainer>
+}
+else
+{
+    <MudRTLProvider RightToLeft="_isRtl">
+        <div dir="@(_isRtl ? "rtl" : "ltr")" class="proof-wrapper" id="proof-root">
+            <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <MudText Typo="Typo.h4" id="proof-title">@(_isRtl ? "إثبات تكامل نظام التقارير" : "LMS Reporting Integration Proof")</MudText>
+                    <div class="d-flex align-items-center gap-2">
+                        <MudText Typo="Typo.body2">Current Culture: <strong id="current-culture-label">@CultureInfo.CurrentUICulture.Name</strong> (@(_isRtl ? "RTL" : "LTR"))</MudText>
+                        <MudButton id="btn-culture-en" Variant="@(_isRtl ? Variant.Outlined : Variant.Filled)" Color="Color.Primary" OnClick="SetEnglish">English (LTR)</MudButton>
+                        <MudButton id="btn-culture-ar" Variant="@(_isRtl ? Variant.Filled : Variant.Outlined)" Color="Color.Secondary" OnClick="SetArabic">العربية (RTL)</MudButton>
+                    </div>
+                </div>
+                
+                <MudAlert Severity="Severity.Warning" Class="mb-4" id="proof-banner">
+                    @(_isRtl ? "هذا إثبات تكامل تقني فقط. لا يقوم بتنفيذ استعلامات فعلية على قاعدة البيانات." : "This is a TECHNICAL INTEGRATION PROOF. It does not execute real database queries.")
+                </MudAlert>
+
+                <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" id="proof-tabs">
+                    <MudTabPanel Text="@(_isRtl ? "عارض التقارير" : "Report Viewer")">
+                        <div id="viewer-container">
+                            <ReportViewer Schema="_schema" />
+                        </div>
+                    </MudTabPanel>
+                    <MudTabPanel Text="@(_isRtl ? "مصمم التقارير" : "Report Designer")">
+                        <div id="designer-container">
+                            <ReportDesigner Schema="_schema" />
+                        </div>
+                    </MudTabPanel>
+                </MudTabs>
+            </MudContainer>
+        </div>
+    </MudRTLProvider>
+}
+
+@code {
+    private bool _isAuthorizedProofEnvironment;
+    private bool _isRtl = false;
+    private ReportSchema _schema = new ReportSchema(
+        "ProofSchema",
+        Array.Empty<IY.Reporting.Schema.ReportTable>(),
+        Array.Empty<IY.Reporting.Schema.ReportOperator>());
+
+    protected override void OnInitialized()
+    {
+        var isExplicitlyEnabled = Configuration.GetValue<bool>("Reporting:EnableIntegrationProof");
+        var isProduction = HostEnvironment.IsProduction();
+
+        // The route itself must not be usable unless the proof harness is explicitly enabled
+        // AND not running in a Production environment.
+        if (!isExplicitlyEnabled || isProduction)
+        {
+            _isAuthorizedProofEnvironment = false;
+            return;
+        }
+
+        _isAuthorizedProofEnvironment = true;
+        _isRtl = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    }
+
+    private void SetEnglish()
+    {
+        NavigationManager.NavigateTo("/reporting/integration-proof?culture=en-US&ui-culture=en-US", forceLoad: true);
+    }
+
+    private void SetArabic()
+    {
+        NavigationManager.NavigateTo("/reporting/integration-proof?culture=ar-SA&ui-culture=ar-SA", forceLoad: true);
+    }
+}

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IY.Reporting" Version="1.0.1" />
+    <PackageReference Include="IY.Reporting.AspNetCore" Version="1.0.1" />
+    <PackageReference Include="IY.Reporting.Blazor" Version="1.0.1" />
+    <PackageReference Include="IY.Reporting.SqlKata" Version="1.0.1" />
+    <PackageReference Include="Npgsql" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\Shared.Core\Shared.Core.csproj" />
+    <ProjectReference Include="..\..\..\shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != 'Debug'">
+    <Content Remove="Ui\Pages\IntegrationProof.razor" />
+    <Compile Remove="Ui\Pages\IntegrationProof.razor" />
+    <None Include="Ui\Pages\IntegrationProof.razor" />
+  </ItemGroup>
+
+</Project>

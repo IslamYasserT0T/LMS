@@ -1,0 +1,35 @@
+{
+  "ModuleName": "SampleModule",
+  "Modules": [
+    {
+      "Name": "SampleModule.Domain",
+      "Version": "1.0.0",
+      "CopyFolder": "modules/SampleModule/SampleModule.Domain/bin/{Configuration}/net9.0/plugins"
+    },
+    {
+      "Name": "SampleModule.API",
+      "Version": "1.0.0",
+      "CopyFolder": "modules/SampleModule/SampleModule.API/bin/{Configuration}/net9.0/plugins"
+    },
+    {
+      "Name": "SampleModule.Application",
+      "Version": "1.0.0",
+      "CopyFolder": "modules/SampleModule/SampleModule.Application/bin/{Configuration}/net9.0/plugins"
+    },
+    {
+      "Name": "SampleModule.Core",
+      "Version": "1.0.0",
+      "CopyFolder": "modules/SampleModule/SampleModule.Core/bin/{Configuration}/net9.0/plugins"
+    },
+    {
+      "Name": "SampleModule.Infrastructure",
+      "Version": "1.0.0",
+      "CopyFolder": "modules/SampleModule/SampleModule.Infrastructure/bin/{Configuration}/net9.0/plugins"
+    },
+    {
+      "Name": "SampleModule.Ui",
+      "Version": "1.0.0",
+      "CopyFolder": "modules/SampleModule/SampleModule.Ui/bin/{Configuration}/net9.0/plugins"
+    }
+  ]
+}

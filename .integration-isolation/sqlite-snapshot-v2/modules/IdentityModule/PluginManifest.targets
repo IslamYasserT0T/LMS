@@ -1,0 +1,5 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="BuildIdentityPlugin" BeforeTargets="Build">
+		<MSBuild Projects="..\..\modules\IdentityModule\LMS.IdentityModule\LMS.IdentityModule.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/LMS.IdentityModule/" />
+	</Target>
+</Project>

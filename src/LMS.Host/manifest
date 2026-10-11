@@ -11,6 +11,16 @@
       ]
     },
     {
+      "ModuleName": "ReportingModule",
+      "Modules": [
+        {
+          "Name": "LMS.ReportingModule",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/ReportingModule/LMS.ReportingModule/bin/Debug/net9.0/plugins"
+        }
+      ]
+    },
+    {
       "ModuleName": "SampleModule",
       "Modules": [
         {

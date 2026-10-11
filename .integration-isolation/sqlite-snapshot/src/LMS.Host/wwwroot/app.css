@@ -1,0 +1,258 @@
+﻿/* ====== Global Font and Background ====== */
+html, body, * {
+    font-family: "Noto Kufi Arabic", sans-serif !important;
+    font-optical-sizing: auto;
+}
+
+body {
+    background-color: #EEF0F3 !important; /* Updated from new page */
+}
+
+/* ====== Links and Buttons ====== */
+a, .btn-link {
+    color: #006bb7;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus,
+.form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* ====== MudBlazor Buttons (Primary & Secondary) ====== */
+.mud-button-filled.mud-button-filled-primary {
+    color: var(--mud-palette-primary-text);
+    --mud-ripple-color rgba(255,255,255,1) : var(--mud-palette-primary-text);
+    background-color: #192A56;
+}
+
+.mud-button-filled.mud-button-filled-secondary {
+    color: var(--mud-palette-primary-text);
+    --mud-ripple-color rgba(255,255,255,1) : var(--mud-palette-primary-text);
+    background-color: #1D61C9;
+}
+
+.mud-button-outlined.mud-button-outlined-primary {
+    color: #192A56;
+    border-color: #192A56;
+    background-color: transparent;
+    --mud-ripple-color: rgba(25, 42, 86, 0.2);
+}
+
+.mud-button-outlined.mud-button-outlined-secondary {
+    color: #1D61C9;
+    border-color: #1D61C9;
+    background-color: transparent;
+    --mud-ripple-color: rgba(29, 97, 201, 0.2);
+}
+
+/* ====== MudBlazor Color Utilities ====== */
+.mud-primary-text {
+    color: #192A56 !important;
+    --mud-ripple-color: var(--mud-palette-primary) !important;
+}
+
+.mud-secondary-text {
+    color: #1D61C9 !important;
+    --mud-ripple-color: var(--mud-palette-primary) !important;
+}
+
+.mud-tertiary-text,
+.root.mud-palette-tertiary {
+    color: #1D61C9 !important;
+    --mud-ripple-color: #1D61C9 !important;
+}
+
+/* ====== MudBlazor Tabs ====== */
+.mud-tab.mud-tab-active {
+    color: #192A56 !important;
+    font-weight: bold;
+}
+
+.mud-tab-slider {
+    position: absolute;
+    background: #192A56;
+}
+
+.mud-tabs-tabbar-content {
+    width: 100%;
+    flex: 1 1 auto;
+    display: inline-block;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: #EEF0F3;
+}
+
+.mud-tabs-transparent {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.mud-tabs-transparent .mud-tabs-toolbar,
+.mud-tabs-transparent .mud-tabs-toolbar-inner,
+.mud-tabs-transparent .mud-tabpanel {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* ====== Content ====== */
+.content {
+    padding-top: 1.1rem;
+}
+
+h1:focus {
+    outline: none;
+}
+
+/* ====== Validation States ====== */
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid #e50000;
+}
+
+.validation-message {
+    color: #e50000;
+}
+
+/* ====== Miscellaneous ====== */
+.h-100 {
+    height: 100%;
+}
+
+.darker-border-checkbox.form-check-input {
+    border-color: #929292;
+}
+
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+.mud-theme-primary {
+    color: var(--mud-palette-primary-text) !important;
+    background-color: #192A56 !important;
+}
+
+/* ====== Error Boundary Styling ====== */
+.blazor-error-boundary {
+    background: url(data:image/svg+xml;base64,...yourData...) no-repeat 1rem/1.8rem, #b32121;
+    padding: 1rem 1rem 1rem 3.7rem;
+    color: white;
+}
+
+.blazor-error-boundary::after {
+    content: "An error has occurred.";
+}
+
+/* ====== Table / Action Button Styling ====== */
+.action-cell {
+    padding: 8px !important;
+    text-align: center;
+}
+
+.action-rounded-wrapper {
+    background-color: white;
+    border: 1px solid #E0E0E0;
+    border-radius: 16px;
+    padding: 4px 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-rounded-wrapper .mud-icon-button {
+    padding: 4px;
+    font-size: 20px;
+    color: #555;
+}
+
+.action-rounded-wrapper:hover {
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
+}
+.mud-theme-primary {
+    color: var(--mud-palette-primary-text) !important;
+    background-color: #192A56 !important;
+}
+
+.mud-button-filled.mud-button-filled-primary {
+    color: var(--mud-palette-primary-text);
+    background-color: #192A56;
+}
+
+
+
+
+.mud-button-filled.mud-button-filled-secondary {
+    color: var(--mud-palette-primary-text);
+    background-color: #1D61C9;
+}
+
+.mud-primary-text {
+    color: #192A56 !important;
+}
+
+.mud-secondary-text {
+    color: #1D61C9 !important;
+}
+
+.mud-primary {
+    background-color: #192A56 !important;
+}
+
+
+/* Secondary color version */
+
+.me-auto {
+    margin-inline-end: auto !important;
+    margin-right: 0 !important; /* If you're sure it's only affecting LTR */
+}
+
+
+.mud-input {
+    position: relative;
+    color: var(--mud-palette-text-primary);
+    cursor: text;
+    display: inline-flex;
+    box-sizing: border-box;
+    align-items: center;
+    color-scheme: var(--mud-native-html-color-scheme);
+    max-width: 460px !important;
+    max-height: 40px !important;
+    border-radius: 100px !important;
+}
+
+.mud-button-outlined.mud-button-outlined-primary {
+    color: #192A56;
+    border-color: #192A56;
+    background-color: transparent;
+}
+
+}
+
+.mud-button-outlined.mud-button-outlined-secondary {
+    color: #1D61C9;
+    border-color: #1D61C9;
+    background-color: transparent;
+}
+
+.mud-secondary-hover:hover,
+.hover\:mud-secondary-hover:hover {
+    background-color: #1D61C9 !important; /* ← your custom hover color */
+    color: white !important;
+    opacity: 0.1 !important;
+}

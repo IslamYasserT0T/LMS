@@ -16,6 +16,11 @@ public class SettingModuleMigrator : IModuleDbMigrator
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<SettingDbContext>();
+        if (context.Database.IsSqlite())
+        {
+            SqliteTestDatabaseInitializer.EnsureInitialized(context, "SettingDefinitions");
+            return;
+        }
         context.Database.Migrate();
     }
 
@@ -23,6 +28,7 @@ public class SettingModuleMigrator : IModuleDbMigrator
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<SettingDbContext>();
+        if (context.Database.IsSqlite()) return SqliteTestDatabaseInitializer.IsInitialized(context, "SettingDefinitions");
         var pendingMigrations = context.Database.GetPendingMigrations();
         return !pendingMigrations.Any();
     }

@@ -1,0 +1,66 @@
+﻿@using MudBlazor
+@inject NavigationManager NavManager
+
+<MudPaper Class="pa-4" Style="direction: rtl;box-shadow: 0px 4px 13.6px 0px #0015420D;border-radius:20px">
+    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+        <MudText style="font-size:14px" Class="fw-bold">@Title</MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.ArrowBack"
+                       Color="Color.Primary"
+                       Size="Size.Small"
+                       Style="background-color: #F8FAFC; border-radius: 30%; width :30px;height:30px;box-shadow: -1px -1px 1.9px 0px #839CED26 inset;"
+                       OnClick="OnButtonClick" />
+    </MudStack>
+
+    <MudText Class="mb-5 text-muted" style="font-size:14px">@Subtitle</MudText>
+
+    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mt-4">
+        <div class="custom-progress-container">
+            <div class="custom-progress-bar"
+                 style="transform: translateX(@((100 - Value))%);">
+            </div>
+        </div>
+
+        <MudText Style="width:35px; background-color: #F8FAFC; border-radius: 50%;"
+                 Typo="Typo.subtitle2"  Color="Color.Dark">
+            @($"{Value}%")
+        </MudText>
+    </MudStack>
+</MudPaper>
+
+
+    <style>
+    .mud-tertiary-text {
+        color: #1D61C9 !important;
+        --mud-ripple-color: #1D61C9 !important;
+    }
+
+    .root.mud-palette-tertiary {
+        color: #1D61C9 !important;
+        --mud-ripple-color: #1D61C9 !important;
+    }
+    .custom-progress-container {
+        position: relative;
+        width: 100%;
+        height: 8px;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+        flex: 1;
+    }
+.custom-progress-bar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #00AA98;
+    border-radius: 4px 0 0 4px;
+    transform-origin: right;
+    transition: transform 0.5s ease-in-out;
+
+    /* Add shadows */
+    box-shadow:
+        0px 1.5px 5.9px 0px #00FF9926,       /* Drop shadow */
+        inset 0px -3px 4px 0px #00453140;    /* Inner shadow */
+}
+    </style>

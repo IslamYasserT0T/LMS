@@ -1,0 +1,126 @@
+﻿@using MudBlazor
+
+<MudStack Row="true" Spacing="2" Style="direction:rtl">
+    <!-- Time Picker -->
+    <MudTimePicker @bind-Time="SelectedTime"
+                   PickerVariant="PickerVariant.Inline"
+                   Color="Color.Primary"
+                   Rounded="false"
+                   Elevation="1"
+                   AmPm="true"
+                   Variant="Variant.Outlined"
+                   Placeholder="@Placeholder"
+                   Adornment="Adornment.Start"
+                   Style="border-radius:20px; width:250px!important ;height:40px!important;" />
+
+    <!-- AM/PM Button Group -->
+    <MudButtonGroup Variant="Variant.Filled" Style="width:100%; box-shadow:none; direction:rtl">
+        <MudButtonGroup Class="custom-am-pm-group" Style="width:100%;">
+            <!-- AM -->
+            <MudButton OnClick="@(() => SetAmPm(false))"
+                       Variant="Variant.Outlined"
+                       Class="@(!IsPM ? "active-am-pm" : "")">
+                ص
+            </MudButton>
+
+            <!-- PM -->
+            <MudButton OnClick="@(() => SetAmPm(true))"
+                       Variant="Variant.Outlined"
+                       Class="@(IsPM ? "active-am-pm" : "")">
+                م
+            </MudButton>
+        </MudButtonGroup>
+    </MudButtonGroup>
+</MudStack>
+
+@code {
+    private TimeSpan? _selectedTime;
+    private bool _isPm;
+
+    [Parameter]
+    public TimeSpan? SelectedTime
+    {
+        get => _selectedTime;
+        set
+        {
+            if (value != _selectedTime)
+            {
+                _selectedTime = value;
+                if (value.HasValue)
+                    _isPm = value.Value.Hours >= 12;
+
+                SelectedTimeChanged.InvokeAsync(value);
+            }
+        }
+    }
+
+    [Parameter]
+    public EventCallback<TimeSpan?> SelectedTimeChanged { get; set; }
+
+    [Parameter]
+    public string Placeholder { get; set; } = "اختر الوقت";
+
+    public bool IsPM
+    {
+        get => _isPm;
+        set
+        {
+            if (value != _isPm && SelectedTime.HasValue)
+            {
+                _isPm = value;
+                var hours = SelectedTime.Value.Hours;
+                var newHours = value
+                    ? (hours < 12 ? hours + 12 : hours)
+                    : (hours >= 12 ? hours - 12 : hours);
+
+                SelectedTime = new TimeSpan(newHours, SelectedTime.Value.Minutes, 0);
+            }
+        }
+    }
+
+    private void SetAmPm(bool isPm)
+    {
+        IsPM = isPm;
+    }
+}
+<style>
+    .mud-picker-timepicker-toolbar .mud-timepicker-hourminute .mud-timepicker-button {
+        font-size: 3.75rem;
+        font-weight: 300;
+        line-height: 1;
+        letter-spacing: -0.00833em -0.4998px;
+        color: white !important;
+    }
+
+  
+    .mud-picker-timepicker-toolbar .mud-timepicker-ampm .mud-timepicker-button {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.75;
+        letter-spacing: .00938em;
+        color: transparent !important;
+    }
+
+    .custom-am-pm-group {
+        border-radius: 20px;
+        padding: 4px;
+    }
+
+        .custom-am-pm-group .mud-button {
+            flex: 1;
+            height: 30px;
+            min-width: 10px;
+            border-radius: 12px !important;
+            border: 2px 2px 2px 2px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #F8FAFC;
+            background-color: #F8FAFC;
+        }
+
+            .custom-am-pm-group .mud-button.active-am-pm {
+                background-color: #E3F2FD;
+                border-color: #1D61C9; /* same as MudBlazor primary */
+                color: #1E293B;
+            }
+</style>

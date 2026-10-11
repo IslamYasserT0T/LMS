@@ -1,0 +1,90 @@
+﻿@using MudBlazor
+@inject NavigationManager NavManager
+
+<MudPaper Class="pa-4" Style="direction: rtl;box-shadow: 0px 4px 13.6px 0px #0015420D;border-radius:20px">
+    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+        <MudText style="font-size:14px" Class="fw-bold">@Title</MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.ArrowBack"
+                       Color="Color.Primary"
+                       Size="Size.Small"
+                       Style="background-color: #F8FAFC; border-radius: 30%; width :30px;height:30px;box-shadow: -1px -1px 1.9px 0px #839CED26 inset;"
+                       OnClick="OnButtonClick" />
+    </MudStack>
+
+    <div class="custom-progresss-container">
+        <div class="custom-progress-barr"
+             style="transform: translateX(@((100 - Value))%);">
+            <div class="progress-labell">
+                <b>@Value%</b>
+            </div>
+        </div>
+    </div>
+</MudPaper>
+
+<style>
+    .mud-tertiary-text {
+        color: #1D61C9 !important;
+        --mud-ripple-color: #1D61C9 !important;
+    }
+
+    .root.mud-palette-tertiary {
+        color: #1D61C9 !important;
+        --mud-ripple-color: #1D61C9 !important;
+    }
+
+    .mud-progress-linear.mud-progress-linear-color-tertiary:not(.mud-progress-linear-buffer) .mud-progress-linear-bar{
+        background-color: #1D61C9 !important;
+    }
+    .mud-progress-linear.mud-progress-linear-color-surface:not(.mud-progress-linear-buffer) .mud-progress-linear-bar{
+        background-color: #00AA98 !important;
+    }
+
+    .mud-progress-linear.mud-progress-linear-rounded .mud-progress-linear-bars{
+        background-color: #EEF0F3!important;
+    }
+
+    .custom-progresss-container {
+        position: relative;
+        width: 100%;
+        height: 36px;
+        background-color: #e0e0e0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 24px;
+        margin-bottom: 5px;
+    }
+
+    .custom-progress-barr {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #1D61C9;
+        border-radius: 10px 0 0 10px;
+        transform-origin: right;
+        transition: transform 0.5s ease-in-out;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-right: 4px;
+        color: #000;
+        box-shadow: 0px 1.5px 5.5px 0px #006FFF26, /* Drop shadow */
+        inset 0px 3px 5.7px 0px #FFFFFF40, /* Inner shadow */
+        -2.85px 0px 5.7px 0px #FFFFFF21; /* Side glow on the left */
+    }
+
+
+    .progress-labell {
+        background-color: white;
+        height: 27px;
+        width: 40px;
+        display: flex;
+        margin:5px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+</style>

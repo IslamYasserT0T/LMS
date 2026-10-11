@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,4 +23,5 @@
   </ItemGroup>
 		<Import Project="..\..\modules\SampleModule\PluginManifest.targets" />
 		<Import Project="..\..\modules\IdentityModule\PluginManifest.targets" />
+		<Import Project="..\..\modules\ReportingModule\PluginManifest.targets" />
 </Project>

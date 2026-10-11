@@ -1,5 +1,6 @@
 using LMS.Host.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using SettingModule.Contracts;
 using SettingModule.Presistence.Context;
 using SettingModule.Services;
@@ -17,16 +18,25 @@ public class ModuleManager : IModuleManager
     private readonly List<ModuleInfo> _moduleUis = new();
     private IServiceCollection? _services;
     private IConfiguration? _configuration;
+    private IHostEnvironment? _hostEnvironment;
     private List<NavMenuItem> _menuItems = new();
+    private static bool _satelliteResolverRegistered;
+    private static readonly object _resolverLock = new();
+
     ///<inheritdoc/>
     public bool Loaded { get; set; }
 
     #region Public Methods
     ///<inheritdoc/>
-    public Task LoadModules(IServiceCollection services, IConfiguration configuration)
+    public Task LoadModules(IServiceCollection services, IConfiguration configuration, IHostEnvironment? hostEnvironment = null)
     {
         _services = services;
         _configuration = configuration;
+        _hostEnvironment = hostEnvironment 
+            ?? services.FirstOrDefault(d => d.ServiceType == typeof(IHostEnvironment))?.ImplementationInstance as IHostEnvironment;
+
+        EnsureSatelliteAssemblyResolverRegistered();
+
         LoadModule();
         Loaded = true;
         return Task.CompletedTask;
@@ -151,7 +161,7 @@ public class ModuleManager : IModuleManager
     {
         var module = (IModule)Activator.CreateInstance(moduleType)!;
         
-        module.RegisterServices(_services!, _configuration!);
+        module.RegisterServices(_services!, _configuration!, _hostEnvironment);
         _modules.Add(moduleInfo);
 
         switch (true)
@@ -160,6 +170,47 @@ public class ModuleManager : IModuleManager
                 _moduleUis.Add(moduleInfo);
                 break;
         }
+    }
+
+    private static void EnsureSatelliteAssemblyResolverRegistered()
+    {
+        if (_satelliteResolverRegistered) return;
+        lock (_resolverLock)
+        {
+            if (_satelliteResolverRegistered) return;
+            AppDomain.CurrentDomain.AssemblyResolve += ResolveSatelliteAssemblies;
+            _satelliteResolverRegistered = true;
+        }
+    }
+
+    private static Assembly? ResolveSatelliteAssemblies(object? sender, ResolveEventArgs args)
+    {
+        var assemblyName = new AssemblyName(args.Name);
+        var cultureName = assemblyName.CultureName;
+        if (string.IsNullOrEmpty(cultureName))
+            return null;
+
+        var pluginsDir = Path.Combine(AppContext.BaseDirectory, "plugins");
+        if (!Directory.Exists(pluginsDir))
+            return null;
+
+        foreach (var dir in Directory.GetDirectories(pluginsDir))
+        {
+            var directCulturePath = Path.Combine(dir, cultureName, $"{assemblyName.Name}.dll");
+            if (File.Exists(directCulturePath))
+            {
+                return Assembly.LoadFrom(directCulturePath);
+            }
+
+            var lang = cultureName.Split('-')[0];
+            var langPath = Path.Combine(dir, lang, $"{assemblyName.Name}.dll");
+            if (File.Exists(langPath))
+            {
+                return Assembly.LoadFrom(langPath);
+            }
+        }
+
+        return null;
     }
 
     #endregion

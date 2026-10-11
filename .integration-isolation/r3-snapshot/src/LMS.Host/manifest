@@ -1,0 +1,59 @@
+{
+  "Modules": [
+    {
+      "ModuleName": "IdentityModule",
+      "Modules": [
+        {
+          "Name": "LMS.IdentityModule",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/IdentityModule/LMS.IdentityModule/bin/Debug/net9.0/plugins"
+        }
+      ]
+    },
+    {
+      "ModuleName": "ReportingModule",
+      "Modules": [
+        {
+          "Name": "LMS.ReportingModule",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/ReportingModule/LMS.ReportingModule/bin/Debug/net9.0/plugins"
+        }
+      ]
+    },
+    {
+      "ModuleName": "SampleModule",
+      "Modules": [
+        {
+          "Name": "SampleModule.Domain",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.Domain/bin/Debug/net9.0/plugins"
+        },
+        {
+          "Name": "SampleModule.API",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.API/bin/Debug/net9.0/plugins"
+        },
+        {
+          "Name": "SampleModule.Application",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.Application/bin/Debug/net9.0/plugins"
+        },
+        {
+          "Name": "SampleModule.Core",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.Core/bin/Debug/net9.0/plugins"
+        },
+        {
+          "Name": "SampleModule.Infrastructure",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.Infrastructure/bin/Debug/net9.0/plugins"
+        },
+        {
+          "Name": "SampleModule.Ui",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.Ui/bin/Debug/net9.0/plugins"
+        }
+      ]
+    }
+  ]
+}

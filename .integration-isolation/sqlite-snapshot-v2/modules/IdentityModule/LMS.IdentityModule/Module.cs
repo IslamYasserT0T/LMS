@@ -1,0 +1,24 @@
+using IY.Auth.AspNetCore.Endpoints;
+using LMS.IdentityModule.Controllers;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Shared.Core.Contracts;
+
+namespace LMS.IdentityModule;
+
+public class Module : IModule
+{
+    public string Name => "LMS.IdentityModule";
+    public string Description => "LMS Identity Module integrating IY.Auth";
+    public Type ModuleType => typeof(IModule);
+    public bool IsEnabled => true;
+
+    public void RegisterServices(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddLMSIdentityModule(configuration);
+
+        // Register AccountController assembly as an MVC application part so the host discovers it.
+        services.AddControllers().AddApplicationPart(typeof(AccountController).Assembly);
+    }
+}

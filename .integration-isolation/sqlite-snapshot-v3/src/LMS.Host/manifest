@@ -1,0 +1,59 @@
+{
+  "Modules": [
+    {
+      "ModuleName": "IdentityModule",
+      "Modules": [
+        {
+          "Name": "LMS.IdentityModule",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/IdentityModule/LMS.IdentityModule/bin/Release/net9.0/plugins"
+        }
+      ]
+    },
+    {
+      "ModuleName": "ReportingModule",
+      "Modules": [
+        {
+          "Name": "LMS.ReportingModule",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/ReportingModule/LMS.ReportingModule/bin/Release/net9.0/plugins"
+        }
+      ]
+    },
+    {
+      "ModuleName": "SampleModule",
+      "Modules": [
+        {
+          "Name": "SampleModule.Domain",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.Domain/bin/Release/net9.0/plugins"
+        },
+        {
+          "Name": "SampleModule.API",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.API/bin/Release/net9.0/plugins"
+        },
+        {
+          "Name": "SampleModule.Application",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.Application/bin/Release/net9.0/plugins"
+        },
+        {
+          "Name": "SampleModule.Core",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.Core/bin/Release/net9.0/plugins"
+        },
+        {
+          "Name": "SampleModule.Infrastructure",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.Infrastructure/bin/Release/net9.0/plugins"
+        },
+        {
+          "Name": "SampleModule.Ui",
+          "Version": "1.0.0",
+          "CopyFolder": "modules/SampleModule/SampleModule.Ui/bin/Release/net9.0/plugins"
+        }
+      ]
+    }
+  ]
+}

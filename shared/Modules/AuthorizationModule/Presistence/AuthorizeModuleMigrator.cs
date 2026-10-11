@@ -16,6 +16,11 @@ public class AuthorizeModuleMigrator : IModuleDbMigrator
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AuthorizationDbContext>();
+        if (context.Database.IsSqlite())
+        {
+            SqliteTestDatabaseInitializer.EnsureInitialized(context, "casbin_rule");
+            return;
+        }
         context.Database.Migrate();
     }
 
@@ -23,6 +28,7 @@ public class AuthorizeModuleMigrator : IModuleDbMigrator
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AuthorizationDbContext>();
+        if (context.Database.IsSqlite()) return SqliteTestDatabaseInitializer.IsInitialized(context, "casbin_rule");
         var pendingMigrations = context.Database.GetPendingMigrations();
         return !pendingMigrations.Any();
     }

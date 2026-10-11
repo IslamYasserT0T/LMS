@@ -1,0 +1,237 @@
+﻿@page "/dashboard"
+@using MudBlazor
+@using Shared.Ui.Areas.DashboardComponent
+@using Shared.Ui.Areas.FieldsComponent
+@using Shared.Ui.Entities
+
+<MudContainer class="p-0 m-0" MaxWidth="MaxWidth.False">
+
+    <!-- Stat Cards -->
+    <MudGrid Class="mb-3" Justify="Justify.SpaceBetween">
+        @foreach (var card in StatCards)
+        {
+            <MudItem xs="12" sm="6" md="4" lg="2">
+                <StatCardComponent Title="@card.Title"
+                                   Value="@card.Value"
+                                   ImageUrl="@card.ImageUrl"
+                                   ChipLabel="@card.ChipLabel"
+                                   ChipIcon="@card.ChipIcon"
+                                   ChipColor="@card.ChipColor"
+                                   TextColor="@card.TextColor" />
+            </MudItem>
+        }
+    </MudGrid>
+
+    <!-- Image + Heatmap -->
+    <MudGrid Spacing="5">
+        <MudItem xs="12" md="6" lg="3">
+                <ImageProgressComponent ImageUrl="assets/images/default.png"
+                                        AltText="Card image"
+                                        Title="الفئة"
+                                        RightText="متوسط"
+                                        RightImageUrl="assets/images/mediumsvg.svg"
+                                        Subtitle="أسم الدورة"
+                                        Description="هذه المرحله تحتوي علي بعض الاشياء"
+                                        Value="70"
+                                        Remaining="30"
+                                        ButtonText="اكمل الدورة"
+                                        OnButtonClick="@(() => Console.WriteLine("Button clicked!"))" />
+        </MudItem>
+
+        <MudItem xs="12" md="6" lg="9">
+            <MudPaper Elevation="0" Class="pa-3 pb-1 d-flex flex-column h-100" Style="border-radius:20px">
+
+                <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-2">
+                    <div style="border-radius: 20px; padding: 4px 12px;" class="d-flex align-items-center gap-2">
+                        <MudIconButton Style="background-color: #F8FAFC; border-radius: 30%; width :30px;height:30px;box-shadow: -1px -1px 1.9px 0px #839CED26 inset;"
+                                       Icon="@Icons.Material.Outlined.ArrowBack" Color="Color.Primary" />
+                        <MudIconButton Style="background-color: #F8FAFC; border-radius: 30%; width :30px;height:30px;box-shadow: -1px -1px 1.9px 0px #839CED26 inset;"
+                                       Icon="@Icons.Material.Outlined.CalendarMonth" Color="Color.Primary" />
+                                 <MudButton Variant="Variant.Filled"
+                                   Color="Color.Default"
+                                   Class="rounded-4"
+                                   Style="background: #FFFFFF; border: 1px solid #EEF0F3; font-size:14px;box-shadow: -1px -1px 1.9px 0px #839CED26 inset;"
+                                   >
+                            استخدام ثانوي
+                        </MudButton>
+                    </div>
+                    <MudText Style="font-size:14px" Class="fw-bold">احصائيات المدن</MudText>
+                </MudStack>
+
+                <HeatMapComponent Incidents="@incidents" />
+
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Radial + Progress Bars -->
+    <MudGrid Class="mb-5">
+       <MudItem xs="12" lg="3">
+            <MudPaper Elevation="0" Class="pa-4 mt-5 d-flex flex-column" style="box-shadow: 0px 4px 13.6px 0px #0015420D;border-radius:20px;">
+        
+        <!-- Top Row: Icon + Title -->
+        <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-2">
+            <MudIconButton 
+                Style="background-color: #F8FAFC; 
+                       border-radius: 30%; 
+                       width: 30px; 
+                       height: 30px; 
+                       box-shadow: -1px -1px 1.9px 0px #839CED26 inset;"
+                Icon="@Icons.Material.Filled.MoreVert" />
+            <MudText Typo="Typo.subtitle2" Class="fw-bold">الرسم البياني الثاني</MudText>
+        </MudStack>
+
+        <!-- Subtitle -->
+        <MudText Typo="Typo.caption" Class="text-muted mb-5 mt-3 text-end">
+            العنوان الفرعي يشرح بعض التفاصيل
+        </MudText>
+
+        <!-- Radar Chart Component -->
+        <RadarComponent />
+
+
+        <!-- Buttons Row -->
+        <MudStack class="mt-3"  Row="true" Justify="Justify.SpaceAround" Spacing="3">
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="rounded-4" Style="border: 1px solid #EEF0F3; box-shadow: -1px -1px 1.9px 0px #839CED26 inset; font-size:14px; height:40px">اول</MudButton>
+
+                    <MudButton Variant="Variant.Outlined" Class="rounded-4" Style="background: #FFFFFF; border: 1px solid #EEF0F3; box-shadow: -1px -1px 1.9px 0px #839CED26 inset;font-size:14px;height:40px">ثاني </MudButton>
+                     
+                    <MudButton Variant="Variant.Outlined" Class="rounded-4" Style="background: #FFFFFF; border: 1px solid #EEF0F3; box-shadow: -1px -1px 1.9px 0px #839CED26 inset;font-size:14px;height:40px">ثالث </MudButton>
+
+        </MudStack>
+
+    </MudPaper>
+</MudItem>
+
+        <MudItem xs="12" lg="9" Class="mt-5">
+            <MudGrid Spacing="3">
+                <MudItem xs="12" sm="6">
+                    <ProgressBarWithoutDescriptionComponent Title="عنوان مختصر"
+                                                            Value="40"
+                                                            Size="Size.Large"
+                                                            Color="Color.Tertiary"
+                                                            OnButtonClick="@(() => Console.WriteLine("Clicked!"))" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <ProgressBarWithDescriptionComponent Title="عنوان مختصر"
+                                                         Subtitle="العنوان الفرعي يشرح بعض التفاصيل"
+                                                         Value="21"
+                                                         Size="Size.Small"
+                                                         Color="Color.Surface"
+                                                         OnButtonClick="@(() => Console.WriteLine("Clicked!"))" />
+                </MudItem>
+            </MudGrid>
+
+            <MudPaper Elevation="0" Style="border-radius:20px;box-shadow: 0px 4px 13.6px 0px #0015420D;" Class="mud-paper mud-elevation-0 pa-5 d-flex flex-column mt-5 h-50">
+                <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="mb-2">
+                    <MudIconButton Style="background-color: #F8FAFC; border-radius: 30%; width: 30px; height: 30px; box-shadow: -1px -1px 1.9px 0px #839CED26 inset;"
+                                   Icon="@Icons.Material.Outlined.ArrowBack"
+                                   Color="Color.Primary" />
+                    <MudText Style="font-size: 14px;" Class="fw-bold text-end flex-grow-1">عنوان مختصر</MudText>
+                </MudStack>
+
+                <MudText Style="font-size: 14px;" Class="text-muted text-end mb-5">العنوان الفرعي يشرح بعض التفاصيل (تفاصيل)</MudText>
+
+                <MudStack Class="mb-5 pb-5" Row="true" Justify="Justify.SpaceBetween">
+                    @foreach (var day in WeekDays)
+                    {
+                        <MudStack AlignItems="AlignItems.Center" Class="text-center">
+                            <RadialComponent Title="@day.Label"
+                                             StrokeWidth="4"
+                                             ActualValue="@day.Value"
+                                             MaxValue="10000"
+                                             Color="Color.Tertiary"
+                                             Size="Size.Large" />
+                        </MudStack>
+                    }
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Spacer between radial section and table -->
+        <MudItem xs="12">
+            <!-- Tabs + Button container -->
+            <MudPaper Class="px-5 py-2 mb-2" Style="background: transparent; box-shadow: none;">
+
+             <MudStack Row="true" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center">
+        
+        <!-- Button -->
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Inherit"
+                   StartIcon="@Icons.Material.Filled.Add"
+                   Class="ms-2"
+                   Style="background-color: transparent;">
+            إنشاء أخرى
+        </MudButton>
+
+        <!-- Tabs -->
+        <MudTabs Rounded="true"
+                 TabPanelClass="px-2"
+                 TabHeaderClass="custom-tab-header"
+                 Class="mud-tabs-transparent custom-tabs">
+            <MudTabPanel Text="الكل" />
+            <MudTabPanel Text="(00) جديد" />
+             <MudTabPanel Text="(00) مغلق" />
+             <MudTabPanel Text="(00) مكتمل" />
+        </MudTabs>
+    </MudStack>
+</MudPaper>
+
+            <!-- Table container -->
+            <MudPaper Class="p-4" Style="background:white; border-radius:20px;box-shadow: 0px 4px 13.6px 0px #0015420D;
+">
+                <!-- TableComponent here -->
+                <TableComponent TItem="Table"
+                                Items="@tables"
+                                Title="جدول البيانات"
+                                SelectedItems="@selectedTables"
+                                PageSize="7">
+
+                    <HeaderTemplate>
+                        <MudTh>الاسم</MudTh>
+                        <MudTh>التاريح</MudTh>
+                        <MudTh>التصنيف</MudTh>
+                        <MudTh>النوع</MudTh>
+                        <MudTh>موجود</MudTh>
+                        <MudTh>وصف</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderTemplate>
+
+                    <RowTemplate Context="item">
+                        <MudTd>@item.Name</MudTd>
+                        <MudTd>@item.Date</MudTd>
+                        <MudTd>
+                            <MudChip T="string" Color="Color.Transparent" Variant="Variant.Outlined">
+                                @item.Category
+                            </MudChip>
+                        </MudTd>
+                        <MudTd>
+                            <MudChip T="string"
+                                     Color="Color.Transparent"
+                                     Variant="Variant.Filled"
+                                     Style="@($"background-color: {GetChipBackgroundColor(item.Type)}; color: {GetChipTextColor(item.Type)}; border: none;")">
+                                @item.Type
+                            </MudChip>
+                        </MudTd>
+                        <MudTd>
+                                <SecondarySwitchComponent Read="true" @bind-Value="item.Tick" />
+
+                        </MudTd>
+                        <MudTd>@item.Disc</MudTd>
+                        <MudTd Class="action-cell">
+                            <div class="action-menu-wrapper">
+                                <MudMenu Icon="@Icons.Material.Filled.MoreVert" Dense="true">
+                                    <MudMenuItem>تعديل</MudMenuItem>
+                                    <MudMenuItem>حذف</MudMenuItem>
+                                </MudMenu>
+                            </div>
+                        </MudTd>
+                    </RowTemplate>
+                </TableComponent>
+            </MudPaper>
+
+        </MudItem>
+
+    </MudGrid>
+</MudContainer>
+

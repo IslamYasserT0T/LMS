@@ -1,0 +1,31 @@
+# Package Artifact Hashes
+
+SHA-256 was calculated with `Get-FileHash -Algorithm SHA256`; no package was repacked.
+
+## IY.Auth 0.2.0 (`D:\IYAUTH\IY.AUTH\.audit-nuget-cache`)
+
+| Package | Current SHA-256 | Recovery-manifest comparison |
+|---|---|---|
+| Application | `338ECC9CF25018148BBA853FEEC0ED9DF8AB8EDAE83A891AF1E3298EFA14939A` | Match |
+| AspNetCore | `414EBB1E158FA445E0ABA699525017BF568A1A0AC16540E29B3F4DC617B047FB` | Match |
+| Contracts | `3E91B4A6AD85FCC8FA3DCF3B8F1293AFDD5E0A23C5125CF3C6AEB427231A6865` | Match |
+| Domain | `C4A21DF5C1B7F0E55223FB822627A6F0FD62A83342F4353B9F6B7DC0FA2D2FE5` | Match |
+| EntityFrameworkCore | `0ED925C7000371C5E83242DA0FB99B0ABCA8A7A0BEB9B97BA5314FBBDF0C4D98` | Match |
+| OpenIddict | `DD797EC46849859D5445A5E656E0C0F3BD588A66034D05784341600C54308AF2` | Match |
+| UI | `214124F94A4B03A525168E42F9E6516DE4EBF26D46320D6B6005313DF64BB960` | **Mismatch**: recovery record specifies `497FCA2B4D89C592199A09AAA52D7CFA1C1160B13F518A9F684BCE2B6AB4F16C` |
+
+Nuspec inspection shows all seven packages have only `net9.0` dependency groups. Production Microsoft.Extensions dependencies in the package nuspecs are 9.0.2; no Microsoft.Extensions 10.x dependency was observed. This does not repair the UI artifact-chain mismatch.
+
+## IY.Reporting 1.0.1 (`D:\IY.Reporting\artifacts\audit-1.0.1`)
+
+| Package | SHA-256 |
+|---|---|
+| IY.Reporting | `6A7816826396F7D13425DC0909763C8B018B70D34E35FFDB5B6D75E50B9EFF26` |
+| AspNetCore | `6F7E5A22B1308D2BD193AEBC02A4E8AA32F3ED31475BBF8A18E56EB747C7695F` |
+| Blazor | `B8845B17655EC86B67203A6F9EB1CA73DA2D477391FF0CBBF7E3E589D2DFB65C` |
+| EntityFrameworkCore | `5164F7F97D7B15DDA08AEFE0451C52274584C2EC34705344A576B8E8671A2C38` |
+| Export.Excel | `89A97F2953DFC329C6DD0901FD22AAB2E8326DDB0CF6573744B4BBEDCF5D9658` |
+| Export.Pdf | `8BD4F477EDA1014125A5B581725F30BEE58D42EB29469ADF6D8B282AF901FA4C` |
+| SqlKata | `3E66E2750A6E01277D0CAB82EAC3118F89409F6826FCE8548069C84733669753` |
+
+These hashes identify files only. There is no signed/recovery manifest in the inspected records linking them to the current dirty Reporting checkout or a committed release revision.

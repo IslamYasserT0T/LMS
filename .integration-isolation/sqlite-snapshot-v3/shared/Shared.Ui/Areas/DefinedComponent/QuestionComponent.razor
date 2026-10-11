@@ -1,0 +1,19 @@
+﻿@using MudBlazor
+
+<MudPaper Class="pa-3 rounded-2 mb-2"  Elevation="1">
+    <MudStack Row="true" Style="direction: rtl;" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+        <MudText Typo="Typo.subtitle1" Class="fw-bold">@Question</MudText>
+        <MudIconButton Icon="@(_expanded? Icons.Material.Filled.Remove : Icons.Material.Filled.Add)" OnClick="Toggle" />
+    </MudStack>
+
+    <MudCollapse Style="direction: rtl;"  Expanded="_expanded">
+        <MudText Typo="Typo.body2" Class="mt-2">@Answer</MudText>
+    </MudCollapse>
+</MudPaper>
+
+@code {
+ 
+}
+
+
+

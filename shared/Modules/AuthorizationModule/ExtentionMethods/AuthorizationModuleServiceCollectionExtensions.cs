@@ -21,7 +21,13 @@ public static class AuthorizationModuleServiceCollectionExtensions
     public static IServiceCollection AddAuthorizationModule(this IServiceCollection services , IConfiguration configuration)
     {
         services.AddDbContext<AuthorizationDbContext>(options =>
-          options.UseNpgsql(configuration.GetConnectionString("Default")));
+        {
+            var connectionString = configuration.GetConnectionString("Default");
+            if (string.Equals(configuration["IntegrationTest:DatabaseProvider"], "Sqlite", StringComparison.OrdinalIgnoreCase))
+                options.UseSqlite(connectionString);
+            else
+                options.UseNpgsql(connectionString);
+        });
 
         services.AddScoped<IAdapter>(provider =>
         {

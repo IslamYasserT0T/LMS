@@ -20,7 +20,13 @@ public static class SampleModuleServiceCollections
     public static IServiceCollection AddInfrastructureSampleModuleServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<SampleModuleDBContext>(options =>
-      options.UseNpgsql(configuration.GetConnectionString("Default")));
+        {
+            var connectionString = configuration.GetConnectionString("Default");
+            if (string.Equals(configuration["IntegrationTest:DatabaseProvider"], "Sqlite", StringComparison.OrdinalIgnoreCase))
+                options.UseSqlite(connectionString);
+            else
+                options.UseNpgsql(connectionString);
+        });
         services.AddScoped<IBaseDbContext, SampleModuleDBContext>();
         services.AddScoped<ISampleRepository, SampleRepository>();
         services.AddScoped<IModuleDbMigrator, SampleModuleMigrator>();

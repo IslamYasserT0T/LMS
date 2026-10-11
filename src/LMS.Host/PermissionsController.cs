@@ -1,6 +1,7 @@
 using Casbin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LMS.Host;
 
@@ -16,24 +17,43 @@ public class PermissionsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = "Identity.Application")]
     public IActionResult AddPremission()
     {
-        _enforcer.AddPermissionForUser("alice", "domain1", "read");
+        if (!TryGetHumanSubject(out var subject))
+            return Forbid();
+
+        _enforcer.AddPermissionForUser(subject, "domain1", "read");
         return Ok();
     }
 
     [HttpGet]
+    [Authorize(AuthenticationSchemes = "Identity.Application")]
     public IActionResult GetPermissions()
     {
-        var permissions = _enforcer.GetPermissionsForUser("alice");
+        if (!TryGetHumanSubject(out var subject))
+            return Forbid();
+
+        var permissions = _enforcer.GetPermissionsForUser(subject);
         return Ok(permissions);
     }
 
     [HttpGet("CheckPermission")]
+    [Authorize(AuthenticationSchemes = "Identity.Application")]
     public IActionResult CheckPermission()
     {
-        var hasPermission = _enforcer.HasPermissionForUser("alice", "domain1", "read");
+        if (!TryGetHumanSubject(out var subject))
+            return Forbid();
+
+        var hasPermission = _enforcer.HasPermissionForUser(subject, "domain1", "read");
         return Ok(hasPermission);
+    }
+
+    [HttpGet("cookie-protected")]
+    [Authorize(AuthenticationSchemes = "Identity.Application")]
+    public IActionResult CookieProtected()
+    {
+        return Ok();
     }
 
     [HttpGet("test-protected")]
@@ -41,5 +61,16 @@ public class PermissionsController : ControllerBase
     public IActionResult TestProtected()
     {
         return Ok("authenticated");
+    }
+
+    private bool TryGetHumanSubject(out string subject)
+    {
+        subject = string.Empty;
+        var value = User.FindFirstValue("sub") ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(value, out var userId))
+            return false;
+
+        subject = userId.ToString("D");
+        return true;
     }
 }

@@ -1,0 +1,80 @@
+﻿@using MudBlazor
+
+<MudPaper Class="overflow-hidden p-0 d-flex flex-column" Style="height: 100%;box-shadow: none; border-radius:20px" Elevation="1">
+
+    <MudImage src="@ImageUrl"
+              class="card-image"
+              alt="@AltText"
+              Style="width: 100%; min-height:60%; object-fit: cover;" />
+
+    <div class="p-4 d-flex flex-column flex-grow-1 gap-1">
+
+        <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                <MudImage src="@RightImageUrl" alt="icon" Width="24" Height="24" Style="border-radius: 4px;" />
+                <MudText style="color:#9B3919" class="fw-bold mx-2" Typo="Typo.overline">@RightText</MudText>
+            </MudStack>
+            <MudText Style="background-color: #F8FAFC; border-radius:8px;"
+            Typo="Typo.subtitle2">@Title</MudText>
+        </MudStack>
+
+        <MudText Typo="Typo.subtitle2" Class="fw-bold" Style="text-align: right;">
+            @Subtitle
+        </MudText>
+
+        <MudText Typo="Typo.overline" Style="text-align: right;">
+            @Description
+        </MudText>
+
+        <MudText Typo="Typo.overline" Style="text-align: right; color:grey">
+            مكتمل ب نسبة @Value متبقي @Remaining
+        </MudText>
+
+        <!-- Row 5: Progress Bar -->
+        <div class="customm-progress-container mb-2">
+            <div class="customm-progress-bar"
+                 style="transform: translateX(@((100 - Value))%);">
+            </div>
+        </div>
+
+        <!-- Row 6: Button Aligned Bottom Right -->
+        <MudStack Row="true" Justify="Justify.FlexStart">
+            <MudButton Variant="Variant.Filled"
+                       OnClick="@OnButtonClick"
+                       Class="rounded-4"
+                       Style="background-color:#192A56; color:white; box-shadow: 3px 3px 7.7px 0px #3568C766 inset, 0px -5px 4px 0px #00063026 inset;">
+                @ButtonText
+            </MudButton>
+        </MudStack>
+    </div>
+</MudPaper>
+
+<style>
+    .card-image {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .customm-progress-container {
+        position: relative;
+        width: 100%;
+        height: 8px;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .customm-progress-bar {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #00AA98;
+        border-radius: 4px 0 0 4px;
+        transform-origin: right;
+        transition: transform 0.5s ease-in-out;
+        box-shadow: 0px 1.5px 5.9px 0px #00FF9926, /* Drop shadow */
+        inset 0px -3px 4px 0px #00453140; /* Inner shadow */
+    }
+</style>

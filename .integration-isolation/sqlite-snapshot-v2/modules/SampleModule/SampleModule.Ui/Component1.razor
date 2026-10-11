@@ -1,0 +1,110 @@
+﻿@page "/Component/razor"
+@using MudBlazor
+@using Shared.Ui.Areas.MyFeature.Pages
+<div class="my-component">
+    This component is defined in the <strong>Product.Module.Ui</strong> library.
+</div>
+<DataGrid TItem="EmployeeDto"
+ServerData="ServerReload"
+Title="Employees"
+OnSearch="HandleSearch"
+CreateCallback="CreateCustomer"
+>
+
+    <Columns>
+
+        <PropertyColumn T="EmployeeDto" TProperty="string" Property="@(x => x.FirstName)" Title="First Name" />
+        <PropertyColumn T="EmployeeDto" TProperty="string" Property="@(x => x.LastName)" Title="Last Name" />
+        <PropertyColumn T="EmployeeDto" TProperty="string" Property="@(x => x.WorkPhone)" Title="Work Phone" />
+        <PropertyColumn T="EmployeeDto" TProperty="string" Property="@(x => x.Email)" Title="Email" />
+        <PropertyColumn T="EmployeeDto" TProperty="string" Property="@(x => x.Status)" Title="Status" />
+
+    </Columns>
+
+    <ActionsTemplate Context="employee">
+        <MudMenu Icon="@Icons.Material.Filled.MoreVert" Color="Color.Primary" Size="Size.Small">
+            <MudMenuItem OnClick="@(() => ViewEmoloyee(employee.Id))">
+                <MudIcon Icon="@Icons.Material.Filled.Visibility" /> View
+            </MudMenuItem>
+            <MudMenuItem OnClick="@(() => EditEmoloyee(employee.Id))">
+                <MudIcon Icon="@Icons.Material.Filled.Edit" /> Edit
+            </MudMenuItem>
+            <MudMenuItem OnClick="@(() => DeleteEmoloyee(employee.Id))">
+                <MudIcon Icon="@Icons.Material.Filled.Delete"/> Delete
+            </MudMenuItem>
+        </MudMenu>
+    </ActionsTemplate>
+</DataGrid>
+
+@code{
+
+    private string _search = string.Empty;
+    // Sample data - replace with your actual data source
+    private List<EmployeeDto> _allEmployees = new()
+        {
+            new EmployeeDto { Id = 1, FirstName = "John", LastName = "Doe", WorkPhone = "123456", Email = "john@example.com", Status = "Active" },
+            new EmployeeDto { Id = 2, FirstName = "Jane", LastName = "Smith", WorkPhone = "654321", Email = "jane@example.com", Status = "Inactive" },
+        };
+
+    private Task<GridData<EmployeeDto>> ServerReload(GridState<EmployeeDto> state)
+    {
+        var filtered = string.IsNullOrWhiteSpace(_search)
+            ? _allEmployees
+            : _allEmployees.FindAll(e =>
+                (e.FirstName?.Contains(_search, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (e.LastName?.Contains(_search, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (e.Email?.Contains(_search, StringComparison.OrdinalIgnoreCase) ?? false));
+
+        var pagedData = filtered
+            .Skip(state.Page * state.PageSize)
+            .Take(state.PageSize)
+            .ToList();
+            
+        return Task.FromResult(new GridData<EmployeeDto>
+        {
+            Items = pagedData,
+            TotalItems = filtered.Count
+        });
+    }
+    private void OnClick()
+    {
+        
+    }
+
+    private Task HandleSearch(string value)
+    {
+        _search = value;
+        return Task.CompletedTask;
+    }
+
+    private void CreateCustomer()
+    {
+        // Open dialog or redirect to create page
+        Console.WriteLine("Create new employee");
+    }
+
+    private void ViewEmoloyee(int id)
+    {
+        Console.WriteLine($"View employee with ID {id}");
+    }
+
+    private void EditEmoloyee(int id)
+    {
+        Console.WriteLine($"Edit employee with ID {id}");
+    }
+
+    private void DeleteEmoloyee(int id)
+    {
+        Console.WriteLine($"Delete employee with ID {id}");
+    }
+
+    public class EmployeeDto
+    {
+        public int Id { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? WorkPhone { get; set; }
+        public string? Email { get; set; }
+        public string? Status { get; set; }
+    }
+}

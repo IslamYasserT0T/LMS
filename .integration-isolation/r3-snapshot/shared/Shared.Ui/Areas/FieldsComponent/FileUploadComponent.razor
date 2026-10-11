@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using MudBlazor
+
+<MudPaper Class="upload-area" Elevation="0">
+    <div class="upload-icon">
+        <MudIcon Icon="@Icons.Material.Filled.CloudUpload" />
+    </div>
+
+    <MudText Typo="Typo.subtitle1" Class="text-secondary">
+        اضغط أو قُم بالسحب لتحميل<br />صورة أو فيديو
+    </MudText>
+
+    <InputFile OnChange="HandleSelected" accept="image/*" class="input-file-hidden" />
+
+    @if (previewUrl != null)
+    {
+        <MudImage Src="@previewUrl" Alt="Preview" Width="200" Class="mt-3" Style="border-radius: 8px;" />
+    }
+</MudPaper>
+
+
+@code {
+    private IBrowserFile file;
+    private string previewUrl;
+
+    private async Task HandleSelected(InputFileChangeEventArgs e)
+    {
+        file = e.File;
+
+        // Resize if needed
+        var resizedImage = await file.RequestImageFileAsync("image/png", 400, 400);
+
+        var buffer = new byte[resizedImage.Size];
+        await resizedImage.OpenReadStream().ReadAsync(buffer);
+
+        previewUrl = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+
+        // You can now store the buffer to send to a server or save locally
+    }
+}
+<style>
+    .upload-area {
+        border: 2px dashed #1976d2;
+        border-radius: 16px;
+        background-color: #EEF0F3;
+        padding: 60px 40px;
+        text-align: center;
+        position: relative;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+        .upload-area:hover {
+            background-color: #e1eafc;
+        }
+
+    .upload-icon {
+        background-color: white;
+        padding: 14px;
+        border-radius: 16px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        height: 56px;
+        font-size: 26px;
+        color: #192A56;
+        margin-bottom: 16px;
+    }
+
+    .text-secondary {
+        color: #555;
+        font-size: 18px;
+        line-height: 1.6;
+        font-weight: 500;
+        white-space: pre-line;
+    }
+
+    .input-file-hidden {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+    }
+
+</style>

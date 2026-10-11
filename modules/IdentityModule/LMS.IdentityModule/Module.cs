@@ -1,3 +1,6 @@
+using IY.Auth.AspNetCore.Endpoints;
+using LMS.IdentityModule.Controllers;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Core.Contracts;
@@ -14,5 +17,8 @@ public class Module : IModule
     public void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddLMSIdentityModule(configuration);
+
+        // Register AccountController assembly as an MVC application part so the host discovers it.
+        services.AddControllers().AddApplicationPart(typeof(AccountController).Assembly);
     }
 }

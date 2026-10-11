@@ -1,0 +1,179 @@
+﻿@page "/inputs"
+@using Blazorise
+@using Blazorise.RichTextEdit
+@using Microsoft.JSInterop
+@using MudBlazor
+@using Shared.Ui.Areas.FieldsComponent
+@inject IJSRuntime JS
+
+<MudContainer MaxWidth="MaxWidth.False"  dir="rtl">
+
+    <!-- User Data Section -->
+    <MudPaper Class="p-4 mb-5" Style="background-color:white; border-radius:12px;">
+        <MudText Typo="Typo.h6" Class="mb-4 fw-bold text-end">بيانات المستخدم</MudText>
+
+        <MudGrid GutterSize="3">
+            <MudItem xs="12" sm="6" md="3">
+                <LabelWithIcon Label="اسم المستخدم" LabelIcon="@Icons.Material.Filled.Person">
+                    <MudTextField T="string"
+                                  @bind-Value="username"
+                                  Placeholder="أدخل اسم المستخدم"
+                                  Variant="Variant.Outlined"
+                                  Adornment="Adornment.Start"
+                                  Required="true"
+                                  RequiredError="⚠ هذا الحقل مطلوب"
+                                  AdornmentIcon="@Icons.Material.Filled.Person"
+                                  Style="border-radius:20px" />
+                </LabelWithIcon>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="3">
+                <LabelWithIcon Label="الرقم" LabelIcon="@Icons.Material.Filled.Calculate">
+                    <MudNumericField T="decimal"
+                                     @bind-Value="amount"
+                                     Placeholder="أدخل الرقم"
+                                     Variant="Variant.Outlined"
+                                     Adornment="Adornment.Start"
+                                     HideSpinButtons="true"
+                                     AdornmentIcon="@Icons.Material.Filled.AttachMoney"
+                                     Style="border-radius:20px" />
+                </LabelWithIcon>
+            </MudItem>
+
+ <MudItem xs="12" sm="6" md="3">
+    <LabelWithIcon Label="اختر الولاية" LabelIcon="@Icons.Material.Filled.LocationOn">
+        <CustomAutoCompleteComponent @bind-Value="selectedState"
+                            Placeholder="ابحث هنا..."
+                            Icon="@Icons.Material.Filled.LocationOn"
+                            SearchFunc="SearchStatesAsync" />
+    </LabelWithIcon>
+</MudItem>
+
+            <MudItem xs="12" sm="6" md="3">
+                <LabelWithIcon Label="اختر التاريخ" LabelIcon="@Icons.Material.Filled.DateRange">
+                    <MudDateRangePicker @bind-DateRange="_dateRange"
+                                        AdornmentIcon="@Icons.Material.Filled.DateRange"
+                                        Adornment="Adornment.Start"
+                                        DateFormat="dddd, dd MMMM, yyyy"
+                                        TitleDateFormat="MMMM dd"
+                                        Margin="MudBlazor.Margin.Dense"
+                                        Variant="Variant.Outlined"
+                                        Style="border-radius:20px" />
+                </LabelWithIcon>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    <!-- Rich Text Editor Section -->
+    <MudPaper Class="p-4 mb-5" Style="background-color:white; border-radius:12px;">
+        <MudGrid>
+            <!-- Rich Text Editor Column -->
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6" Class="mb-3 fw-bold text-end">محرر النصوص</MudText>
+                <CustomRichTextComponent></CustomRichTextComponent>
+            </MudItem>
+
+            <!-- File Upload Column -->
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6" Class="mb-3 fw-bold text-end">رفع الملفات</MudText>
+                <FileUploadComponent />
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+
+       
+        <MudPaper Class="p-4 mt-5" Style="background-color:white; border-radius:12px;">
+        <MudText Typo="Typo.h6" Class="mb-4 fw-bold text-end">الاختيارات</MudText>
+
+   <MudStack Row="true" Class="mt-5" Spacing="3">
+
+    <!-- استخدام رئيسي -->
+    <CustomSelectorComponent CustomStyle="background-color:#192A56; color:white; box-shadow: 3px 3px 7.7px 0px #3568C766 inset, 0px -5px 4px 0px #00063026 inset;"
+                             Label="للإستخدام الرئيسي"
+                             Icon="@Icons.Material.Filled.AddCircle"
+                             >
+        <MudStack Spacing="1">
+                <MudRadioGroup T="int" @bind-SelectedOption="SelectedOption">
+                <MudRadio Value="1" Color="MudBlazor.Color.Primary" UncheckedColor="MudBlazor.Color.Default">Primary</MudRadio>
+                <MudRadio Value="2" Color="MudBlazor.Color.Secondary" UncheckedColor="MudBlazor.Color.Default">Secondary</MudRadio>
+            </MudRadioGroup>
+        </MudStack>
+    </CustomSelectorComponent>
+
+    <!-- استخدام فرعي -->
+    <CustomSelectorComponent CustomStyle="background: #FFFFFF; border: 1px solid #EEF0F3; box-shadow: -1px -1px 1.9px 0px #839CED26 inset;"
+                             Label="استخدام فرعي"
+                             Icon="@Icons.Material.Filled.AddCircle"
+                             >
+        <MudStack Spacing="1">
+
+             <PrimarySwitchComponent @bind-Value="Basic_Switch2" />
+
+            <SecondarySwitchComponent @bind-Value="Basic_Switch3" />
+        </MudStack>
+    </CustomSelectorComponent>
+
+    <!-- استخدام ثالث -->
+    <CustomSelectorComponent Label="استخدام ثالث"
+                             Icon="@Icons.Material.Filled.AddCircle"
+                             >
+        <MudStack Spacing="1">
+            <MudCheckBox T="bool" @bind-Checked="Label_CheckBox2" Label="Primary" Color="MudBlazor.Color.Primary" />
+            <MudCheckBox T="bool" @bind-Checked="Label_CheckBox3" Label="Secondary" Color="MudBlazor.Color.Secondary" />
+        </MudStack>
+    </CustomSelectorComponent>
+
+</MudStack>
+    </MudPaper>
+    <MudPaper Class="p-4 mb-5" Style="background-color:white; border-radius:12px;">
+        <MudText Typo="Typo.h6" Class="mb-4 fw-bold text-end">بيانات المستخدم</MudText>
+
+        <MudGrid GutterSize="3">
+            <!-- Existing fields... -->
+            <!-- New Time Picker Field -->
+            <MudItem xs="12" sm="6" md="3">
+                <LabelWithIcon Label="وقت البدء" LabelIcon="@Icons.Material.Filled.AccessTime">
+
+                <CustomTimePickerComponent  @bind-SelectedTime="startTime" Placeholder="اختر الوقت" />
+            </LabelWithIcon>
+        </MudItem>
+        
+        </MudGrid>
+    </MudPaper>
+            </MudContainer>
+
+@code {
+    private string username;
+    private decimal amount;
+    private double value = 50;
+    private DateRange _dateRange { get; set; }
+    public bool Label_CheckBox2 { get; set; } = false;
+    public bool Label_CheckBox3 { get; set; } = false;
+    public string SelectedOption { get; set; }
+    public bool Basic_Switch2 { get; set; } = false;
+    public bool Basic_Switch3 { get; set; } = true;
+   
+    private TimeSpan? startTime;
+
+   private string selectedState;
+
+    private Task<IEnumerable<string>> SearchStatesAsync(string value)
+    {
+        var states = new List<string>
+        {
+            "القاهرة", "الجيزة", "الإسكندرية", "أسوان", "الأقصر", "دمياط"
+        };
+
+        if (string.IsNullOrWhiteSpace(value))
+            return Task.FromResult(states.AsEnumerable());
+
+        var result = states.Where(x => x.Contains(value, StringComparison.OrdinalIgnoreCase));
+        return Task.FromResult(result);
+    }
+
+   
+
+   
+}
+

@@ -16,7 +16,7 @@ public class AccountController : Controller
     }
 
     [HttpGet("Login")]
-    public IActionResult Login(string returnUrl = null)
+    public IActionResult Login(string? returnUrl = null)
     {
         var error = Request.Query["error"].ToString();
         string errorMsg = error == "locked" ? "Account locked." : error == "invalid" ? "Invalid credentials." : "";
@@ -35,7 +35,7 @@ public class AccountController : Controller
     }
 
     [HttpPost("Login")]
-    public async Task<IActionResult> LoginPost([FromForm] string username, [FromForm] string password, [FromQuery] string returnUrl = null)
+    public async Task<IActionResult> LoginPost([FromForm] string username, [FromForm] string password, [FromQuery] string? returnUrl = null)
     {
         var result = await _authService.SignInAsync(username, password);
         if (result.IsSuccess)

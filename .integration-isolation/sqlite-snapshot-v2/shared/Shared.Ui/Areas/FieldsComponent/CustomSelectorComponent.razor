@@ -1,0 +1,31 @@
+﻿@using MudBlazor
+
+<div class="d-flex flex-column align-items-center text-center me-2">
+
+    <!-- Rounded Label with Icon -->
+    <MudPaper Class="@($"d-flex align-items-center justify-content-center px-3 py-1 rounded-pill cursor-pointer {CustomClass}")"
+              Style="@CustomStyle"
+              Elevation="0"
+              OnClick="@OnClick">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <MudIcon Icon="@Icon" Class="me-1" />
+        }
+        <MudText Typo="Typo.body2" Class="fw-bold">@Label</MudText>
+    </MudPaper>
+
+    <!-- Slot for child content below -->
+    <div class="mt-1">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; }
+    [Parameter] public string Icon { get; set; }
+    [Parameter] public string CustomClass { get; set; }
+    [Parameter] public string CustomStyle { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

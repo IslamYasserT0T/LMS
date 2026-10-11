@@ -20,7 +20,8 @@ public interface IModuleManager
     /// </summary>
     /// <param name="services"> Object of IServiceCollection </param>
     /// <param name="configuration"> Object of IConfiguration </param>
-    Task LoadModules(IServiceCollection services, IConfiguration configuration);
+    /// <param name="hostEnvironment"> Optional Object of IHostEnvironment </param>
+    Task LoadModules(IServiceCollection services, IConfiguration configuration, Microsoft.Extensions.Hosting.IHostEnvironment? hostEnvironment = null);
 
     /// <summary>
     /// Initialize runtime providers using the final application service provider.

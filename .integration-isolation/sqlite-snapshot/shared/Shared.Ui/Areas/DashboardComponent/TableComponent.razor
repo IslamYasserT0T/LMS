@@ -1,0 +1,341 @@
+﻿@typeparam TItem
+@using MudBlazor
+<MudPaper Class="rounded-4 elevation-0" Style="overflow-x:auto; box-shadow: none;">
+    <MudStack Row="true" Justify="Justify.FlexEnd" Class="mb-2">
+        <MudText Typo="Typo.h6" Class="fw-bold">@Title</MudText>
+    </MudStack>
+    <MudTable @ref="_table"
+              T="TItem"
+              Items="@PagedItems"
+              MultiSelection="true"
+              Hover="true"
+              Class="outer-bordered-table"
+              Striped="true"
+              Style="direction:rtl"
+              @bind-SelectedItems="SelectedItems"
+              OnRowClick="@OnRowClick"
+              Elevation="0">
+
+        <!-- 🔹 Toolbar with buttons and search -->
+        <ToolBarContent>
+            <MudGrid Class="w-100" GutterSize="GutterSize.Small" Style="direction:rtl">
+                <MudItem xs="12" md="6">
+                    <MudStack Row="true" Justify="Justify.FlexEnd" Wrap="Wrap.Wrap" Spacing="2" Style="direction:rtl">
+                        <MudTextField T="string"
+                                      Variant="Variant.Outlined"
+                                      Placeholder="بحث"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      Class="rounded-5"
+                                      Style="min-width: 70px; height:36px;direction:rtl" />
+
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   Class="rounded-4"
+                                   Style="background: #FFFFFF; border: 1px solid #EEF0F3; box-shadow: -1px -1px 1.9px 0px #839CED26 inset;"
+                                   EndIcon="@Icons.Material.Filled.Tune">
+                            تصفية
+                        </MudButton>
+                    </MudStack>
+                </MudItem>
+
+                <!-- Left Side (appears last in RTL) - Other Buttons -->
+                <MudItem xs="12" md="6">
+                    <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="1" Justify="Justify.FlexEnd" Style="direction:rtl">
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   Class="rounded-4"
+                                   Style="background: #FFFFFF; border: 1px solid #EEF0F3; box-shadow: -1px -1px 1.9px 0px #839CED26 inset;"
+                                   EndIcon="@Icons.Material.Outlined.TableView">
+                            اعدادات الجدول
+                        </MudButton>
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Default"
+                                   Class="rounded-4"
+                                   Style="background: #FFFFFF; border: 1px solid #EEF0F3; box-shadow: -1px -1px 1.9px 0px #839CED26 inset;"
+                                   EndIcon="@Icons.Material.Filled.Cached">
+                            تحديث
+                        </MudButton>
+                     
+                        <MudButton Variant="Variant.Filled"
+                                   Style="background-color:#192A56; color:white; box-shadow: 3px 3px 7.7px 0px #3568C766 inset, 0px -5px 4px 0px #00063026 inset;"
+                                   Class="rounded-4"
+                                   EndIcon="@Icons.Material.Filled.AddCircleOutline">
+                            اضافة جديدة
+                        </MudButton>
+                    </MudStack>
+                </MudItem>
+            </MudGrid>
+        </ToolBarContent>
+
+        <!-- Rest of your table content remains the same -->
+        <HeaderContent>
+            @HeaderTemplate
+        </HeaderContent>
+
+        <RowTemplate>
+            @RowTemplate(context)
+        </RowTemplate>
+
+    <PagerContent>
+    <MudStack Row="true" Justify="Justify.Center" AlignItems="AlignItems.Center" Class="mt-4" Style="position: relative;">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1" Style="direction: rtl;">
+            <MudButton Variant="Variant.Outlined" 
+                      Disabled="@(_currentPage == 1)" 
+                      OnClick="PrevPage" 
+                      Class="pager-switch">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronRight" />
+            </MudButton>
+            
+            <div class="pager-container">
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                    @if (_totalPages <= 5)
+                    {
+                        @for (int i = 1; i <= _totalPages; i++)
+                        {
+                            var pageNumber = i;
+                            <MudButton OnClick="@(() => GoToPage(pageNumber))"
+                                      Variant="@(pageNumber == _currentPage ? Variant.Filled : Variant.Outlined)"
+                                      Color="@(pageNumber == _currentPage ? Color.Primary : Color.Default)"
+                                      Class="pager-button">
+                                @pageNumber
+                            </MudButton>
+                        }
+                    }
+                    else
+                    {
+                        <MudButton OnClick="@(() => GoToPage(1))"
+                                  Variant="@(1 == _currentPage ? Variant.Filled : Variant.Outlined)"
+                                  Color="@(1 == _currentPage ? Color.Primary : Color.Default)"
+                                  Class="pager-button">
+                            1
+                        </MudButton>
+
+                        @if (_currentPage > 3)
+                        {
+                            <MudText Class="mx-1">...</MudText>
+                        }
+
+                        @for (int i = Math.Max(2, _currentPage - 1); i <= Math.Min(_totalPages - 1, _currentPage + 1); i++)
+                        {
+                            var pageNumber = i;
+                            <MudButton OnClick="@(() => GoToPage(pageNumber))"
+                                      Variant="@(pageNumber == _currentPage ? Variant.Filled : Variant.Outlined)"
+                                      Color="@(pageNumber == _currentPage ? Color.Primary : Color.Default)"
+                                      Class="pager-button">
+                                @pageNumber
+                            </MudButton>
+                        }
+
+                        @if (_currentPage < _totalPages - 2)
+                        {
+                            <MudText Class="mx-1">...</MudText>
+                        }
+
+                        <MudButton OnClick="@(() => GoToPage(_totalPages))"
+                                  Variant="@(_totalPages == _currentPage ? Variant.Filled : Variant.Outlined)"
+                                  Color="@(_totalPages == _currentPage ? Color.Primary : Color.Default)"
+                                  Class="pager-button">
+                            @_totalPages
+                        </MudButton>
+                    }
+                </MudStack>
+            </div>
+            
+            <MudButton Variant="Variant.Outlined" 
+                      Disabled="@(_currentPage == _totalPages)" 
+                      OnClick="NextPage" 
+                      Class="pager-switch">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronLeft" />
+            </MudButton>
+        </MudStack>
+
+        <div style="position: absolute; left: 0;">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                        <MudText Style="font-size:14px">ذهاب الي صفحة:</MudText>
+                <MudNumericField @bind-Value="_goToPageNumber" 
+                                     Variant="Variant.Outlined" 
+                                     Class="go-to-page-input"
+                                     Min="1"
+                                     Max="@_totalPages"
+                                     Immediate="true"
+                                     HideSpinButtons="true"
+                                     Style="width: 40px; height: 30px;border-radius:20px;" />
+                
+                <MudButton Variant="Variant.Outlined" 
+                          OnClick="GoToInputPage"
+                          Class="go-to-page-button"
+                          Style=" width :40px ;height:30px;border-radius:12px; background-color:#192A56; color:white; box-shadow: 3px 3px 7.7px 0px #3568C766 inset, 0px -5px 4px 0px #00063026 inset;">
+
+               اذهب </MudButton>
+            </MudStack>
+        </div>
+    </MudStack>
+</PagerContent>
+
+    </MudTable>
+</MudPaper>
+
+@code {
+    private MudTable<TItem> _table;
+
+    [Parameter] public IEnumerable<TItem> Items { get; set; } = new List<TItem>();
+    [Parameter] public HashSet<TItem> SelectedItems { get; set; } = new();
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public EventCallback<TableRowClickEventArgs<TItem>> OnRowClick { get; set; }
+    [Parameter] public RenderFragment HeaderTemplate { get; set; }
+    [Parameter] public RenderFragment<TItem> RowTemplate { get; set; }
+    [Parameter] public int PageSize { get; set; } = 4;
+
+    private int _currentPage = 1;
+    private int _goToPageInput = 1;
+
+    private int _totalPages => (int)Math.Ceiling((double)(Items?.Count() ?? 0) / PageSize);
+
+    private IEnumerable<TItem> PagedItems => Items?
+        .Skip((_currentPage - 1) * PageSize)
+        .Take(PageSize) ?? Enumerable.Empty<TItem>();
+
+    private int _goToPageNumber = 1;
+
+    private void GoToInputPage()
+    {
+        if (_goToPageNumber >= 1 && _goToPageNumber <= _totalPages)
+        {
+            GoToPage(_goToPageNumber);
+        }
+        else
+        {
+            _goToPageNumber = _currentPage;
+        }
+    }
+
+    private void GoToPage(int pageNumber)
+    {
+        if (pageNumber >= 1 && pageNumber <= _totalPages && pageNumber != _currentPage)
+        {
+            _currentPage = pageNumber;
+            _goToPageNumber = pageNumber;
+            _table?.NavigateTo(pageNumber - 1);
+            StateHasChanged();
+        }
+    }
+
+    private void PrevPage()
+    {
+        if (_currentPage > 1)
+            GoToPage(_currentPage - 1);
+    }
+
+    private void NextPage()
+    {
+        if (_currentPage < _totalPages)
+            GoToPage(_currentPage + 1);
+    }
+    private void OnEdit(TItem item)
+    {
+        Console.WriteLine($"Edit clicked for item: {item}");
+        // Add your logic here
+    }
+
+    private void OnDelete(TItem item)
+    {
+        Console.WriteLine($"Delete clicked for item: {item}");
+        // Add your logic here
+    }
+}
+<style>
+    .mud-checkbox-true {
+        color: #1D61C9 !important; /* Your custom blue */
+    }
+
+    /* ✅ Unchecked checkbox hover effect (optional) */
+    .mud-ripple-checkbox:hover {
+        color: #103F8F !important;
+    }
+
+    .mud-checkbox-null .mud-button-root {
+        border: 2px solid #0B2E5E !important; /* dark blue border */
+        border-radius: 12px !important; /* rounded shape */
+        padding: 2px;
+        box-sizing: border-box;
+        color: #0B2E5E !important; /* this sets icon color too */
+    }
+
+    /* Icon color for null state */
+    .mud-checkbox-null .mud-icon-root {
+        color: #D3EAFF !important; /* Dark blue icon */
+    }
+    /* Remove from outer wrapper */
+    .outer-bordered-table {
+        overflow: hidden; /* keep this if needed */
+    }
+
+    .mud-input {
+        position: relative;
+        color: var(--mud-palette-text-primary);
+        cursor: text;
+        display: inline-flex;
+        box-sizing: border-box;
+        align-items: center;
+        color-scheme: var(--mud-native-html-color-scheme);
+        max-width: 406px !important;
+        max-height: 36px !important;
+        border-radius: 12px !important;
+    }
+        /* Apply border only to the rendered HTML table */
+        .outer-bordered-table table {
+            border: 1px solid #EEF0F3 !important;
+            border-radius: 8px;
+            overflow: hidden;
+            border-collapse: separate;
+        }
+
+    .pager-container {
+        background-color: #F8FAFC;
+        border-radius: 40px;
+        display: inline-block;
+    }
+
+    .pager-button
+ {
+        min-width: 40px !important;
+        height: 100% !important;
+        opacity: 1;
+        border-radius: 14px;
+        padding-right: 2px;
+        padding-left: 2px;
+        border: none;
+    }
+
+        .pager-button.mud-button-filled-primary:hover {
+            background-color: #0B2E5E !important; /* Darker primary or custom hover color */
+            opacity: 0.9 !important; /* Adjust as needed */
+            color: white !important; /* Optional: ensure text remains readable */
+        }
+    .pager-switch {
+        border-radius: 14px;
+        min-width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        color: #192A56 !important;
+        border: 1px solid #EEF0F3;
+        box-shadow: -1px -1px 1.9px 0px #839CED26 inset;
+    }
+    .mud-table-root .mud-table-head  {
+        color: var(--mud-palette-text-primary);
+        font-weight: 500;
+        line-height: 1.5rem;
+        border-radius:10px;
+        background-color: #FDFDFD;
+    }
+            /* Remove inner borders */
+            .outer-bordered-table table thead,
+            .outer-bordered-table table tbody,
+            .outer-bordered-table table tr,
+            .outer-bordered-table table td,
+            .outer-bordered-table table th {
+                border: none !important;
+            }
+
+</style>

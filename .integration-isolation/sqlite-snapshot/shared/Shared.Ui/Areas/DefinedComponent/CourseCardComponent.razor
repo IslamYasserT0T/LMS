@@ -1,0 +1,61 @@
+﻿@using MudBlazor
+
+<MudPaper Class="p-0 rounded-4 overflow-hidden"
+          Style="width: 170%; border-radius: 16px; margin-left:-60px">
+
+    <!-- Image Section -->
+    <MudPaper Class="position-relative p-0 ">
+        <MudImage Src="@ImageUrl"
+                  Alt="@Title"
+                  Style="width: 100%; height: 180px; object-fit: cover; display: block;" />
+
+        <!-- Category Badge (Top Right) -->
+        <MudPaper Elevation="1"
+                  Style="position: absolute; top: 12px; right: 12px; background-color: white; padding: 4px 12px; border-radius: 16px;">
+            <MudText Typo="Typo.caption" Class="fw-bold text-primary">@Category</MudText>
+        </MudPaper>
+
+        <!-- Rating Badge (Top Left) -->
+        <MudPaper Class="d-flex align-center" Elevation="1"
+                  Style="position: absolute; top: 12px; left: 12px; background-color: white; padding: 4px 8px; border-radius: 16px;">
+            <MudIcon Icon="@Icons.Material.Filled.Star" Size="Size.Small" Color="Color.Warning" />
+            <MudText Typo="Typo.caption" Class="ms-1">@Rating.ToString("0.0")</MudText>
+        </MudPaper>
+    </MudPaper>
+
+    <!-- Text Content -->
+    <MudPaper Class="p-3">
+        <!-- Title + Best Seller Chip -->
+        <MudStack Row="true"
+                  Justify="Justify.SpaceBetween"
+                  AlignItems="AlignItems.Center"
+                  Style="direction: rtl;"
+                  Class="mb-2">
+            <MudText Typo="Typo.subtitle1" Class="fw-bold">@Title</MudText>
+            <MudChip T="string" Color="Color.Success" Variant="Variant.Filled" Size="Size.Small" Class="mb-2">
+                الأفضل مبيعًا
+            </MudChip>
+        </MudStack>
+
+        <!-- Instructor + Price -->
+        <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Style="direction: rtl;">
+            <MudItem>
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                    <MudAvatar Size="Size.Medium">
+                        <MudImage Src="@InstructorImage" />
+                    </MudAvatar>
+                    <MudText Typo="Typo.caption">@InstructorName</MudText>
+                </MudStack>
+            </MudItem>
+
+            <MudText Typo="Typo.subtitle2">
+                <MudIcon Icon="@Icons.Material.Filled.AttachMoney" />@Price
+            </MudText>
+        </MudStack>
+    </MudPaper>
+</MudPaper>
+
+
+@code {
+   
+}

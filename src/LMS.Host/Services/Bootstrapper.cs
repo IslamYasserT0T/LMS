@@ -8,6 +8,7 @@ using LMS.Host.Contracts;
 using LMS.Host.Dtos;
 using LMS.Host.ExtensionsMethods;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ModulePoc.Host.Pages;
@@ -35,18 +36,39 @@ public class Bootstrapper
 
     public async Task PreInitialize()
     {
+#if DEBUG
+        const string activeConfig = "Debug";
+#else
+        const string activeConfig = "Release";
+#endif
         var filesCopier = new ModuleFolderCopier();
         var moduleManifestManager = new ModuleManifestsManager();
-        moduleManifestManager.ProcessManifests(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "ManifestPlugins"),Path.Combine(Directory.GetCurrentDirectory(),"manifest"));
+        var curDir = Directory.GetCurrentDirectory();
+        var dirInfo = new DirectoryInfo(curDir);
+        while (dirInfo != null && !File.Exists(Path.Combine(dirInfo.FullName, "LMS.sln")))
+        {
+            dirInfo = dirInfo.Parent;
+        }
+        var solutionRoot = dirInfo?.FullName ?? curDir;
+        var manifestSource = Path.Combine(solutionRoot, "ManifestPlugins");
+        var hostDir = Path.Combine(solutionRoot, "src", "LMS.Host");
+        var manifestDest = Directory.Exists(hostDir) ? Path.Combine(hostDir, "manifest") : Path.Combine(curDir, "manifest");
 
-        var manifestPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "manifest"));
-        var destinationRoot = Path.Combine(AppContext.BaseDirectory,"plugins");
-        if(!Directory.Exists(destinationRoot)) 
+        moduleManifestManager.ProcessManifests(manifestSource, manifestDest, activeConfig);
+
+        var destinationRoot = Path.Combine(AppContext.BaseDirectory, "plugins");
+        if (!Directory.Exists(destinationRoot)) 
             Directory.CreateDirectory(destinationRoot);
-        await ModuleFolderCopier.CopyFoldersFromManifestAsync(manifestPath, destinationRoot);
+        await ModuleFolderCopier.CopyFoldersFromManifestAsync(manifestDest, destinationRoot, activeConfig);
 
         _builder.Services.AddDbContext<BaseDbContext>(options =>
-          options.UseNpgsql(_builder.Configuration.GetConnectionString("Default")));
+        {
+            var connectionString = _builder.Configuration.GetConnectionString("Default");
+            if (string.Equals(_builder.Configuration["IntegrationTest:DatabaseProvider"], "Sqlite", StringComparison.OrdinalIgnoreCase))
+                options.UseSqlite(connectionString);
+            else
+                options.UseNpgsql(connectionString);
+        });
 
         _builder.Services.AddAuthentication();
         _builder.Services.AddSettingModule(_builder.Configuration);
@@ -62,8 +84,10 @@ public class Bootstrapper
             .AddFontAwesomeIcons();
         _builder.Services.AddRazorComponents()
                .AddInteractiveServerComponents();
+        _builder.Services.AddCascadingAuthenticationState();
         _builder.Services.AddServerSideBlazor();
         _builder.Services.AddMudServices();
+        _builder.Services.AddLocalization();
         _builder.Services.AddSingleton<IModuleManager>(ModuleManager);
 
         // Configure Swagger
@@ -82,7 +106,7 @@ public class Bootstrapper
 
     public async Task Initialize(IModuleManager moduleManager)
     {
-        await moduleManager.LoadModules(_builder.Services, _builder.Configuration);
+        await moduleManager.LoadModules(_builder.Services, _builder.Configuration, _builder.Environment);
     }
 
     public async Task PostInitialize(IModuleManager moduleManager)
@@ -120,14 +144,48 @@ public class Bootstrapper
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ModulePoc API V1");
             });
         }
+
+        var supportedCultures = new[] { "en-US", "en", "ar-SA", "ar" };
+        var locOptions = new RequestLocalizationOptions()
+            .SetDefaultCulture("en-US")
+            .AddSupportedCultures(supportedCultures)
+            .AddSupportedUICultures(supportedCultures);
+        app.UseRequestLocalization(locOptions);
+
         app.UseRouting();
         app.UseHttpsRedirection();
         app.UseStaticFiles();
+
+        // Serve plugin static assets from AppContext.BaseDirectory/plugins/*/wwwroot
+        var pluginsRoot = Path.Combine(AppContext.BaseDirectory, "plugins");
+        if (Directory.Exists(pluginsRoot))
+        {
+            foreach (var pluginDir in Directory.GetDirectories(pluginsRoot))
+            {
+                var pluginWwwroot = Path.Combine(pluginDir, "wwwroot");
+                if (Directory.Exists(pluginWwwroot))
+                {
+                    app.UseStaticFiles(new StaticFileOptions
+                    {
+                        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(pluginWwwroot),
+                        RequestPath = ""
+                    });
+                }
+            }
+        }
+
         app.MapStaticAssets();
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseAntiforgery();
         app.MapControllers();
+
+        // Allow modules to register their own endpoints (e.g., IY.Auth token/authorize endpoints).
+        foreach (var endpointBuilder in app.Services.GetServices<Action<IEndpointRouteBuilder>>())
+        {
+            endpointBuilder(app);
+        }
+
         app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
                 .AddAdditionalAssemblies(moduleManager.GetModules().Select(m => m.Assembly).ToArray());

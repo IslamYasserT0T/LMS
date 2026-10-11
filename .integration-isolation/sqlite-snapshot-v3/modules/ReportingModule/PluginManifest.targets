@@ -1,0 +1,10 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="BuildReportingPlugin" BeforeTargets="Build">
+		<MSBuild Projects="..\..\modules\ReportingModule\LMS.ReportingModule\LMS.ReportingModule.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(OutputPath)/plugins/LMS.ReportingModule/" />
+	</Target>
+
+	<Target Name="ValidateReportingPluginDeployment" BeforeTargets="Build">
+		<Error Condition="'$(Configuration)' == 'Release' And $([System.IO.File]::ReadAllText('$([System.IO.Path]::GetFullPath(&quot;$(MSBuildThisFileDirectory)..\..\ManifestPlugins\ReportingModuleManifest.json&quot;))').Contains('bin/Debug/'))"
+			   Text="Validation Failed: ReportingModuleManifest.json contains a hard-coded Debug path in Release build configuration. Use {Configuration} token instead." />
+	</Target>
+</Project>

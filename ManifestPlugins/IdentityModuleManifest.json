@@ -4,7 +4,7 @@
     {
       "Name": "LMS.IdentityModule",
       "Version": "1.0.0",
-      "CopyFolder": "modules/IdentityModule/LMS.IdentityModule/bin/Debug/net9.0/plugins"
+      "CopyFolder": "modules/IdentityModule/LMS.IdentityModule/bin/{Configuration}/net9.0/plugins"
     }
   ]
 }
