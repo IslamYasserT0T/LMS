@@ -11,7 +11,7 @@
     <PackageReference Include="IY.Reporting.AspNetCore" Version="1.0.1" />
     <PackageReference Include="IY.Reporting.Blazor" Version="1.0.1" />
     <PackageReference Include="IY.Reporting.SqlKata" Version="1.0.1" />
-    <PackageReference Include="Npgsql" Version="9.0.4" />
+    <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.7" />
   </ItemGroup>
 

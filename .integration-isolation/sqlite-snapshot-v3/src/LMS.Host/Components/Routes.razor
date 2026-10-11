@@ -1,10 +1,10 @@
-﻿@using LMS.Host.Components.Layout
+@using LMS.Host.Components.Layout
 @using LMS.Host.Contracts
 @using LMS.Host.Services
 @inherits LayoutComponentBase
 @inject IModuleManager ModuleManager
 
-<Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="ModuleManager.GetModules().Select(m => m.Assembly).ToArray()">
+<Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="ModuleManager.GetModules().Select(m => m.Assembly).Concat(ModuleManager.GetAdditionalBlazorAssemblies()).Distinct().ToArray()">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>

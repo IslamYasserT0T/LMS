@@ -39,6 +39,10 @@ public static class IdentityModuleServiceCollectionExtensions
 
         services.AddScoped<IModuleDbMigrator, IdentityModuleDbMigrator>();
 
+        // Register theme provider and localization for IY.Auth.UI Blazor components
+        services.AddScoped<IY.Auth.Contracts.UI.IAuthThemeProvider, LmsAuthThemeProvider>();
+        services.AddLocalization();
+
         // Register the IY.Auth endpoint mapping so Host can invoke it without an IY.Auth dependency.
         services.AddSingleton<Action<IEndpointRouteBuilder>>(endpoints => endpoints.MapIYAuthEndpoints());
 

@@ -188,7 +188,11 @@ public class Bootstrapper
 
         app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
-                .AddAdditionalAssemblies(moduleManager.GetModules().Select(m => m.Assembly).ToArray());
+                .AddAdditionalAssemblies(
+                    moduleManager.GetModules().Select(m => m.Assembly)
+                        .Concat(moduleManager.GetAdditionalBlazorAssemblies())
+                        .Distinct()
+                        .ToArray());
     }
 
     private static void ApplyMigrations(WebApplication app)

@@ -76,11 +76,10 @@ public class Module : IModule
 
             if (string.Equals(configuration["IntegrationTest:DatabaseProvider"], "Sqlite", StringComparison.OrdinalIgnoreCase))
             {
-                return new QueryFactory(new SqliteConnection(connectionString), new SqliteCompiler());
+                return CreateSqliteQueryFactory(connectionString);
             }
 
-            var connectionSettings = new NpgsqlConnectionStringBuilder(connectionString) { CommandTimeout = 30 };
-            return new QueryFactory(new NpgsqlConnection(connectionSettings.ConnectionString), new PostgresCompiler());
+            return CreatePostgresQueryFactory(connectionString);
         });
         services.AddScoped<IY.Reporting.Models.IReportExecutionContext, LmsReportExecutionContext>();
         services.AddScoped<IY.Reporting.Services.IReportAccessPolicy, LmsReportAccessPolicy>();
@@ -88,5 +87,18 @@ public class Module : IModule
         services.AddScoped<IY.Reporting.Export.IReportExportPolicy, LmsReportExportPolicy>();
         services.AddSingleton(LmsReportingSchema.Create());
         services.AddReportingBlazor();
+    }
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+    private static QueryFactory CreateSqliteQueryFactory(string connectionString)
+    {
+        return new QueryFactory(new SqliteConnection(connectionString), new SqliteCompiler());
+    }
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+    private static QueryFactory CreatePostgresQueryFactory(string connectionString)
+    {
+        var connectionSettings = new NpgsqlConnectionStringBuilder(connectionString) { CommandTimeout = 30 };
+        return new QueryFactory(new NpgsqlConnection(connectionSettings.ConnectionString), new PostgresCompiler());
     }
 }

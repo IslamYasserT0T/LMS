@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -10,6 +10,7 @@
     <PackageReference Include="IY.Auth.AspNetCore" Version="0.2.0" />
     <PackageReference Include="IY.Auth.Contracts" Version="0.2.0" />
     <PackageReference Include="IY.Auth.EntityFrameworkCore" Version="0.2.0" />
+    <PackageReference Include="IY.Auth.UI" Version="0.2.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.7" />
   </ItemGroup>

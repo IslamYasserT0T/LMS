@@ -1,0 +1,81 @@
+@page "/reports"
+@using System.Security.Claims
+@using Casbin
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
+@attribute [Authorize]
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IEnforcer Enforcer
+
+<PageTitle>Reports</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4">
+    <MudText Typo="Typo.h5" Class="mb-4" id="reports-landing-title">Reports Management</MudText>
+
+    @if (!_isInitialized)
+    {
+        <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+    }
+    else
+    {
+        <MudGrid>
+            <MudItem xs="12" sm="6">
+                <MudCard Class="pa-4" id="card-report-viewer">
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6">Report Viewer</MudText>
+                        <MudText Typo="Typo.body2" Class="mt-2">Browse and execute saved reports.</MudText>
+                        @if (!_canViewReports)
+                        {
+                            <MudChip T="string" Color="Color.Error" Size="Size.Small" Class="mt-2" id="chip-no-viewer-access">Casbin: No Viewer Access</MudChip>
+                        }
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/reports/viewer" id="btn-go-viewer" Disabled="@(!_canViewReports)">Open Viewer</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudCard Class="pa-4" id="card-report-designer">
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6">Report Designer</MudText>
+                        <MudText Typo="Typo.body2" Class="mt-2">Create and configure report definitions.</MudText>
+                        @if (!_canDesignReports)
+                        {
+                            <MudChip T="string" Color="Color.Error" Size="Size.Small" Class="mt-2" id="chip-no-designer-access">Casbin: No Designer Access</MudChip>
+                        }
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/reports/designer" id="btn-go-designer" Disabled="@(!_canDesignReports)">Open Designer</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    }
+</MudContainer>
+
+@code {
+    private bool _isInitialized;
+    private bool _canViewReports;
+    private bool _canDesignReports;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            var subject = user.FindFirstValue("sub") ?? user.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (Guid.TryParse(subject, out var userId))
+            {
+                var subjectId = userId.ToString("D");
+                _canViewReports = Enforcer.Enforce(subjectId, "reporting:table:Samples", "sourceaccess", "lms");
+                _canDesignReports = Enforcer.Enforce(subjectId, "reporting:designer", "design", "lms")
+                    || _canViewReports;
+            }
+        }
+        _isInitialized = true;
+    }
+}

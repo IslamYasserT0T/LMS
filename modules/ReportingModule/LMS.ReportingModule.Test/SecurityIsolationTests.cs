@@ -54,6 +54,25 @@ public class SecurityIsolationTests
     }
 
     [Fact]
+    public void ReleaseCompilation_Metadata_ContainsAllProductionReportingPages()
+    {
+        var releaseDll = Path.Combine(_solutionRoot, "modules", "ReportingModule", "LMS.ReportingModule", "bin", "Release", "net9.0", "LMS.ReportingModule.dll");
+        Assert.True(File.Exists(releaseDll), $"Release DLL must exist at {releaseDll}");
+
+        var assembly = Assembly.Load(File.ReadAllBytes(releaseDll));
+        var types = assembly.GetTypes();
+
+        // 1. Verify production reporting pages are present
+        Assert.Contains(types, t => t.FullName == "LMS.ReportingModule.Ui.Pages.ReportsIndex");
+        Assert.Contains(types, t => t.FullName == "LMS.ReportingModule.Ui.Pages.ReportsViewerPage");
+        Assert.Contains(types, t => t.FullName == "LMS.ReportingModule.Ui.Pages.ReportsDesignerPage");
+
+        // 2. Verify old conflicting names are absent
+        Assert.DoesNotContain(types, t => t.FullName == "LMS.ReportingModule.Ui.Pages.ReportViewer");
+        Assert.DoesNotContain(types, t => t.FullName == "LMS.ReportingModule.Ui.Pages.ReportDesigner");
+    }
+
+    [Fact]
     public void ReleaseModule_RegisterServices_DoesNotRegisterProofServices_EvenWithExplicitOptIn()
     {
         var releaseDll = Path.Combine(_solutionRoot, "modules", "ReportingModule", "LMS.ReportingModule", "bin", "Release", "net9.0", "LMS.ReportingModule.dll");

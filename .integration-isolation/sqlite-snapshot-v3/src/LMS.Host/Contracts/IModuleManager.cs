@@ -49,4 +49,11 @@ public interface IModuleManager
     /// </summary>
     /// <returns> List of Assembly</returns>
     List<Assembly> GetAllAssemblies();
+    /// <summary>
+    /// Get additional Blazor UI assemblies deployed into plugin folders that contain
+    /// route-bearing Razor components (e.g. IY.Auth.UI.dll).  These are separate from
+    /// the plugin entry-point assemblies returned by <see cref="GetModules"/>.
+    /// </summary>
+    /// <returns>List of additional Blazor assemblies</returns>
+    List<Assembly> GetAdditionalBlazorAssemblies();
 }

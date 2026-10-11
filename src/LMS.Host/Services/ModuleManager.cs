@@ -16,6 +16,7 @@ public class ModuleManager : IModuleManager
     private readonly List<ModuleInfo> _modules = new();
     private readonly List<Assembly> _assemblies = new();
     private readonly List<ModuleInfo> _moduleUis = new();
+    private readonly List<Assembly> _additionalBlazorAssemblies = new();
     private IServiceCollection? _services;
     private IConfiguration? _configuration;
     private IHostEnvironment? _hostEnvironment;
@@ -68,6 +69,11 @@ public class ModuleManager : IModuleManager
     public List<Assembly> GetAllAssemblies()
     {
         return _assemblies;
+    }
+    ///<inheritdoc/>
+    public List<Assembly> GetAdditionalBlazorAssemblies()
+    {
+        return _additionalBlazorAssemblies;
     }
     #endregion
 
@@ -141,6 +147,12 @@ public class ModuleManager : IModuleManager
                                 RegisterModuleServices(moduleType, moduleInfo);
                             }
                         }
+
+                        // Discover companion Blazor/UI assemblies in the same plugin directory.
+                        // These are DLLs that are NOT the plugin entry point but carry @page-decorated
+                        // Razor components (e.g. IY.Auth.UI.dll, IY.Reporting.Blazor.dll).
+                        LoadCompanionBlazorAssemblies(dir);
+
                         Console.WriteLine($"Loaded module from {pluginDll}");
                     }
                     catch (Exception ex)
@@ -155,6 +167,66 @@ public class ModuleManager : IModuleManager
         _assemblies.AddRange(AppDomain.CurrentDomain.GetAssemblies());
 
 
+    }
+
+    /// <summary>
+    /// Scans the given plugin directory for companion DLLs containing Blazor route components
+    /// (*.UI.dll, *.Blazor.dll) and loads them so their @page routes can be registered
+    /// with the Blazor Router and server-side endpoint discovery.
+    /// Explicitly validates that candidate assemblies contain RouteAttribute-bearing components.
+    /// </summary>
+    private void LoadCompanionBlazorAssemblies(string pluginDir)
+    {
+        var companionPatterns = new[] { ".UI.dll", ".Blazor.dll" };
+
+        foreach (var dllPath in Directory.GetFiles(pluginDir, "*.dll"))
+        {
+            var fileName = Path.GetFileName(dllPath);
+
+            if (!companionPatterns.Any(p => fileName.EndsWith(p, StringComparison.OrdinalIgnoreCase)))
+                continue;
+
+            var assemblyName = Path.GetFileNameWithoutExtension(dllPath);
+            var existingAsm = AppDomain.CurrentDomain.GetAssemblies()
+                .FirstOrDefault(a => string.Equals(a.GetName().Name, assemblyName, StringComparison.OrdinalIgnoreCase));
+
+            Assembly? candidateAsm = existingAsm;
+            if (candidateAsm == null)
+            {
+                try
+                {
+                    candidateAsm = Assembly.LoadFrom(dllPath);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to load candidate companion Blazor assembly {dllPath}: {ex.Message}");
+                    continue;
+                }
+            }
+
+            if (candidateAsm != null && IsRouteBearingAssembly(candidateAsm))
+            {
+                if (!_additionalBlazorAssemblies.Contains(candidateAsm))
+                {
+                    _additionalBlazorAssemblies.Add(candidateAsm);
+                    Console.WriteLine($"Discovered route-bearing companion assembly: {candidateAsm.GetName().Name}");
+                }
+            }
+        }
+    }
+
+    private static bool IsRouteBearingAssembly(Assembly assembly)
+    {
+        try
+        {
+            return assembly.GetTypes().Any(t =>
+                typeof(Microsoft.AspNetCore.Components.IComponent).IsAssignableFrom(t) &&
+                t.GetCustomAttributes().Any(a => a.GetType().FullName == "Microsoft.AspNetCore.Components.RouteAttribute"));
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private void RegisterModuleServices(Type moduleType, ModuleInfo moduleInfo)

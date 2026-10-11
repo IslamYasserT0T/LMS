@@ -1,0 +1,78 @@
+@page "/reports/designer"
+@using System.Security.Claims
+@using Casbin
+@using IY.Reporting.Blazor.Components.Designer
+@using IY.Reporting.Blazor.Models
+@using IY.Reporting.Models
+@using IY.Reporting.Schema
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Extensions.DependencyInjection
+@using MudBlazor
+@attribute [Authorize]
+@inject IServiceProvider ServiceProvider
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IEnforcer Enforcer
+
+<PageTitle>Report Designer</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4">
+    <MudText Typo="Typo.h5" Class="mb-4" id="report-designer-title">Report Designer</MudText>
+
+    @if (!_isInitialized)
+    {
+        <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+    }
+    else if (!_isAuthorized)
+    {
+        <MudAlert Severity="Severity.Error" Variant="Variant.Filled" id="designer-access-denied" Class="mb-4">
+            Access Denied: Casbin policy does not permit report design for this identity.
+        </MudAlert>
+    }
+    else
+    {
+        <div id="lms-report-designer">
+            <IY.Reporting.Blazor.Components.Designer.ReportDesigner Schema="_schema" Capabilities="_capabilities" />
+        </div>
+    }
+</MudContainer>
+
+@code {
+    private bool _isInitialized;
+    private bool _isAuthorized;
+    private ReportSchema _schema = default!;
+    private ReportingCapabilities _capabilities = new(CanDesign: true, CanSave: true, CanExport: true, CanDelete: true);
+
+    protected override async Task OnInitializedAsync()
+    {
+        var schema = ServiceProvider.GetService<ReportSchema>();
+        if (schema == null)
+        {
+            throw new InvalidOperationException("Required LMS reporting schema is not registered. Failing closed.");
+        }
+        _schema = schema;
+
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity?.IsAuthenticated != true)
+        {
+            _isAuthorized = false;
+            _isInitialized = true;
+            return;
+        }
+
+        var subject = user.FindFirstValue("sub") ?? user.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(subject, out var userId))
+        {
+            _isAuthorized = false;
+            _isInitialized = true;
+            return;
+        }
+
+        var subjectId = userId.ToString("D");
+        _isAuthorized = Enforcer.Enforce(subjectId, "reporting:designer", "design", "lms")
+            || Enforcer.Enforce(subjectId, "reporting:table:Samples", "sourceaccess", "lms");
+        _isInitialized = true;
+    }
+}
